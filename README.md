@@ -55,12 +55,15 @@ Other syntax elements are described below.
 | `[_n_]` | Selects the  _n_-th element from an array. Indexes are 0-based. |
 |--|--|
 |[_index1_,_index2_,_…_]|Selects array elements with the specified indexes.|
-
+|--|--|
 |`.._property_` | Recursive descent: Searches for the specified property name recursively and returns an array of all values with this property name. Always returns a list even if just one property is found.  |
 |--|--|
-|  |  |
+|`*`|Wildcard selects all elements in an object or an array, regardless of their names or indexes. For example,  `address.*`  means all properties of the  `address`  object, and  `book[*]`  means all items of the  `book`  array.|
 |--|--|
-|  |  |
+|`[_start_:_end_]`  
+`[_start_:]`
+
+Selects array elements from the  _start_  index and up to, but not including,  _end_  index. If  _end_  is omitted, selects all elements from  _start_  until the end of the array. Returns a l  |  |
 |--|--|
 |  |  |
 |--|--|
@@ -406,5 +409,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE0Mjk3MzgyNDksOTYwMjExMTI3XX0=
+eyJoaXN0b3J5IjpbNTQ4NzE0NDYxLDk2MDIxMTEyN119
 -->
