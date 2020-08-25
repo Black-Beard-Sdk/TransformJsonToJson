@@ -79,20 +79,9 @@ $.store.book[?(@.price < $.expensive)]
 An expression that specifies just a property name, such as  `[?(@.isbn)]`, matches all items that have this property, regardless of the value.
 
 Below are the operators that can be used in filters.
-
-![](https://support.smartbear.com/alertsite/docs/_assets/commonImages/pay-attention.gif)
-
-Supported operators depend on the monitor  [playback engine](https://support.smartbear.com/alertsite/docs/monitors/api/readyapi-versions.html).
-
-Operator
-
-Description
-
-`==`
-
-Equals to. String values must be enclosed in single quotes (not double quotes):  `[?(@.color=='red')]`.
-
-**Note:** Number to string comparison works differently depending on the  [playback engine](https://support.smartbear.com/alertsite/docs/monitors/api/readyapi-versions.html). In TestEngine,  `1`  does not equal  `'1'`. In ReadyAPI 1.9 and earlier,  `1`  equals  `'1'`.
+|Operator|Description|
+|--|--|
+|`==`|Equals to. String values must be enclosed in single quotes (not double quotes):  `[?(@.color=='red')]`.| (https://support.smartbear.com/alertsite/docs/monitors/api/readyapi-versions.html). In TestEngine,  `1`  does not equal  `'1'`. In ReadyAPI 1.9 and earlier,  `1`  equals  `'1'`.
 
 `!=`
 
@@ -394,5 +383,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE0NzM4OTA2ODMsOTYwMjExMTI3XX0=
+eyJoaXN0b3J5IjpbNTg2NzU2MzI4LDk2MDIxMTEyN119
 -->
