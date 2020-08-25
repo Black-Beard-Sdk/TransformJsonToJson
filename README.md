@@ -184,7 +184,7 @@ JSONPath queries can return not just a single element, but also a list of matchi
 
 the JSONPath expression
 
-```JSON
+```JAVASCRIPT
 phoneNumbers[*].number
 ```
 returns a list containing two phone numbers:
@@ -201,6 +201,6 @@ When using “equals” assertions against a list of matches, specify a list of 
 Standalone strings (like  `apples`) should not have enclosing quotes, unless the quotes are part of the value.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzMDcwNDA3NiwtMjA3MzQ4NzYyNSw5Nj
-AyMTExMjddfQ==
+eyJoaXN0b3J5IjpbLTE3NDIxNDE2ODEsLTIwNzM0ODc2MjUsOT
+YwMjExMTI3XX0=
 -->
