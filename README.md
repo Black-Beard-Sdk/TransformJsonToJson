@@ -93,8 +93,7 @@ Below are the operators that can be used in filters.
 |`||`|Logical OR, used to combine multiple filter expressions: [?(@.category=='fiction' || @.price < 10)]
 |`in`|Checks if the left-side value is present in the right-side list. Similar to the SQL IN operator. String comparison is case-sensitive.[?(@.size in ['M', 'L'])]  [?('S' in @.sizes)]
 |`nin`|Opposite of  `in`. Checks that the left-side value is not present in the right-side list. String comparison is case-sensitive.[?(@.size nin ['M', 'L'])]  [?('S' nin @.sizes)]
-|`subsetof`|Checks if the left-side array is a subset of the right-side array. The actual order of array items does not matter. String comparison is case-sensitive. An empty left-side array always matches. For example:-   `[?(@.sizes subsetof ['M', 'L'])]` – matches if  `sizes`  is  `['M']`  or  `['L']`  or  `['L', 'M']`  but does not match if the array has any other elements.
--   `[?(['M', 'L'] subsetof @.sizes)]` – matches if  `sizes`  contains at least  `'M'`  and  `'L'`.
+|`subsetof`|Checks if the left-side array is a subset of the right-side array. The actual order of array items does not matter. String comparison is case-sensitive. An empty left-side array always matches. For example:-   `[?(@.sizes subsetof ['M', 'L'])]` – matches if  `sizes`  is  `['M']`  or  `['L']`  or  `['L', 'M']`  but does not match if the array has any other elements. `[?(['M', 'L'] subsetof @.sizes)]` matches if `sizes` contains at least  `'M'`  and  `'L'`.
 |`contains`|Checks if a string contains the specified substring (case-sensitive), or an array contains the specified element. [?(@.name contains 'Alex')]  [?(@.numbers contains 7)]  [?('ABCDEF' contains @.character)]
 |`size`|Checks if an array or string has the specified length. [?(@.name size 4)]
 |`empty true`|Matches an empty array or string. [?(@.name empty true)]
@@ -285,5 +284,6 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIwNzM0ODc2MjUsOTYwMjExMTI3XX0=
+eyJoaXN0b3J5IjpbNDA2MDA5NywtMjA3MzQ4NzYyNSw5NjAyMT
+ExMjddfQ==
 -->
