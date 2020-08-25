@@ -62,17 +62,17 @@ Other syntax elements are described below.
 
 ## Notes:
 -   JSONPath expressions, including property names and values, are  **case-sensitive**.
-    
-JSONPath does not have operations for accessing parent or sibling nodes from the given node.
-    
+-  JSONPath does not have operations for accessing parent or sibling nodes from the given node.
 
 ### Filters
 
 Filters are logical expressions used to filter arrays. An example of a JSONPath expression with a filter is
 
+```JSON
 $.store.book[?(@.price < 10)]
+```
 
-where  `@`  represents the current array item or object being processed. Filters can also use  `$`  to refer to the properties outside of the current object:
+where   `@`  represents the current array item or object being processed. Filters can also use  `$`  to refer to the properties outside of the current object:
 
 $.store.book[?(@.price < $.expensive)]
 
@@ -394,5 +394,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTMwMTQ4ODY5MCw5NjAyMTExMjddfQ==
+eyJoaXN0b3J5IjpbLTY2OTE2ODU2Nyw5NjAyMTExMjddfQ==
 -->
