@@ -1,5 +1,5 @@
 # TransformJsonToJson
-Manage configuration for transform a json source in json target like xslt in XML.
+Manage configuration for transform a json source in json.
 
 consider the following template
 ```JSON
@@ -13,12 +13,11 @@ The result will be.
 ```JSON
     { 'name' : 'name1' }
 ```
-
-the json path fetch the value at adress from the source document.
+the json path fetch the value at specified adress from the source document.
 
 # JSONPath Syntax
 
-
+this section is inspired
 
 JSONPath is a query language for JSON, similar to XPath for XML. AlertSite [API endpoint monitors](https://support.smartbear.com/alertsite/docs/monitors/api/endpoint/create.html)  let you use JSONPath in  [assertions](https://support.smartbear.com/alertsite/docs/monitors/api/endpoint/assertions.html)  to specify the JSON fields that need to be verified.
 
@@ -430,5 +429,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE4Njk5MDkwNjFdfQ==
+eyJoaXN0b3J5IjpbLTEyMzE1MDYwMjFdfQ==
 -->
