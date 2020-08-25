@@ -32,19 +32,21 @@ JSONPath is a query language for JSON, similar to XPath for XML. The implementat
 A JSONPath expression specifies a path to an element (or a set of elements) in a JSON structure. Paths can use the dot notation:
 
 ```JSON
-    $.store.books[0].title
-
-or the bracket notation:
-
-$['store']['books'][0]['title']
-
+$.store.books[0].title
 ```
 
-
+or the bracket notation:
+```JSON
+$['store']['books'][0]['title']
+```
 
 The leading  `$`  represents the root object or array and can be omitted. For example,  `$.foo.bar`  and  `foo.bar`  are the same, and so are  `$[0].status`  and  `[0].status`.
 
 Other syntax elements are described below.
+
+|Expression|Description  |
+|--|--|
+|  |  |
 
 
 Notes:
@@ -382,5 +384,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTY1NzQ4MjE4MCw5NjAyMTExMjddfQ==
+eyJoaXN0b3J5IjpbMTI5OTI2MjIzNiw5NjAyMTExMjddfQ==
 -->
