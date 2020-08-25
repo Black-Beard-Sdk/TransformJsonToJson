@@ -13,7 +13,7 @@ The result will be.
 ```JSON
     { 'name' : 'name1' }
 ```
-The template is a valid json structur.
+The template is a valid json structur. the value in string have a specific syntax
 The json path fetch the value at specified adress from the source document.
 
 # JSONPath Syntax
@@ -370,5 +370,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTkwMTE4MzQzM119
+eyJoaXN0b3J5IjpbMjAxMjYwOTY1XX0=
 -->
