@@ -16,7 +16,7 @@ The result will be.
 The template is a valid json structur. the value in string have a specific syntax.
 
 ```JSON
-    "key:{argument}"
+    "key:{argument} key:{argument} ..."
 ```
 
 the key is
@@ -52,7 +52,7 @@ Other syntax elements are described below.
 |--|--|
 | ['property'] | Selects the specified property in a parent object. Be sure to put single quotes around the property name. **Tip:** Use this notation if the property name contains special characters such as spaces, or begins with a character other than  `A..Za..z_`. |
 |--|--|
-| `[_n_]` | Selects the  _n_-th element from an array. Indexes are 0-based. |
+| `[n]` | Selects the  n-th element from an array. Indexes are 0-based. |
 |--|--|
 |[_index1_,_index2_,_…_]|Selects array elements with the specified indexes.|
 |--|--|
@@ -64,7 +64,7 @@ Other syntax elements are described below.
 |--|--|
 | `[:n]` | Selects the first n elements of the array. Returns a list |
 |--|--|
-| `[_-n_:]`|Selects the last  _n_  elements of the array. Returns a  [list](https://support.smartbear.com/alertsite/docs/monitors/api/endpoint/jsonpath.html#multiple).|
+| `[_-n_:]`|Selects the last n elements of the array. Returns a list |
 |--|--|
 |  |  |
 |--|--|
@@ -406,5 +406,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTQ1MzM4MDE3Miw5NjAyMTExMjddfQ==
+eyJoaXN0b3J5IjpbLTgwNzcxMDMwMCw5NjAyMTExMjddfQ==
 -->
