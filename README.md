@@ -21,7 +21,7 @@ The template is a valid json structur. the value in string have a specific synta
     "key:{argument} key:{argument} ..."
 ```
 
-the key is a name of the service you need to call. You are responsable of registered the services in the configuration for matching with the template. the unique key registered is **jpath** -> "jpath:{valid json path expression}". The json path fetch the value at specified adress in the source document.
+the key is a name of the service you need to call. You are responsable of registered the services in the configuration for matching with the template. the unique key registered is **jpath** -> "jpath:{valid json path expression}". The json path fetch the value at specified adress in the source document. jpathJSONPath is a query language for JSON, similar to XPath for XML. The implementation of JsonPath is did by newtonsoft. [SelectToken](https://www.newtonsoft.com/json/help/html/SelectToken.htm)
 
 ```JSON
 // Template
@@ -55,8 +55,6 @@ JToken result = template.Transform(sbSource);
 
 
 # JSONPath Syntax
-
-JSONPath is a query language for JSON, similar to XPath for XML. The implementation of JsonPath is did by newtonsoft. [SelectToken](https://www.newtonsoft.com/json/help/html/SelectToken.htm)
 
 ### JSONPath notation
 
@@ -191,7 +189,7 @@ In all these examples, the leading  `$.`  is optional and can be omitted.
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTUwODQzMDc2Miw1NjI3NDgxMjEsMTI1Mz
-M5MDk5LDEzNzY3MDQ0MDcsLTE3NDIxNDE2ODEsLTIwNzM0ODc2
-MjUsOTYwMjExMTI3XX0=
+eyJoaXN0b3J5IjpbLTIwMjkxMTUxMjEsNTYyNzQ4MTIxLDEyNT
+MzOTA5OSwxMzc2NzA0NDA3LC0xNzQyMTQxNjgxLC0yMDczNDg3
+NjI1LDk2MDIxMTEyN119
 -->
