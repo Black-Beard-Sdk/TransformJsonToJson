@@ -31,12 +31,12 @@ JSONPath is a query language for JSON, similar to XPath for XML. The implementat
 
 A JSONPath expression specifies a path to an element (or a set of elements) in a JSON structure. Paths can use the dot notation:
 
-```JSON
+```JAVASCRIPT
 $.store.books[0].title
 ```
 
 or the bracket notation:
-```JSON
+```JAVASCRIPT
 $['store']['books'][0]['title']
 ```
 
@@ -73,7 +73,7 @@ $.store.book[?(@.price < 10)]
 ```
 where  `@`  represents the current array item or object being processed. Filters can also use  `$`  to refer to the properties outside of the current object:
 
-```JSON
+```JAVASCRIPT
 $.store.book[?(@.price < $.expensive)]
 ```
 An expression that specifies just a property name, such as  `[?(@.isbn)]`, matches all items that have this property, regardless of the value.
@@ -201,6 +201,6 @@ When using “equals” assertions against a list of matches, specify a list of 
 Standalone strings (like  `apples`) should not have enclosing quotes, unless the quotes are part of the value.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMzk2NTI3ODY1LC0yMDczNDg3NjI1LDk2MD
-IxMTEyN119
+eyJoaXN0b3J5IjpbLTEzMDcwNDA3NiwtMjA3MzQ4NzYyNSw5Nj
+AyMTExMjddfQ==
 -->
