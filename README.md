@@ -23,6 +23,12 @@ the key is
 
  - **jpath** -> "jpath:{valid json path expression}". The json path fetch the value at specified adress in the source document.
 
+```CSHARP
+var configuration = new TranformJsonAstConfiguration();
+TemplateTransformProvider Templateprovider = new TemplateTransformProvider(configuration);
+StringBuilder sb = new StringBuilder(payloadTemplate.Replace('\'', '"').Replace('§', '\''));
+
+```
 
 
 # JSONPath Syntax
@@ -166,6 +172,6 @@ In all these examples, the leading  `$.`  is optional and can be omitted.
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE1MjQ1ODcyNTEsMTM3NjcwNDQwNywtMT
-c0MjE0MTY4MSwtMjA3MzQ4NzYyNSw5NjAyMTExMjddfQ==
+eyJoaXN0b3J5IjpbLTkzNTM2NDc3NCwxMzc2NzA0NDA3LC0xNz
+QyMTQxNjgxLC0yMDczNDg3NjI1LDk2MDIxMTEyN119
 -->
