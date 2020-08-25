@@ -40,7 +40,7 @@ var configuration = new TranformJsonAstConfiguration();
 TemplateTransformProvider Templateprovider = new TemplateTransformProvider(configuration);
 
 // add a custom service
-configuration.AddService("sum", new ServiceSum());
+configuration.AddService("sum", () => new ServiceSum());
 
 //Build the template translator
 StringBuilder sbPayloadTemplate = new StringBuilder(@"payload template");
@@ -189,7 +189,7 @@ In all these examples, the leading  `$.`  is optional and can be omitted.
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEyMTQxNDE0MjgsNTYyNzQ4MTIxLDEyNT
-MzOTA5OSwxMzc2NzA0NDA3LC0xNzQyMTQxNjgxLC0yMDczNDg3
-NjI1LDk2MDIxMTEyN119
+eyJoaXN0b3J5IjpbLTE5MDQ0Mjk5Niw1NjI3NDgxMjEsMTI1Mz
+M5MDk5LDEzNzY3MDQ0MDcsLTE3NDIxNDE2ODEsLTIwNzM0ODc2
+MjUsOTYwMjExMTI3XX0=
 -->
