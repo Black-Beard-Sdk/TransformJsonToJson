@@ -148,12 +148,9 @@ In all these examples, the leading  `$.`  is optional and can be omitted.
 |`$.store.bicycle.color`|The color of the bicycle in the store.Result:  `red`|
 |`$.store..price` `$..price`|The prices of all items in the store. Result:  `[8.95, 8.99, 22.99, 19.95]`|
 |`$.store.book[*]`  `$..book[*]`|All books in the store.|
-|`$..book[*].title`|The titles of all books in the store. Result:  `[Sayings of the Century,  
-Moby Dick,  
-The Lord of the Rings]`|
-|`$..book[0]`|The first book.
-Result:
-
+|`$..book[*].title`|The titles of all books in the store. Result:  `[Sayings of the Century, Moby Dick, The Lord of the Rings]`|
+|`$..book[0]`|The first book. Result: 
+```JSON
 [  
 {  
 "category":"reference",  
@@ -162,8 +159,8 @@ Result:
 "price":8.95  
 }  
 ]
-
-`$..book[0].title`
+```
+|`$..book[0].title`
 
 The title of the first book.
 
@@ -260,6 +257,6 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzU2MzA1MTYxLC0yMDczNDg3NjI1LDk2MD
-IxMTEyN119
+eyJoaXN0b3J5IjpbLTIxMDA4MzYwMzcsLTIwNzM0ODc2MjUsOT
+YwMjExMTI3XX0=
 -->
