@@ -1,7 +1,7 @@
 # Transform Json To Json
-Manage configuration for transform a json source in json.
+Manage configuration for transform a json source in json target.
 
-consider the following template. note that the template is a json that describe the structure of the target json. If the template is empty, the process return the source json.
+Consider the following template. note that the template is a json that describe the structure of the target json. If the template is empty, the process return the initial source json.
 ```JSON
     { "name" : "jpath:{$.n}" }
 ```
@@ -189,7 +189,7 @@ In all these examples, the leading  `$.`  is optional and can be omitted.
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjYyMjk4NzI4LDU2Mjc0ODEyMSwxMjUzMz
+eyJoaXN0b3J5IjpbLTk2NTMwMTIzLDU2Mjc0ODEyMSwxMjUzMz
 kwOTksMTM3NjcwNDQwNywtMTc0MjE0MTY4MSwtMjA3MzQ4NzYy
 NSw5NjAyMTExMjddfQ==
 -->
