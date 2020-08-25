@@ -17,9 +17,7 @@ the json path fetch the value at specified adress from the source document.
 
 # JSONPath Syntax
 
-this section is inspired
-
-JSONPath is a query language for JSON, similar to XPath for XML. AlertSite [API endpoint monitors](https://support.smartbear.com/alertsite/docs/monitors/api/endpoint/create.html)  let you use JSONPath in  [assertions](https://support.smartbear.com/alertsite/docs/monitors/api/endpoint/assertions.html)  to specify the JSON fields that need to be verified.
+JSONPath is a query language for JSON, similar to XPath for XML. The implementation of JsonPath is done by newtonsoft.
 
 ### JSONPath notation
 
@@ -429,5 +427,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEyMzE1MDYwMjFdfQ==
+eyJoaXN0b3J5IjpbNzIxOTI2OTg2XX0=
 -->
