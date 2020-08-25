@@ -103,6 +103,7 @@ Below are the operators that can be used in filters.
 
 For these examples, we will use a modified version of JSON from  [http://goessner.net/articles/JsonPath/index.html#e3](http://goessner.net/articles/JsonPath/index.html#e3):
 
+```JSON
 {  
 "store": {  
 "book": [  
@@ -134,24 +135,18 @@ For these examples, we will use a modified version of JSON from  [http://goessne
 },  
 "expensive": 10  
 }
+```
 
 In all these examples, the leading  `$.`  is optional and can be omitted.
 
-Expression
 
-Meaning
 
-`$.store.*`
 
-All direct properties of  `store`  (not recursive).
-
-`$.store.bicycle.color`
-
-The color of the bicycle in the store.
-
-Result:  `red`
-
-`$.store..price`  
+|Expression|Meaning|
+|--|--|
+|`$.store.*`|All direct properties of  `store`  (not recursive).|
+|`$.store.bicycle.color`|The color of the bicycle in the store.Result:  `red`|
+|`$.store..price`  
 `$..price`
 
 The prices of all items in the store.
@@ -284,6 +279,6 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNDA2MDA5NywtMjA3MzQ4NzYyNSw5NjAyMT
-ExMjddfQ==
+eyJoaXN0b3J5IjpbLTgyMjg5ODAzMywtMjA3MzQ4NzYyNSw5Nj
+AyMTExMjddfQ==
 -->
