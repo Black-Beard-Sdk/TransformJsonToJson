@@ -71,11 +71,11 @@ Filters are logical expressions used to filter arrays. An example of a JSONPath 
 ```JSON
 $.store.book[?(@.price < 10)]
 ```
+where  `@`  represents the current array item or object being processed. Filters can also use  `$`  to refer to the properties outside of the current object:
 
-where   `@`  represents the current array item or object being processed. Filters can also use  `$`  to refer to the properties outside of the current object:
-
+```JSON
 $.store.book[?(@.price < $.expensive)]
-
+```
 An expression that specifies just a property name, such as  `[?(@.isbn)]`, matches all items that have this property, regardless of the value.
 
 Below are the operators that can be used in filters.
@@ -394,5 +394,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTY2OTE2ODU2Nyw5NjAyMTExMjddfQ==
+eyJoaXN0b3J5IjpbLTE0NzM4OTA2ODMsOTYwMjExMTI3XX0=
 -->
