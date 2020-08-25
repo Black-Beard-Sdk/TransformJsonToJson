@@ -3,9 +3,13 @@ Manage configuration for transform a json source in json target like xslt in XML
 
 consider the following template
 ```JSON
-    { 'name' : 'name1' }
+    { 'name' : 'xpath:{$.n}' }
 ```
-
+And now the document source
+```JSON
+    { 'n' : 'name1' }
+```
+The result will be.
 ```JSON
     { 'name' : 'name1' }
 ```
@@ -424,5 +428,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbODQ5MDg1OTk4XX0=
+eyJoaXN0b3J5IjpbLTEzNTY3NDY0NjZdfQ==
 -->
