@@ -23,6 +23,7 @@ the key is
 
  - **jpath** -> "jpath:{valid json path expression}". The json path fetch the value at specified adress in the source document.
 
+## HeadingHow to use
 ```CSHARP
 // Intialization of the configuration
 var configuration = new TranformJsonAstConfiguration();
@@ -179,6 +180,6 @@ In all these examples, the leading  `$.`  is optional and can be omitted.
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTExMzk5MTUzMCwxMzc2NzA0NDA3LC0xNz
+eyJoaXN0b3J5IjpbMTQyNDk3MDgwMCwxMzc2NzA0NDA3LC0xNz
 QyMTQxNjgxLC0yMDczNDg3NjI1LDk2MDIxMTEyN119
 -->
