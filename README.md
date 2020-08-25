@@ -44,9 +44,10 @@ The leading  `$`  represents the root object or array and can be omitted. For ex
 
 Other syntax elements are described below.
 
-|Expression|Description  |
+|Expression|Description|
 |--|--|
 | $ | The root object or array |
+
 |--|--|
 |.property  | Selects the specified property in a parent object. |
 |--|--|
@@ -68,7 +69,10 @@ Other syntax elements are described below.
 |--|--|
 | `[?(_expression_)]` | [Filter expression](https://support.smartbear.com/alertsite/docs/monitors/api/endpoint/jsonpath.html#filters). Selects all elements in an object or array that match the specified filter. Returns a list |
 |--|--|
-| `[(_expression_)]` |  |
+| `[(_expression_)]` | Script expressions can be used instead of explicit property names or indexes. An example is  `[(@.length-1)]`  which selects the last item in an array. Here,  `length`  refers to the length of the current array rather than a JSON field named  `length`. |
+| `@` | Used in filter expressions to refer to the current node being processed. |
+|--|--|
+
 
 
 Notes:
@@ -406,5 +410,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTMzMzAxMjk1LDk2MDIxMTEyN119
+eyJoaXN0b3J5IjpbMjA0Mjc3MzUyMyw5NjAyMTExMjddfQ==
 -->
