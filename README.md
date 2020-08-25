@@ -149,44 +149,11 @@ In all these examples, the leading  `$.`  is optional and can be omitted.
 |`$.store..price` `$..price`|The prices of all items in the store. Result:  `[8.95, 8.99, 22.99, 19.95]`|
 |`$.store.book[*]`  `$..book[*]`|All books in the store.|
 |`$..book[*].title`|The titles of all books in the store. Result:  `[Sayings of the Century, Moby Dick, The Lord of the Rings]`|
-|`$..book[0]`|The first book. Result: 
-```JSON
-[  
-{  
-"category":"reference",  
-"author":"Nigel Rees",  
-"title":"Sayings of the Century",  
-"price":8.95  
-}  
-]
-```
-|`$..book[0].title`
-
-The title of the first book.
-
-Result:  `Sayings of the Century`
-
-`$..book[0,1].title`  
-`$..book[:2].title`
-
-The titles of the first two books.
-
-Result:  `[Sayings of the Century, Moby Dick]`
-
-`$..book[-1:].title`  
-`$..book[(@.length-1)].title`
-
-The title of the last book.
-
-Result:  `[The Lord of the Rings]`
-
-The result is a  [list](https://support.smartbear.com/alertsite/docs/monitors/api/endpoint/jsonpath.html#multiple), because  `[_-n_:]`  always returns lists.
-
-`$..book[?(@.author=='J.R.R. Tolkien')].title`
-
-The titles of all books by  _J.R.R. Tolkien_  (exact match, case-sensitive).
-
-Result:  `[The Lord of the Rings]`
+|`$..book[0]`|The first book.|
+|`$..book[0].title`|The title of the first book. Result:  `Sayings of the Century`|
+|`$..book[0,1].title`  `$..book[:2].title`| The titles of the first two books. Result:  `[Sayings of the Century, Moby Dick]`|
+|`$..book[-1:].title`  `$..book[(@.length-1)].title`| The title of the last book. Result:  `[The Lord of the Rings]` The result is a list because  `[_-n_:]`  always returns lists.
+|`$..book[?(@.author=='J.R.R. Tolkien')].title`|The titles of all books by  _J.R.R. Tolkien_  (exact match, case-sensitive). Result:  `[The Lord of the Rings]`
 
 The result is a list, because filters always return lists.
 
@@ -257,6 +224,6 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIxMDA4MzYwMzcsLTIwNzM0ODc2MjUsOT
-YwMjExMTI3XX0=
+eyJoaXN0b3J5IjpbLTg4NjEzNzkxLC0yMDczNDg3NjI1LDk2MD
+IxMTEyN119
 -->
