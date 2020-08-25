@@ -152,9 +152,6 @@ For these examples, we will use a modified version of JSON from  [http://goessne
 
 In all these examples, the leading  `$.`  is optional and can be omitted.
 
-
-
-
 |Expression|Meaning|
 |--|--|
 |`$.store.*`|All direct properties of  `store`  (not recursive).|
@@ -177,6 +174,7 @@ In all these examples, the leading  `$.`  is optional and can be omitted.
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTI1MzM5MDk5LDEzNzY3MDQ0MDcsLTE3ND
-IxNDE2ODEsLTIwNzM0ODc2MjUsOTYwMjExMTI3XX0=
+eyJoaXN0b3J5IjpbLTg2NzU3OTgyMywxMjUzMzkwOTksMTM3Nj
+cwNDQwNywtMTc0MjE0MTY4MSwtMjA3MzQ4NzYyNSw5NjAyMTEx
+MjddfQ==
 -->
