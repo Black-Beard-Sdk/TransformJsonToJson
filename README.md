@@ -60,10 +60,7 @@ Other syntax elements are described below.
 |--|--|
 |`*`|Wildcard selects all elements in an object or an array, regardless of their names or indexes. For example,  `address.*`  means all properties of the  `address`  object, and  `book[*]`  means all items of the  `book`  array.|
 |--|--|
-|`[_start_:_end_]`  
-`[_start_:]`
-
-Selects array elements from the  _start_  index and up to, but not including,  _end_  index. If  _end_  is omitted, selects all elements from  _start_  until the end of the array. Returns a l  |  |
+|`[_start_:_end_]` `[_start_:]`|Selects array elements from the  _start_  index and up to, but not including,  _end_  index. If  _end_  is omitted, selects all elements from  _start_  until the end of the array. Returns a list|
 |--|--|
 |  |  |
 |--|--|
@@ -409,5 +406,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNTQ4NzE0NDYxLDk2MDIxMTEyN119
+eyJoaXN0b3J5IjpbMTcwODA1NjQxNyw5NjAyMTExMjddfQ==
 -->
