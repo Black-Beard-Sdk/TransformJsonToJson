@@ -17,17 +17,17 @@ the json path fetch the value at specified adress from the source document.
 
 # JSONPath Syntax
 
-JSONPath is a query language for JSON, similar to XPath for XML. The implementation of JsonPath is done by newtonsoft.
+JSONPath is a query language for JSON, similar to XPath for XML. The implementation of JsonPath is done by newtonsoft. [SelectToken](https://www.newtonsoft.com/json/help/html/SelectToken.htm)
 
 ### JSONPath notation
 
 A JSONPath expression specifies a path to an element (or a set of elements) in a JSON structure. Paths can use the dot notation:
 
-$.store.book[0].title
+$.store.books[0].title
 
 or the bracket notation:
 
-$['store']['book'][0]['title']
+$['store']['books'][0]['title']
 
 The leading  `$`  represents the root object or array and can be omitted. For example,  `$.foo.bar`  and  `foo.bar`  are the same, and so are  `$[0].status`  and  `[0].status`.
 
@@ -427,5 +427,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzIxOTI2OTg2XX0=
+eyJoaXN0b3J5IjpbLTExNjU5NzYyXX0=
 -->
