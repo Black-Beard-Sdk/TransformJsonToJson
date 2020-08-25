@@ -35,9 +35,7 @@ TranformJsonAstTree template = Templateprovider.GetTemplate(sbPayloadTemplate);
 
 StringBuilder sbSource = new StringBuilder(@"payload source json");
 JToken result = template.Transform(sbSource);
-
 ```
-
 
 # JSONPath Syntax
 
@@ -77,14 +75,13 @@ Other syntax elements are described below.
 | `@` | Used in filter expressions to refer to the current node being processed. |
 
 ## Notes:
--   JSONPath expressions, including property names and values, are  **case-sensitive**.
--  JSONPath does not have operations for accessing parent or sibling nodes from the given node.
+-   Json path expressions, including property names and values, are  **case-sensitive**.
+-  Json path does not have operations for accessing parent or sibling nodes from the given node.
 
 ### Filters
-
 Filters are logical expressions used to filter arrays. An example of a JSONPath expression with a filter is
 
-```JSON
+```JAVASCRIPT
 $.store.book[?(@.price < 10)]
 ```
 where  `@`  represents the current array item or object being processed. Filters can also use  `$`  to refer to the properties outside of the current object:
@@ -180,6 +177,6 @@ In all these examples, the leading  `$.`  is optional and can be omitted.
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE0NjMyNDMyMjgsMTM3NjcwNDQwNywtMT
-c0MjE0MTY4MSwtMjA3MzQ4NzYyNSw5NjAyMTExMjddfQ==
+eyJoaXN0b3J5IjpbLTkwOTQ4MTAwNSwxMzc2NzA0NDA3LC0xNz
+QyMTQxNjgxLC0yMDczNDg3NjI1LDk2MDIxMTEyN119
 -->
