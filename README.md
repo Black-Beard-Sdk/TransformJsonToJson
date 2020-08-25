@@ -1,7 +1,7 @@
 # TransformJsonToJson
 Manage configuration for transform a json source in json.
 
-consider the following template
+consider the following template. note that the template is a json that describe the structure of the target json. If the template is empty, the process return the source json.
 ```JSON
     { "name" : "jpath:{$.n}" }
 ```
@@ -23,7 +23,6 @@ the key is
 
  - **jpath** -> "jpath:{valid json path expression}". The json path fetch the value at specified adress in the source document.
 
-The template is a json that describe the structure of the target json. 
 
 
 # JSONPath Syntax
@@ -167,6 +166,6 @@ In all these examples, the leading  `$.`  is optional and can be omitted.
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTI0MDEyNzcxLDEzNzY3MDQ0MDcsLTE3ND
-IxNDE2ODEsLTIwNzM0ODc2MjUsOTYwMjExMTI3XX0=
+eyJoaXN0b3J5IjpbLTE1MjQ1ODcyNTEsMTM3NjcwNDQwNywtMT
+c0MjE0MTY4MSwtMjA3MzQ4NzYyNSw5NjAyMTExMjddfQ==
 -->
