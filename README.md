@@ -119,32 +119,32 @@ For these examples, we will use a modified version of JSON from  [http://goessne
 ```JSON
 {  
 "store": {  
-"book": [  
-{  
-"category": "reference",  
-"author": "Nigel Rees",  
-"title": "Sayings of the Century",  
-"price": 8.95  
-},  
-{  
-"category": "fiction",  
-"author": "Herman Melville",  
-"title": "Moby Dick",  
-"isbn": "0-553-21311-3",  
-"price": 8.99  
-},  
-{  
-"category": "fiction",  
-"author": "J.R.R. Tolkien",  
-"title": "The Lord of the Rings",  
-"isbn": "0-395-19395-8",  
-"price": 22.99  
-}  
-],  
-"bicycle": {  
-"color": "red",  
-"price": 19.95  
-}  
+	"book": [  
+	{  
+		"category": "reference",  
+		"author": "Nigel Rees",  
+		"title": "Sayings of the Century",  
+		"price": 8.95  
+	},  
+	{  
+		"category": "fiction",  
+		"author": "Herman Melville",  
+		"title": "Moby Dick",  
+		"isbn": "0-553-21311-3",  
+		"price": 8.99  
+	},  
+	{  
+		"category": "fiction",  
+		"author": "J.R.R. Tolkien",  
+		"title": "The Lord of the Rings",  
+		"isbn": "0-395-19395-8",  
+		"price": 22.99  
+	}  
+	],  
+		"bicycle": {  
+		"color": "red",  
+		"price": 19.95  
+	}  
 },  
 "expensive": 10  
 }
@@ -177,6 +177,6 @@ In all these examples, the leading  `$.`  is optional and can be omitted.
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTkwOTQ4MTAwNSwxMzc2NzA0NDA3LC0xNz
-QyMTQxNjgxLC0yMDczNDg3NjI1LDk2MDIxMTEyN119
+eyJoaXN0b3J5IjpbMTI1MzM5MDk5LDEzNzY3MDQ0MDcsLTE3ND
+IxNDE2ODEsLTIwNzM0ODc2MjUsOTYwMjExMTI3XX0=
 -->
