@@ -1,5 +1,7 @@
 # TransformJsonToJson
-Manage configuration for transform a json source in json target
+Manage configuration for transform a json source in json target like xslt in XML.
+
+    enter code here
 
 
 
@@ -418,5 +420,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTExMzU1Mjc3OTldfQ==
+eyJoaXN0b3J5IjpbMTA2NDQ0NzI3Ml19
 -->
