@@ -23,7 +23,7 @@ the key is
 
  - **jpath** -> "jpath:{valid json path expression}". The json path fetch the value at specified adress in the source document.
 
-The template is a json that describe the structure of the target. 
+The template is a json that describe the structure of the target json. 
 
 
 # JSONPath Syntax
@@ -167,6 +167,6 @@ In all these examples, the leading  `$.`  is optional and can be omitted.
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTM3NjcwNDQwNywtMTc0MjE0MTY4MSwtMj
-A3MzQ4NzYyNSw5NjAyMTExMjddfQ==
+eyJoaXN0b3J5IjpbLTI0MDEyNzcxLDEzNzY3MDQ0MDcsLTE3ND
+IxNDE2ODEsLTIwNzM0ODc2MjUsOTYwMjExMTI3XX0=
 -->
