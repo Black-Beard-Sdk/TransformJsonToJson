@@ -88,42 +88,16 @@ Below are the operators that can be used in filters.
 |`<`|Less than.
 |`<=`|Less than or equal to.
 |`=~`|Matches a  [JavaScript regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions). For example,  `[?(@.description =~  /cat.*/i)]`  matches items whose description starts with  _cat_  (case-insensitive).
-
-**Note:** Not supported if ReadyAPI 1.1 is used as the playback engine.
-
-`!`
-
-Used to negate a filter:  `[?(!@.isbn)]`  matches items that do not have the  `isbn`  property.
-
-**Note:** Not supported if ReadyAPI 1.1 is used as the playback engine.
-
-`&&`
-
-Logical AND, used to combine multiple filter expressions:
-
-[?(@.category=='fiction' && @.price < 10)]
-
-`||`
-
-Logical OR, used to combine multiple filter expressions:
-
-[?(@.category=='fiction' || @.price < 10)]
-
-**Note:** Not supported if ReadyAPI 1.1 is used as the playback engine.
-
-`in`
-
-Checks if the left-side value is present in the right-side list. Similar to the SQL IN operator. String comparison is case-sensitive.
+|`!`|Used to negate a filter:  `[?(!@.isbn)]`  matches items that do not have the  `isbn`  property.
+|`&&`|Logical AND, used to combine multiple filter expressions: [?(@.category=='fiction' && @.price < 10)]
+|`||`|Logical OR, used to combine multiple filter expressions: [?(@.category=='fiction' || @.price < 10)]
+|`in`|Checks if the left-side value is present in the right-side list. Similar to the SQL IN operator. String comparison is case-sensitive.
 
 [?(@.size in ['M', 'L'])]  
   
 [?('S' in @.sizes)]
 
-**Note:** Supported only by the TestEngine playback engine.
-
-`nin`
-
-Opposite of  `in`. Checks that the left-side value is not present in the right-side list. String comparison is case-sensitive.
+|`nin`|Opposite of  `in`. Checks that the left-side value is not present in the right-side list. String comparison is case-sensitive.
 
 [?(@.size nin ['M', 'L'])]  
   
@@ -365,5 +339,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTkwMTUyNjAyNiw5NjAyMTExMjddfQ==
+eyJoaXN0b3J5IjpbNDQ3NTkxMjg3LDk2MDIxMTEyN119
 -->
