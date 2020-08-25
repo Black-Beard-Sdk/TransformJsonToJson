@@ -46,6 +46,30 @@ Other syntax elements are described below.
 
 |Expression|Description  |
 |--|--|
+| $ | The root object or array |
+|--|--|
+|.property  | Selects the specified property in a parent object. |
+|--|--|
+| ['property'] | Selects the specified property in a parent object. Be sure to put single quotes around the property name.
+
+**Tip:** Use this notation if the property name contains special characters such as spaces, or begins with a character other than  `A..Za..z_`. |
+|--|--|
+|  |  |
+|--|--|
+|  |  |
+|--|--|
+|  |  |
+|--|--|
+|  |  |
+|--|--|
+|  |  |
+|--|--|
+|  |  |
+|--|--|
+|  |  |
+|--|--|
+|  |  |
+|--|--|
 |  |  |
 
 
@@ -384,5 +408,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTI5OTI2MjIzNiw5NjAyMTExMjddfQ==
+eyJoaXN0b3J5IjpbNDEyNjA1NTIyLDk2MDIxMTEyN119
 -->
