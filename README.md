@@ -3,17 +3,23 @@ Manage configuration for transform a json source in json.
 
 consider the following template
 ```JSON
-    { 'name' : 'xpath:{$.n}' }
+    { "name" : "xpath:{$.n}" }
 ```
 And now the document source
 ```JSON
-    { 'n' : 'name1' }
+    { "n" : "name1" }
 ```
 The result will be.
 ```JSON
-    { 'name' : 'name1' }
+    { "name" : "name1" }
 ```
-The template is a valid json structur. the value in string have a specific syntax
+The template is a valid json structur. the value in string have a specific syntax.
+
+```JSON
+    "key:{argument}"
+```
+
+
 The json path fetch the value at specified adress from the source document.
 
 # JSONPath Syntax
@@ -370,5 +376,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjAxMjYwOTY1XX0=
+eyJoaXN0b3J5IjpbLTcxNzY2MjQ4N119
 -->
