@@ -66,9 +66,9 @@ Other syntax elements are described below.
 |--|--|
 | `[_-n_:]`|Selects the last n elements of the array. Returns a list |
 |--|--|
-|  |  |
+| `[?(_expression_)]` | [Filter expression](https://support.smartbear.com/alertsite/docs/monitors/api/endpoint/jsonpath.html#filters). Selects all elements in an object or array that match the specified filter. Returns a list |
 |--|--|
-|  |  |
+| `[(_expression_)]` |  |
 
 
 Notes:
@@ -406,5 +406,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTgwNzcxMDMwMCw5NjAyMTExMjddfQ==
+eyJoaXN0b3J5IjpbLTMzMzAxMjk1LDk2MDIxMTEyN119
 -->
