@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
@@ -15,10 +14,13 @@ namespace Bb.TransformJson.Services
             this._dictionary = new Dictionary<string, Func<XsltType, ITransformJsonService>>();
         }
 
-        public void AddService(string typeName, Func<ITransformJsonService> provider)
+        public ServiceContainer AddService(string typeName, Func<ITransformJsonService> provider)
         {
             Func<XsltType, ITransformJsonService> srv = type => MapService(type, provider);
             this._dictionary.Add(typeName, srv);
+
+            return this;
+
         }
 
         public ITransformJsonService GetService(XsltType type)
@@ -49,11 +51,6 @@ namespace Bb.TransformJson.Services
         }
 
         private readonly Dictionary<string, Func<XsltType, ITransformJsonService>> _dictionary;
-
-    }
-
-    public interface ITransformJsonService
-    {
 
     }
 

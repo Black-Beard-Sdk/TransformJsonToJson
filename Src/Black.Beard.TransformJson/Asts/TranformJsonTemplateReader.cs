@@ -19,12 +19,12 @@ namespace Bb.TransformJson
             this._configuration = configuration;
         }
 
-        public Func<JToken, JToken> Get()
+        public Func<RuntimeContext, JToken, JToken> Get()
         {
 
-            Func<JToken, JToken> fnc;
+            Func<RuntimeContext, JToken, JToken> fnc;
             Expression e;
-            Expression<Func<JToken, JToken>> lbd;
+            Expression<Func<RuntimeContext, JToken, JToken>> lbd;
 
             if (_root != null)
             {
@@ -36,13 +36,14 @@ namespace Bb.TransformJson
                 };
 
                 e = result.Accept(builder) as Expression;
-                lbd = Expression.Lambda<Func<JToken, JToken>>(e, builder.Argument);
+                lbd = Expression.Lambda<Func<RuntimeContext, JToken, JToken>>(e, builder.Context, builder.Argument);
 
             }
             else
             {
-                var arg = Expression.Parameter(typeof(JToken), "arg0");
-                lbd = Expression.Lambda<Func<JToken, JToken>>(arg, arg);
+                var arg = Expression.Parameter(typeof(RuntimeContext), "arg0");
+                var arg1 = Expression.Parameter(typeof(JToken), "arg1");
+                lbd = Expression.Lambda<Func<RuntimeContext, JToken, JToken>>(arg1, arg, arg1);
             }
 
             fnc = lbd.Compile();
@@ -151,7 +152,7 @@ namespace Bb.TransformJson
 
             var value = n.Value?.ToString();
 
-            Regex reg = new Regex(@"xpath:\{[^}]*");
+            Regex reg = new Regex(@"[a-z]*:\{[^}]*");
 
             var o = reg.Matches(value);
 
@@ -160,11 +161,20 @@ namespace Bb.TransformJson
 
                 XPath first = null;
 
-                //for (int i = o.Count - 1; i >= 0; i--)
-                //    first = new XPath() { Value = o[i].Value.Substring(7), Kind = XsltKind.Xpath, Child = first };
-
                 for (int i = 0; i < o.Count; i++)
-                    first = new XPath() { Value = o[i].Value.Substring(7), Kind = XsltKind.Xpath, Child = first };
+                {
+
+                    var txt = o[i].Value;
+                    string _value = txt.Substring(txt.IndexOf('{') + 1);
+                    string _key = txt.Substring(0, txt.IndexOf(':'));
+                    if (_key == "jpath")
+                        first = new XPath() { Type = _key.ToLower(), Value = _value, Kind = XsltKind.Xpath, Child = first };
+                    else
+                    {
+                        first = new XPath() { Type = _key.ToLower(), Value = $"{{{_value}}}", Kind = XsltKind.Xpath, Child = first };
+                        first.TypeObject = (XsltObject)ReadObject(JObject.Parse(first.Value));
+                    }
+                }
 
                 return first;
 

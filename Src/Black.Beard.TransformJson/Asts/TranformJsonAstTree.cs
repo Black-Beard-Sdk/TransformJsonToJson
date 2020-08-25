@@ -14,13 +14,13 @@ namespace Bb.TransformJson
            
         }
 
-        public Func<JToken, JToken> Rules { get; internal set; }
+        public Func<RuntimeContext, JToken, JToken> Rules { get; internal set; }
 
         public JToken Transform(StringBuilder payload)
         {
             JObject obj = JObject.Parse(payload.ToString());
-           
-            return Rules(obj);
+            RuntimeContext ctx = new RuntimeContext();
+            return Rules(ctx, obj);
         }
 
 

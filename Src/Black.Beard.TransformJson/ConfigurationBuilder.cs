@@ -17,8 +17,8 @@ namespace Bb.TransformJson
             this._ctorJObject = typeof(JObject).GetConstructor(new Type[] { typeof(object) });
             this._ctorJArray = typeof(JArray).GetConstructor(new Type[] { typeof(object[]) });
 
-            this.Argument = Expression.Parameter(typeof(JToken), "arg0");
-
+            this.Argument = Expression.Parameter(typeof(JToken), "arg1");
+            this.Context = Expression.Parameter(typeof(RuntimeContext), "arg0");
         }
 
 
@@ -30,9 +30,9 @@ namespace Bb.TransformJson
             List<Expression> _items = new List<Expression>();
 
             var o = (Expression)node.Item.Accept(this);
-            var lbd = Expression.Lambda<Func<JToken, JToken>>(o, Argument);
+            var lbd = Expression.Lambda<Func<RuntimeContext, JToken, JToken>>(o, Context, Argument);
             
-            var i = Expression.Call(RuntimeContext._getProjectionFromSource.Method, source, lbd);
+            var i = Expression.Call(RuntimeContext._getProjectionFromSource.Method, this.Context, source, lbd);
 
             return i;
 
@@ -81,47 +81,26 @@ namespace Bb.TransformJson
             if (node.Child != null)
                 resultChild = (Expression)node.Child.Accept(this);
 
-            var item = Expression.Call(RuntimeContext._getContentByName.Method, resultChild ?? _parent, Expression.Constant(node.Value));
+            if (node.Type == "jpath")
+                return Expression.Call(RuntimeContext._getContentByJPath.Method, this.Context, resultChild ?? _parent, Expression.Constant(node.Value));
 
-            return item;
+            if (node.TypeObject != null)
+            {
+                var service = this.Configuration.Services.GetService(new XsltType(node.TypeObject) { Type = node.Type });
+                if (service != null)
+                    return Expression.Call(RuntimeContext._getContentFromService.Method, this.Context, resultChild ?? _parent, Expression.Constant(service));
+            
+            }
+
+            throw new NotImplementedException(node.Type);
 
         }
-
-        //public object VisitIndice(XPathIndice node)
-        //{
-        //    _parent = Expression.Call(RuntimeContext._getIndice.Method, _parent, Expression.Constant(node.Indice), Expression.Constant(node.Value == "last"));
-        //    return _parent;
-        //}
-
-        //public object VisitPathComposite(XPathComposite node)
-        //{
-        //    Expression result = null;
-        //    _parent = this.Argument;
-        //    foreach (var item in node.Children)
-        //        result = item.Accept(this) as Expression;
-        //    return result;
-        //}
-
-        //public object VisitPathKey(XPathCompositeKey node)
-        //{
-        //    if (node.Kind == XsltKind.PathParent)
-        //        _parent = Expression.Call(RuntimeContext._getParent.Method, _parent, Expression.Constant(node.Value));
-        //    else
-        //        _parent = Expression.Call(RuntimeContext._getContentByName.Method, _parent, Expression.Constant(node.Value));
-        //    return _parent;
-        //}
-
-        //public object VisitPathCoalesce(XPathCoalesce node)
-        //{
-        //    var l = node.ChildLeft.Accept(this) as Expression;
-        //    var r = node.ChildRight.Accept(this) as Expression;
-        //    return Expression.Coalesce(l, r);
-        //}
-
 
         public TranformJsonAstConfiguration Configuration { get; set; }
 
         public ParameterExpression Argument { get; }
+        public ParameterExpression Context { get; }
+
         public Expression _parent;
 
         private ConstructorInfo _ctorJArray;

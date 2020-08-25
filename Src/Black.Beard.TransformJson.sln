@@ -13,6 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Black.Beard.ComponentModel"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Links", "Links", "{CA2581B6-35DE-48E5-95DD-95F916608EE6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{781BF86E-D80D-403C-83B5-7BC7F167E72E}"
+	ProjectSection(SolutionItems) = preProject
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

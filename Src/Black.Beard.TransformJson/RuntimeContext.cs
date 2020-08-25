@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Bb.TransformJson.Services;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 
@@ -9,11 +10,19 @@ namespace Bb.TransformJson
 
         static RuntimeContext()
         {
-            _getContentByName = RuntimeContext.GetContentByName;
+            _getContentByJPath = RuntimeContext.GetContentByJPath;
             _getProjectionFromSource = RuntimeContext.GetProjectionFromSource;
+            _getContentFromService = RuntimeContext.GetContentFromService;
         }
 
-        public static JToken GetContentByName(JToken token, string path)
+
+        // ITransformJsonService
+        public static JToken GetContentFromService(RuntimeContext ctx, JToken token, ITransformJsonService service)
+        {
+            return service.Execute(ctx, token);
+        }
+
+        public static JToken GetContentByJPath(RuntimeContext ctx, JToken token, string path)
         {
 
             JToken result = null;
@@ -53,7 +62,7 @@ namespace Bb.TransformJson
 
         }
 
-        public static JToken GetProjectionFromSource(JToken token, Func<JToken, JToken> delegateObject)
+        public static JToken GetProjectionFromSource(RuntimeContext ctx, JToken token, Func<RuntimeContext, JToken, JToken> delegateObject)
         {
 
             if (token != null)
@@ -64,13 +73,13 @@ namespace Bb.TransformJson
                 if (token is JArray a)
                     foreach (var item in a)
                     {
-                        var i = delegateObject(item);
+                        var i = delegateObject(ctx, item);
                         arr.Add(i);
                     }
 
                 else if (token is JObject o)
                 {
-                    var i = delegateObject(o);
+                    var i = delegateObject(ctx, o);
                     arr.Add(i);
                 }
                 else
@@ -86,9 +95,11 @@ namespace Bb.TransformJson
 
         }
 
-        public static readonly Func<JToken, Func<JToken, JToken>, JToken> _getProjectionFromSource;
-        public static readonly Func<JToken, string, JToken> _getContentByName;
+        public static readonly Func<RuntimeContext, JToken, Func<RuntimeContext, JToken, JToken>, JToken> _getProjectionFromSource;
+        public static readonly Func<RuntimeContext, JToken, string, JToken> _getContentByJPath;
+        public static readonly Func<RuntimeContext, JToken, ITransformJsonService, JToken> _getContentFromService;
 
+        
     }
 
 }

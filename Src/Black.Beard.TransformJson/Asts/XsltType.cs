@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace Bb.TransformJson
 {
@@ -20,7 +21,7 @@ namespace Bb.TransformJson
 
         public IEnumerable<XsltProperty> Properties { get => _items.Values; }
 
-        public string Type { get; }
+        public string Type { get; internal set; }
 
         public override object Accept(IXsltJsonVisitor visitor)
         {
