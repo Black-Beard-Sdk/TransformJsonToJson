@@ -153,21 +153,10 @@ In all these examples, the leading  `$.`  is optional and can be omitted.
 |`$..book[0].title`|The title of the first book. Result:  `Sayings of the Century`|
 |`$..book[0,1].title`  `$..book[:2].title`| The titles of the first two books. Result:  `[Sayings of the Century, Moby Dick]`|
 |`$..book[-1:].title`  `$..book[(@.length-1)].title`| The title of the last book. Result:  `[The Lord of the Rings]` The result is a list because  `[_-n_:]`  always returns lists.
-|`$..book[?(@.author=='J.R.R. Tolkien')].title`|The titles of all books by  _J.R.R. Tolkien_  (exact match, case-sensitive). Result:  `[The Lord of the Rings]`
-
-The result is a list, because filters always return lists.
-
-`$..book[?(@.isbn)]`
-
-All books that have the  `isbn`  property.
-
-`$..book[?(!@.isbn)]`
-
-All books without the  `isbn`  property.
-
-`$..book[?(@.price < 10)]`
-
-All books cheaper than 10.
+|`$..book[?(@.author=='J.R.R. Tolkien')].title`|The titles of all books by  _J.R.R. Tolkien_  (exact match, case-sensitive). Result:  `[The Lord of the Rings]` The result is a list, because filters always return lists.|
+|`$..book[?(@.isbn)]`|All books that have the  `isbn`  property.|
+|`$..book[?(!@.isbn)]`|All books without the `isbn` property.|
+|`$..book[?(@.price < 10)]`|All books cheaper than 10.
 
 `$..book[?(@.price > $.expensive)]`
 
@@ -224,6 +213,6 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTg4NjEzNzkxLC0yMDczNDg3NjI1LDk2MD
-IxMTEyN119
+eyJoaXN0b3J5IjpbMTQ5ODAxMTQwNSwtMjA3MzQ4NzYyNSw5Nj
+AyMTExMjddfQ==
 -->
