@@ -23,6 +23,9 @@ the key is
 
  - **jpath** -> "jpath:{valid json path expression}". The json path fetch the value at specified adress in the source document.
 
+The template is a json that describe the structure of the target. 
+
+
 # JSONPath Syntax
 
 JSONPath is a query language for JSON, similar to XPath for XML. The implementation of JsonPath is did by newtonsoft. [SelectToken](https://www.newtonsoft.com/json/help/html/SelectToken.htm)
@@ -164,6 +167,6 @@ In all these examples, the leading  `$.`  is optional and can be omitted.
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTUxMzA5OTYzOCwtMTc0MjE0MTY4MSwtMj
+eyJoaXN0b3J5IjpbMTM3NjcwNDQwNywtMTc0MjE0MTY4MSwtMj
 A3MzQ4NzYyNSw5NjAyMTExMjddfQ==
 -->
