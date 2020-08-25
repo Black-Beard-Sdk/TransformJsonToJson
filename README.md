@@ -47,28 +47,16 @@ Other syntax elements are described below.
 |Expression|Description|
 |--|--|
 | $ | The root object or array |
-
-|--|--|
 |.property  | Selects the specified property in a parent object. |
-|--|--|
 | ['property'] | Selects the specified property in a parent object. Be sure to put single quotes around the property name. **Tip:** Use this notation if the property name contains special characters such as spaces, or begins with a character other than  `A..Za..z_`. |
-|--|--|
 | `[n]` | Selects the  n-th element from an array. Indexes are 0-based. |
-|--|--|
 |[_index1_,_index2_,_…_]|Selects array elements with the specified indexes.|
-|--|--|
 |`.._property_` | Recursive descent: Searches for the specified property name recursively and returns an array of all values with this property name. Always returns a list even if just one property is found.  |
-|--|--|
 |`*`|Wildcard selects all elements in an object or an array, regardless of their names or indexes. For example,  `address.*`  means all properties of the  `address`  object, and  `book[*]`  means all items of the  `book`  array.|
-|--|--|
 |`[_start_:_end_]` `[_start_:]`|Selects array elements from the  _start_  index and up to, but not including,  _end_  index. If  _end_  is omitted, selects all elements from  _start_  until the end of the array. Returns a list|
-|--|--|
 | `[:n]` | Selects the first n elements of the array. Returns a list |
-|--|--|
 | `[_-n_:]`|Selects the last n elements of the array. Returns a list |
-|--|--|
 | `[?(_expression_)]` | [Filter expression](https://support.smartbear.com/alertsite/docs/monitors/api/endpoint/jsonpath.html#filters). Selects all elements in an object or array that match the specified filter. Returns a list |
-|--|--|
 | `[(_expression_)]` | Script expressions can be used instead of explicit property names or indexes. An example is  `[(@.length-1)]`  which selects the last item in an array. Here,  `length`  refers to the length of the current array rather than a JSON field named  `length`. |
 | `@` | Used in filter expressions to refer to the current node being processed. |
 |--|--|
@@ -410,5 +398,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjA0Mjc3MzUyMyw5NjAyMTExMjddfQ==
+eyJoaXN0b3J5IjpbMzU5Nzc4NDM5LDk2MDIxMTEyN119
 -->
