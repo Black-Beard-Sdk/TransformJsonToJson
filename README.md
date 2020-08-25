@@ -56,15 +56,11 @@ Other syntax elements are described below.
 |`[_start_:_end_]` `[_start_:]`|Selects array elements from the  _start_  index and up to, but not including,  _end_  index. If  _end_  is omitted, selects all elements from  _start_  until the end of the array. Returns a list|
 | `[:n]` | Selects the first n elements of the array. Returns a list |
 | `[_-n_:]`|Selects the last n elements of the array. Returns a list |
-| `[?(_expression_)]` | [Filter expression](https://support.smartbear.com/alertsite/docs/monitors/api/endpoint/jsonpath.html#filters). Selects all elements in an object or array that match the specified filter. Returns a list |
+| `[?(_expression_)]` | Selects all elements in an object or array that match the specified filter. Returns a list |
 | `[(_expression_)]` | Script expressions can be used instead of explicit property names or indexes. An example is  `[(@.length-1)]`  which selects the last item in an array. Here,  `length`  refers to the length of the current array rather than a JSON field named  `length`. |
 | `@` | Used in filter expressions to refer to the current node being processed. |
-|--|--|
 
-
-
-Notes:
-
+## Notes:
 -   JSONPath expressions, including property names and values, are  **case-sensitive**.
     
 JSONPath does not have operations for accessing parent or sibling nodes from the given node.
@@ -398,5 +394,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMzU5Nzc4NDM5LDk2MDIxMTEyN119
+eyJoaXN0b3J5IjpbLTMwMTQ4ODY5MCw5NjAyMTExMjddfQ==
 -->
