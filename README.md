@@ -1,4 +1,4 @@
-# TransformJsonToJson
+# Transform Json To Json
 Manage configuration for transform a json source in json.
 
 consider the following template. note that the template is a json that describe the structure of the target json. If the template is empty, the process return the source json.
@@ -174,7 +174,7 @@ In all these examples, the leading  `$.`  is optional and can be omitted.
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTg2NzU3OTgyMywxMjUzMzkwOTksMTM3Nj
-cwNDQwNywtMTc0MjE0MTY4MSwtMjA3MzQ4NzYyNSw5NjAyMTEx
-MjddfQ==
+eyJoaXN0b3J5IjpbNTYyNzQ4MTIxLDEyNTMzOTA5OSwxMzc2Nz
+A0NDA3LC0xNzQyMTQxNjgxLC0yMDczNDg3NjI1LDk2MDIxMTEy
+N119
 -->
