@@ -5,6 +5,12 @@ Consider the following template. note that the template is a json that describe 
 ```JSON
     { "name" : "jpath:{$.n}" }
 ```
+In this case. the result will be an object with a property named 
+
+> Blockquote
+
+name
+
 And now the document source
 ```JSON
     { "n" : "name1" }
@@ -189,7 +195,7 @@ In all these examples, the leading  `$.`  is optional and can be omitted.
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTk2NTMwMTIzLDU2Mjc0ODEyMSwxMjUzMz
-kwOTksMTM3NjcwNDQwNywtMTc0MjE0MTY4MSwtMjA3MzQ4NzYy
-NSw5NjAyMTExMjddfQ==
+eyJoaXN0b3J5IjpbLTgxMDUwOTQ4NCw1NjI3NDgxMjEsMTI1Mz
+M5MDk5LDEzNzY3MDQ0MDcsLTE3NDIxNDE2ODEsLTIwNzM0ODc2
+MjUsOTYwMjExMTI3XX0=
 -->
