@@ -50,13 +50,11 @@ Other syntax elements are described below.
 |--|--|
 |.property  | Selects the specified property in a parent object. |
 |--|--|
-| ['property'] | Selects the specified property in a parent object. Be sure to put single quotes around the property name.
-
-**Tip:** Use this notation if the property name contains special characters such as spaces, or begins with a character other than  `A..Za..z_`. |
+| ['property'] | Selects the specified property in a parent object. Be sure to put single quotes around the property name. **Tip:** Use this notation if the property name contains special characters such as spaces, or begins with a character other than  `A..Za..z_`. |
 |--|--|
 | `[_n_]` | Selects the  _n_-th element from an array. Indexes are 0-based. |
 |--|--|
-| `[_index1_,_index2_,_…_]` | Selects array elements with the specified indexes. |
+|[_index1_,_index2_,_…_]|Selects array elements with the specified indexes.|
 |--|--|
 |  |  |
 |--|--|
@@ -408,5 +406,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTQ0NjE3NzQsOTYwMjExMTI3XX0=
+eyJoaXN0b3J5IjpbMTAyMDgxODQ0MCw5NjAyMTExMjddfQ==
 -->
