@@ -3,7 +3,7 @@ Manage configuration for transform a json source in json.
 
 consider the following template
 ```JSON
-    { "name" : "xpath:{$.n}" }
+    { "name" : "jpath:{$.n}" }
 ```
 And now the document source
 ```JSON
@@ -376,5 +376,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTcxNzY2MjQ4N119
+eyJoaXN0b3J5IjpbOTYwMjExMTI3XX0=
 -->
