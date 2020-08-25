@@ -98,13 +98,7 @@ Below are the operators that can be used in filters.
 |`contains`|Checks if a string contains the specified substring (case-sensitive), or an array contains the specified element. [?(@.name contains 'Alex')]  [?(@.numbers contains 7)]  [?('ABCDEF' contains @.character)]
 |`size`|Checks if an array or string has the specified length. [?(@.name size 4)]
 |`empty true`|Matches an empty array or string. [?(@.name empty true)]
-|`empty false`|
-
-Matches a non-empty array or string.
-
-[?(@.name empty false)]
-
-**Note:** Supported only by the TestEngine playback engine.
+|`empty false`|Matches a non-empty array or string. [?(@.name empty false)]
 
 ### Examples
 
@@ -291,5 +285,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTk0NjgxMjE3Niw5NjAyMTExMjddfQ==
+eyJoaXN0b3J5IjpbLTIwNzM0ODc2MjUsOTYwMjExMTI3XX0=
 -->
