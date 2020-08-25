@@ -163,44 +163,7 @@ In all these examples, the leading  `$.`  is optional and can be omitted.
 |`$..*`|All members of the JSON structure beneath the root (child objects, individual property values, array items), combined into an array.|
 
 
-### Considerations for JSONPath expressions that return multiple elements
-
-JSONPath queries can return not just a single element, but also a list of matching elements. For example, given this JSON:
-```JSON
-{  
-"name": "Rose Kolodny",  
-"phoneNumbers": [  
-{  
-"type": "home",  
-"number": "954-555-1234"  
-},  
-{  
-"type": "work",  
-"number": "754-555-5678"  
-}  
-]  
-}
-```
-
-the JSONPath expression
-
-```JAVASCRIPT
-phoneNumbers[*].number
-```
-returns a list containing two phone numbers:
-
-["954-555-1234", "754-555-5678"]
-
-Note that this is not a JSON array, it is just a comma-separated list of items where  `[ ]`  indicates the beginning and end of the list.
-
-When using “equals” assertions against a list of matches, specify a list of expected values enclosed in  `[ ]`  and separated by a comma and one space:
-
-```JSON
-[apples, 15, false, ["foo","bar"], {"status":"ok"}]
-```
-Standalone strings (like  `apples`) should not have enclosing quotes, unless the quotes are part of the value.
-
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3NDIxNDE2ODEsLTIwNzM0ODc2MjUsOT
-YwMjExMTI3XX0=
+eyJoaXN0b3J5IjpbMTUxMzA5OTYzOCwtMTc0MjE0MTY4MSwtMj
+A3MzQ4NzYyNSw5NjAyMTExMjddfQ==
 -->
