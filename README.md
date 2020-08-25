@@ -161,14 +161,12 @@ In all these examples, the leading  `$.`  is optional and can be omitted.
 |`$..book[?(@.author =~ /.*Tolkien/i)]`|All books whose author name ends with  _Tolkien_  (case-insensitive).|
 |`$..book[?(@.category == 'fiction' || @.category == 'reference')]`| All fiction and reference books.|
 |`$..*`|All members of the JSON structure beneath the root (child objects, individual property values, array items), combined into an array.|
-|--|--|
-|  |  |
 
 
 ### Considerations for JSONPath expressions that return multiple elements
 
 JSONPath queries can return not just a single element, but also a list of matching elements. For example, given this JSON:
-
+```JSON
 {  
 "name": "Rose Kolodny",  
 "phoneNumbers": [  
@@ -182,10 +180,13 @@ JSONPath queries can return not just a single element, but also a list of matchi
 }  
 ]  
 }
+```
 
 the JSONPath expression
 
+```JSON
 phoneNumbers[*].number
+```
 
 returns a list containing two phone numbers:
 
@@ -203,6 +204,6 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzczOTA3MDI3LC0yMDczNDg3NjI1LDk2MD
+eyJoaXN0b3J5IjpbNjc3ODU4MTAzLC0yMDczNDg3NjI1LDk2MD
 IxMTEyN119
 -->
