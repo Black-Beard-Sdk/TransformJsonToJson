@@ -62,9 +62,9 @@ Other syntax elements are described below.
 |--|--|
 |`[_start_:_end_]` `[_start_:]`|Selects array elements from the  _start_  index and up to, but not including,  _end_  index. If  _end_  is omitted, selects all elements from  _start_  until the end of the array. Returns a list|
 |--|--|
-|  |  |
+| `[:n]` | Selects the first n elements of the array. Returns a list |
 |--|--|
-|  |  |
+| `[_-n_:]`|Selects the last  _n_  elements of the array. Returns a  [list](https://support.smartbear.com/alertsite/docs/monitors/api/endpoint/jsonpath.html#multiple).|
 |--|--|
 |  |  |
 |--|--|
@@ -406,5 +406,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTcwODA1NjQxNyw5NjAyMTExMjddfQ==
+eyJoaXN0b3J5IjpbLTQ1MzM4MDE3Miw5NjAyMTExMjddfQ==
 -->
