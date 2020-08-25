@@ -23,13 +23,13 @@ the key is a name of the service you need to call. You are responsable of regist
 
 ```JSON
 // Template
-{ 'prices': 'jpath:{$..n} sum:{}' } // service sum is registered n the service.
+{ "prices": "jpath:{$..n} sum:{}" } // service sum is registered n the service.
 
 // Source
-{ 'prices': [{'n' : 1}, {'n' : 2}, {'n' : 3}] }
+{ "prices": [{"n" : 1}, {"n" : 2}, {"n" : 3}] }
 
 // Result
-{ 'prices':  6 }
+{ "prices":  6 }
 
 ```  
 
@@ -189,7 +189,7 @@ In all these examples, the leading  `$.`  is optional and can be omitted.
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5MDQ0Mjk5Niw1NjI3NDgxMjEsMTI1Mz
-M5MDk5LDEzNzY3MDQ0MDcsLTE3NDIxNDE2ODEsLTIwNzM0ODc2
-MjUsOTYwMjExMTI3XX0=
+eyJoaXN0b3J5IjpbNjYyMjk4NzI4LDU2Mjc0ODEyMSwxMjUzMz
+kwOTksMTM3NjcwNDQwNywtMTc0MjE0MTY4MSwtMjA3MzQ4NzYy
+NSw5NjAyMTExMjddfQ==
 -->
