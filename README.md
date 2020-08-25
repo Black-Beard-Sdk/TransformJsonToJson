@@ -21,21 +21,26 @@ The template is a valid json structur. the value in string have a specific synta
 
 the key is
 
- - **jpath** -> "jpath:{valid json path expression}". The json path fetch the value at specified adress from the source document.
+ - **jpath** -> "jpath:{valid json path expression}". The json path fetch the value at specified adress in the source document.
 
 # JSONPath Syntax
 
-JSONPath is a query language for JSON, similar to XPath for XML. The implementation of JsonPath is done by newtonsoft. [SelectToken](https://www.newtonsoft.com/json/help/html/SelectToken.htm)
+JSONPath is a query language for JSON, similar to XPath for XML. The implementation of JsonPath is did by newtonsoft. [SelectToken](https://www.newtonsoft.com/json/help/html/SelectToken.htm)
 
 ### JSONPath notation
 
 A JSONPath expression specifies a path to an element (or a set of elements) in a JSON structure. Paths can use the dot notation:
 
-$.store.books[0].title
+```JSON
+    $.store.books[0].title
 
 or the bracket notation:
 
 $['store']['books'][0]['title']
+
+```
+
+
 
 The leading  `$`  represents the root object or array and can be omitted. For example,  `$.foo.bar`  and  `foo.bar`  are the same, and so are  `$[0].status`  and  `[0].status`.
 
@@ -377,5 +382,5 @@ Standalone strings (like  `apples`) should not have enclosing quotes, unless the
 
 Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjY5NTY3NTcyLDk2MDIxMTEyN119
+eyJoaXN0b3J5IjpbLTY1NzQ4MjE4MCw5NjAyMTExMjddfQ==
 -->
