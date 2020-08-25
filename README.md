@@ -187,23 +187,20 @@ the JSONPath expression
 ```JSON
 phoneNumbers[*].number
 ```
-
 returns a list containing two phone numbers:
 
-[954-555-1234, 754-555-5678]
+["954-555-1234", "754-555-5678"]
 
 Note that this is not a JSON array, it is just a comma-separated list of items where  `[ ]`  indicates the beginning and end of the list.
 
 When using “equals” assertions against a list of matches, specify a list of expected values enclosed in  `[ ]`  and separated by a comma and one space:
 
+```JSON
 [apples, 15, false, ["foo","bar"], {"status":"ok"}]
-
+```
 Standalone strings (like  `apples`) should not have enclosing quotes, unless the quotes are part of the value.
 
-![](https://support.smartbear.com/alertsite/docs/_assets/commonImages/plus-btn.gif)Example
-
-Values that are JSON arrays and objects keep inner quotes, but are minified with no spaces between their items:  `["foo","bar"]`, not  `[ "foo" , "bar" ]`.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjc3ODU4MTAzLC0yMDczNDg3NjI1LDk2MD
+eyJoaXN0b3J5IjpbMzk2NTI3ODY1LC0yMDczNDg3NjI1LDk2MD
 IxMTEyN119
 -->
