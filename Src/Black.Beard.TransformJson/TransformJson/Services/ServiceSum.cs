@@ -5,7 +5,6 @@ using System.Linq;
 namespace Bb.TransformJson.Services
 {
 
-
     public class ServiceSum : ITransformJsonService
     {
 

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Bb.TransformJson.Asts;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -31,7 +32,7 @@ namespace Bb.TransformJson
 
             var o = (Expression)node.Item.Accept(this);
             var lbd = Expression.Lambda<Func<RuntimeContext, JToken, JToken>>(o, Context, Argument);
-            
+
             var i = Expression.Call(RuntimeContext._getProjectionFromSource.Method, this.Context, source, lbd);
 
             return i;
@@ -60,8 +61,38 @@ namespace Bb.TransformJson
 
         public object VisitType(XsltType node)
         {
-            throw new NotImplementedException();
+
+            var root = _parent;
+
+
+            Expression expressionCreatetService = Expression.Call(Expression.Constant(node.ServiceProvider), TransformJsonServiceProvider.Method);
+
+            foreach (var property in node.Properties)
+            {
+                _parent = root;
+                var value = (Expression)property.Value.Accept(this);
+                expressionCreatetService = Expression.Call(null, RuntimeContext._mapPropertyService.Method, this.Context, expressionCreatetService, Expression.Constant(property.Name), value);
+            }
+
+            _parent = root;
+
+            var result = Expression.Call(RuntimeContext._getContentFromService.Method, this.Context, _parent, expressionCreatetService);
+
+            return result;
+
         }
+
+        public object VisitMapProperty(XsltMapProperty node)
+        {
+
+            var value = (Expression)node.Value.Accept(this);
+
+            Expression.Call(Context, null, Expression.Constant(node.Name), value);
+
+            return null;
+
+        }
+
 
         public object VisitProperty(XsltProperty node)
         {
@@ -73,26 +104,21 @@ namespace Bb.TransformJson
 
         }
 
-        public object VisitXPath(XPath node)
+        public object VisitJPath(JPath node)
         {
 
-            Expression resultChild = null;
-
-            if (node.Child != null)
-                resultChild = (Expression)node.Child.Accept(this);
-
             if (node.Type == "jpath")
-                return Expression.Call(RuntimeContext._getContentByJPath.Method, this.Context, resultChild ?? _parent, Expression.Constant(node.Value));
+                _parent = Expression.Call(RuntimeContext._getContentByJPath.Method, this.Context, _parent, Expression.Constant(node.Value));
 
-            if (node.TypeObject != null)
+            else
             {
-                var service = this.Configuration.Services.GetService(new XsltType(node.TypeObject) { Type = node.Type });
-                if (service != null)
-                    return Expression.Call(RuntimeContext._getContentFromService.Method, this.Context, resultChild ?? _parent, Expression.Constant(service));
-            
+
             }
 
-            throw new NotImplementedException(node.Type);
+            if (node.Child != null)
+                _parent = (Expression)node.Child.Accept(this);
+
+            return _parent;
 
         }
 

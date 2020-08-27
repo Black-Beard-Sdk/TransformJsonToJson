@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace Bb.TransformJson.Services
+namespace Bb.TransformJson
 {
     public interface ITransformJsonService
     {

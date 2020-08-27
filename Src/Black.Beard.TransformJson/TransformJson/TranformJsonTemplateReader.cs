@@ -1,11 +1,9 @@
-﻿//using Bb.TransformJson.Parser;
+﻿using Bb.TransformJson.Asts;
+using Bb.TransformJson.Parsers;
+using Bb.TransformJson.Services;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Bb.TransformJson
@@ -149,38 +147,42 @@ namespace Bb.TransformJson
 
         private XsltJson ReadString(JValue n)
         {
-
             var value = n.Value?.ToString();
+            var parser = new StringParser(value);
+            var result = parser.Get();
+            result = ConvertChildToType(result);
+            return result;
+        }
 
-            Regex reg = new Regex(@"[a-z]*:\{[^}]*");
+        private XsltJson ConvertChildToType(XsltJson node)
+        {
 
-            var o = reg.Matches(value);
-
-            if (o.Count > 0)
+            if (node is JPath jp)
             {
-
-                XPath first = null;
-
-                for (int i = 0; i < o.Count; i++)
+                if (jp.Type != "jpath")
                 {
 
-                    var txt = o[i].Value;
-                    string _value = txt.Substring(txt.IndexOf('{') + 1);
-                    string _key = txt.Substring(0, txt.IndexOf(':'));
-                    if (_key == "jpath")
-                        first = new XPath() { Type = _key.ToLower(), Value = _value, Kind = XsltKind.Xpath, Child = first };
-                    else
-                    {
-                        first = new XPath() { Type = _key.ToLower(), Value = $"{{{_value}}}", Kind = XsltKind.Xpath, Child = first };
-                        first.TypeObject = (XsltObject)ReadObject(JObject.Parse(first.Value));
-                    }
+                    var service = this._configuration.Services.GetService(jp.Type);
+                    if (service == null)
+                        throw new MissingServiceException(jp.Type);
+
+                    return new XsltType(jp.TypeObject) { Type = jp.Type, ServiceProvider = service };
+
                 }
 
-                return first;
+                if (jp.Child != null)
+                    jp.Child = ConvertChildToType(jp.Child);
+            }
+            else if (node is XsltType t)
+            {
+
+                var service = this._configuration.Services.GetService(t.Type);
+                if (service == null)
+                    throw new MissingServiceException(t.Type);
+                t.ServiceProvider = service;
 
             }
-
-            return new XsltConstant() { Value = value, Kind = XsltKind.String };
+            return node;
 
         }
 
@@ -232,9 +234,16 @@ namespace Bb.TransformJson
             foreach (var item in n.Properties())
                 result.Append(Read(item) as XsltProperty);
 
-
-            if (result.IsType)
-                return new XsltType(result);
+            if (result.Source != null)
+                if (result.Source is XsltConstant c)
+                    if (c.Value is string v)
+                    {
+                        var service = this._configuration.Services.GetService(v);
+                        if (service != null)
+                            return new XsltType(result) { ServiceProvider = service };
+                        else
+                            throw new MissingServiceException(v);
+                    }
 
             return result;
 

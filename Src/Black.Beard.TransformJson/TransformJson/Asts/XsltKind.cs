@@ -1,4 +1,4 @@
-﻿namespace Bb.TransformJson
+﻿namespace Bb.TransformJson.Asts
 {
     public enum XsltKind
     {
@@ -20,7 +20,7 @@
         PathParent,
         PathKey,
         PathCoalesce,
-        Xpath,
+        Jpath,
         PathIndice,
     }
 

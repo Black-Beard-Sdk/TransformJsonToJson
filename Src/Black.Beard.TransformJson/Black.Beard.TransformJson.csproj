@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Bb.TransformJson</RootNamespace>
+    <RootNamespace>Bb</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,19 +12,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Asts\XPathCoalesce.cs" />
-    <Compile Remove="Asts\XPathComposite.cs" />
-    <Compile Remove="Asts\XPathCompositeKey.cs" />
-    <Compile Remove="Asts\XPathIndice.cs" />
+    <Compile Remove="TransformJson\Asts\XPathCoalesce.cs" />
+    <Compile Remove="TransformJson\Asts\XPathComposite.cs" />
+    <Compile Remove="TransformJson\Asts\XPathCompositeKey.cs" />
+    <Compile Remove="TransformJson\Asts\XPathIndice.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Ude.NetStandard" Version="1.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Black.Beard.ComponentModel\Src\Black.Beard.ComponentModel\Black.Beard.ComponentModel.csproj" />
   </ItemGroup>
 
 </Project>

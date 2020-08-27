@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bb.TransformJson
+namespace Bb.TransformJson.Asts
 {
 
     public abstract class XsltJson

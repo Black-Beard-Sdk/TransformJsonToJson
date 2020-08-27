@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-namespace Bb.TransformJson
+namespace Bb.TransformJson.Asts
 {
 
 
@@ -23,8 +24,6 @@ namespace Bb.TransformJson
                 _items.Add(property.Name, property);
         }
 
-        internal bool IsType { get => _items.ContainsKey(TransformJsonConstants.Type); }
-
         public IEnumerable<XsltProperty> Properties { get => _items.Values; }
 
         public string Name { get; set; }
@@ -36,6 +35,10 @@ namespace Bb.TransformJson
 
         private readonly Dictionary<string, XsltProperty> _items;
 
+        internal void AddProperty(XsltProperty prop)
+        {
+            this._items.Add(prop.Name, prop);
+        }
     }
 
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Bb.TransformJson
+namespace Bb.TransformJson.Asts
 {
     public class XsltArray : XsltJson
     {

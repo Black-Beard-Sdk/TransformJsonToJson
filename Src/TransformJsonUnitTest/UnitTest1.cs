@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using Bb.TransformJson;
+using Bb.TransformJson.Asts;
+using Bb.TransformJson.Parsers;
 using Bb.TransformJson.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
@@ -10,11 +13,6 @@ namespace TransformJsonUnitTest
 
     /*
      
-    value from node in the parent of the current object source
-    "name":"$../name"
-
-    "items": { "$type":"foreach",    "source": "$/persons",    "filter": { }, "item": { "name":"$name" } }
-
     "name":  { "$type":"MonSrvData", "arg1": "$/person/name",  "filter": { } }
      
              { "$type": "filterEqual",     "left": "$name", "right": { "_type": "filterGreatThan", } }
@@ -112,7 +110,7 @@ namespace TransformJsonUnitTest
         public void TestCompositeMapArrayIndiceLast2Value()
         {
 
-            string payloadTemplate = @" { 'person': { 'name' : 'jpath:{$.persons[-1:].name}' } }";
+            string payloadTemplate = @"{ 'person': { 'name' : 'jpath:{$.persons[-1:].name}' } }";
             TranformJsonAstTree template = GetProvider(payloadTemplate);
 
             string payloadSource = @"{ 'persons': [{'name' : 'name1'}, {'name' : 'name2'}, {'name' : 'name3'}] }";
@@ -150,7 +148,7 @@ namespace TransformJsonUnitTest
         public void TestCompositeMapArray2()
         {
 
-            string payloadTemplate = @"{ 'persons': [{'$source' : 'jpath:{$.persons[1]}', 'name' : 'jpath:{$.n}'}] }";
+            string payloadTemplate = @"{ 'persons': [{'$source' : 'jpath:{$.persons[1]}', 'name':'jpath:{$.n}'}] }";
             TranformJsonAstTree template = GetProvider(payloadTemplate);
 
             string payloadSource = @"{ 'persons': [{'n' : 'name1'}, {'n' : 'name2'}, {'n' : 'name3'}] }";
@@ -189,8 +187,8 @@ namespace TransformJsonUnitTest
         public void TestCompositeExecuteCustomRule()
         {
 
-            string payloadTemplate = @"{ 'prices': 'jpath:{$..n} sum:{}' }";
-            TranformJsonAstTree template = GetProvider(payloadTemplate, 
+            string payloadTemplate = @"{ 'prices': 'jpath:{$..n} | sum:{}' }";
+            TranformJsonAstTree template = GetProvider(payloadTemplate,
                 ("sum", new ServiceSum())
                 );
 
@@ -203,7 +201,65 @@ namespace TransformJsonUnitTest
 
         }
 
+        /// <summary>
+        /// select 2 rd item in the list by filter in field
+        /// </summary>
+        [TestMethod]
+        public void TestCompositeExecuteCustomRuleOnType()
+        {
 
+            string payloadTemplate = @"{ 'Person': { '$source':'data1', 'id':'jpath:{$.id}' } }";
+            TranformJsonAstTree template = GetProvider(payloadTemplate,
+                ("data1", new DataClass())
+                );
+
+            string payloadSource = @"{ 'Event':'e1', 'id':'FR345' }";
+            StringBuilder sb2 = new StringBuilder(payloadSource.Replace('\'', '"'));
+
+            var result = template.Transform(sb2) as JObject;
+
+            Assert.AreEqual(result["Person"]["Uuid"], "FR345");
+
+        }
+
+        /// <summary>
+        /// select 2 rd item in the list by filter in field
+        /// </summary>
+        [TestMethod]
+        public void TestCompositeExecuteCustomRuleOnType2()
+        {
+
+            string payloadTemplate = @"{ '$source':'data1', '$id':'jpath:{$.id}' }";
+            TranformJsonAstTree template = GetProvider(payloadTemplate,
+                ("data1", new DataClass())
+                );
+
+            string payloadSource = @"{ 'Event':'e1', 'id':'FR345' }";
+            StringBuilder sb2 = new StringBuilder(payloadSource.Replace('\'', '"'));
+
+            var result = template.Transform(sb2) as JObject;
+
+            Assert.AreEqual(result["Person"]["Uuid"], "FR345");
+
+        }
+
+
+        /// <summary>
+        /// select 2 rd item in the list by filter in field
+        /// </summary>
+        [TestMethod]
+        public void Test1()
+        {
+
+            string rule = "jpath:{$..n} | sum:{ 'id':'jpath:{$..n}' }"
+                .Replace('\'', '"')
+                .Replace('§', '\'');
+
+            var p = new StringParser(rule);
+            var o = p.Get();
+
+
+        }
 
         private static TranformJsonAstTree GetProvider(string payloadTemplate, params (string, ITransformJsonService)[] services)
         {
@@ -213,7 +269,7 @@ namespace TransformJsonUnitTest
             var configuration = new TranformJsonAstConfiguration();
             foreach (var item in services)
                 configuration.AddService(item.Item1, item.Item2);
-            
+
             TemplateTransformProvider Templateprovider = new TemplateTransformProvider(configuration);
 
             TranformJsonAstTree template = Templateprovider.GetTemplate(sb);
@@ -221,7 +277,26 @@ namespace TransformJsonUnitTest
             return template;
 
         }
-    
+
+    }
+
+    public class DataClass : ITransformJsonService
+    {
+
+        public string Id { get; set; }
+
+        public JToken Execute(RuntimeContext ctx, JToken source)
+        {
+
+            return new JObject(
+
+                    new JProperty("Uuid", new JValue(Id))
+
+                );
+
+
+        }
+
     }
 
 }
