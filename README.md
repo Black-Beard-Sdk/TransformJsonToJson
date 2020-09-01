@@ -32,7 +32,7 @@ the key is a name of the service you need to call. You are responsable of regist
 
 // Result
 { "prices":  6 }
-
+ 
 ```  
 
 ## How to use
