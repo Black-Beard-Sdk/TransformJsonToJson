@@ -32,7 +32,7 @@ the key is a name of the service you need to call. You are responsable of regist
 
 // Result
 { "prices":  6 }
- 
+
 ```  
 
 ## How to use
@@ -189,7 +189,7 @@ In all these examples, the leading  `$.`  is optional and can be omitted.
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbOTMzNDgzODcsNTYyNzQ4MTIxLDEyNTMzOT
-A5OSwxMzc2NzA0NDA3LC0xNzQyMTQxNjgxLC0yMDczNDg3NjI1
-LDk2MDIxMTEyN119
+eyJoaXN0b3J5IjpbMjAzNzY2NDQzNyw5MzM0ODM4Nyw1NjI3ND
+gxMjEsMTI1MzM5MDk5LDEzNzY3MDQ0MDcsLTE3NDIxNDE2ODEs
+LTIwNzM0ODc2MjUsOTYwMjExMTI3XX0=
 -->
