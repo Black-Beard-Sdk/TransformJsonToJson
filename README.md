@@ -25,7 +25,7 @@ the key is a name of the service you need to call. You are responsable of regist
 
 ```JSON
 // Template
-{ "prices": "jpath:{$..n} sum:{}" } // service sum is registered n the service.
+{ "prices": "jpath:{$..n} | sum:{}" } // service sum is before registered in the services list.
 
 // Source
 { "prices": [{"n" : 1}, {"n" : 2}, {"n" : 3}] }
