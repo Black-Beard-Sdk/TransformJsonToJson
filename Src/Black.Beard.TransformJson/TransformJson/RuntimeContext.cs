@@ -13,13 +13,40 @@ namespace Bb.TransformJson
         static RuntimeContext()
         {
             _getContentByJPath = RuntimeContext.GetContentByJPath;
-            _getProjectionFromSource = RuntimeContext.GetProjectionFromSource;
             _getContentFromService = RuntimeContext.GetContentFromService;
             _mapPropertyService = RuntimeContext.MapPropertyService;
-            _properties = new Dictionary<Type, Dictionary<string, (PropertyInfo, Action<object, object>)>>();
+            _addProperty = RuntimeContext.AddProperty;
 
+            _properties = new Dictionary<Type, Dictionary<string, (PropertyInfo, Action<object, object>)>>();
         }
 
+
+        public static JToken AddProperty(
+            RuntimeContext ctx, 
+            JToken tokenSource, 
+            JToken value, 
+            JToken tokenTarget, 
+            string propertyName
+            )
+        {
+
+            if (tokenSource != null)
+            {
+
+                if (tokenTarget is JObject o)
+                    o.Add(new JProperty(propertyName, value));
+
+                else if (tokenTarget is JArray a)
+                {
+
+
+                }
+
+            }
+
+            return tokenTarget;
+
+        }
 
         public static ITransformJsonService MapPropertyService(RuntimeContext ctx, ITransformJsonService service, string propertyName, JToken value)
         {
@@ -35,10 +62,10 @@ namespace Bb.TransformJson
 
                 else if (type.IsValueType)
                     writer.Item2(service, Convert.ChangeType(value.ToString(), type));
-                
-                else if(value is JObject o)
+
+                else if (value is JObject o)
                     writer.Item2(service, o.ToObject(type));
-                
+
                 else
                 {
 
@@ -48,6 +75,64 @@ namespace Bb.TransformJson
             return service;
 
         }
+
+        // ITransformJsonService
+        public static JToken GetContentFromService(RuntimeContext ctx, JToken token, ITransformJsonService service)
+        {
+            return service.Execute(ctx, token);
+        }
+
+        public static JToken GetContentByJPath(RuntimeContext ctx, JToken token, string path)
+        {
+
+            JToken result = null;
+
+            if (token != null)
+            {
+
+                if (token is JObject o)
+                {
+                    var h = o.SelectTokens(path).ToList();
+                    if (h.Count == 0)
+                        result = null;
+
+                    else if (h.Count == 1)
+                        result = h[0];
+
+                    else
+                        result = new JArray(h);
+
+                }
+
+                else if (token is JArray a)
+                {
+
+                    var h = a.SelectTokens(path).ToList();
+                    if (h.Count == 1)
+                        result = h[0];
+
+                    else
+                        result = new JArray(h);
+
+                }
+                else if (token is JValue v)
+                    return null;
+                else
+                {
+
+                }
+
+            }
+
+            return result;
+
+        }
+
+        public static readonly Func<RuntimeContext, JToken, Func<RuntimeContext, JToken, JToken>, JToken> _getProjectionFromSource;
+        public static readonly Func<RuntimeContext, JToken, string, JToken> _getContentByJPath;
+        public static readonly Func<RuntimeContext, JToken, ITransformJsonService, JToken> _getContentFromService;
+        public static readonly Func<RuntimeContext, ITransformJsonService, string, JToken, ITransformJsonService> _mapPropertyService;
+        public static readonly Func<RuntimeContext, JToken, JToken, JToken, string, JToken> _addProperty;
 
         private static (PropertyInfo, Action<object, object>) GetWriter(Type componentType, string propertyName)
         {
@@ -62,7 +147,7 @@ namespace Bb.TransformJson
                     if (!properties.TryGetValue(propertyName, out action))
                     {
                         var ___properties = componentType.GetProperties().Where(c => c.Name.ToLower() == propertyName.ToLower()).ToList();
-                        var property = ___properties.Count ==1 
+                        var property = ___properties.Count == 1
                             ? ___properties[0]
                             : ___properties.Single(c => c.Name == propertyName)
                             ;
@@ -102,93 +187,8 @@ namespace Bb.TransformJson
 
         }
 
-        // ITransformJsonService
-        public static JToken GetContentFromService(RuntimeContext ctx, JToken token, ITransformJsonService service)
-        {
-            return service.Execute(ctx, token);
-        }
 
-        public static JToken GetContentByJPath(RuntimeContext ctx, JToken token, string path)
-        {
-
-            JToken result = null;
-
-            if (token != null)
-            {
-
-                if (token is JObject o)
-                {
-                    var h = o.SelectTokens(path).ToList();
-                    if (h.Count == 1)
-                        result = h[0];
-
-                    else
-                        result = new JArray(h);
-                }
-
-                else if (token is JArray a)
-                {
-
-                    var h = a.SelectTokens(path).ToList();
-                    if (h.Count == 1)
-                        result = h[0];
-
-                    else
-                        result = new JArray(h);
-
-                }
-                else if (token is JValue v)
-                    return null;
-                else
-                {
-
-                }
-
-            }
-
-            return result;
-
-        }
-
-        public static JToken GetProjectionFromSource(RuntimeContext ctx, JToken token, Func<RuntimeContext, JToken, JToken> delegateObject)
-        {
-
-            if (token != null)
-            {
-
-                var arr = new JArray();
-
-                if (token is JArray a)
-                    foreach (var item in a)
-                    {
-                        var i = delegateObject(ctx, item);
-                        arr.Add(i);
-                    }
-
-                else if (token is JObject o)
-                {
-                    var i = delegateObject(ctx, o);
-                    arr.Add(i);
-                }
-                else
-                {
-
-                }
-
-                return arr;
-
-            }
-
-            return null;
-
-        }
-
-        public static readonly Func<RuntimeContext, JToken, Func<RuntimeContext, JToken, JToken>, JToken> _getProjectionFromSource;
-        public static readonly Func<RuntimeContext, JToken, string, JToken> _getContentByJPath;
-        public static readonly Func<RuntimeContext, JToken, ITransformJsonService, JToken> _getContentFromService;
-        public static readonly Func<RuntimeContext, ITransformJsonService, string, JToken, ITransformJsonService> _mapPropertyService;
         private static readonly Dictionary<Type, Dictionary<string, (PropertyInfo, Action<object, object>)>> _properties;
-
         private static object _lock = new object();
 
     }

@@ -6,10 +6,10 @@ using System.Text;
 namespace Bb.TransformJson.Asts
 {
 
-    public class TranformJsonAstTree
+    public class XjsltTemplate
     {
 
-        public TranformJsonAstTree()
+        public XjsltTemplate()
         {
            
         }
@@ -18,6 +18,12 @@ namespace Bb.TransformJson.Asts
 
         public RuntimeContext LastExecutionContext { get; private set; }
 
+        public XjsltJson Template { get; internal set; }
+        
+        public TranformJsonAstConfiguration Configuration { get; internal set; }
+
+        internal StringBuilder Rule { get; set; }
+
         public JToken Transform(StringBuilder payload)
         {
             JObject obj = JObject.Parse(payload.ToString());
@@ -25,6 +31,12 @@ namespace Bb.TransformJson.Asts
             return Rules(this.LastExecutionContext, obj);
         }
 
+        public override string ToString()
+        {
+            var t = new VisualiserBuilder();
+            var o = (JObject)this.Template.Accept(t);
+            return o.ToString();
+        }
 
     }
 

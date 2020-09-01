@@ -14,7 +14,7 @@ namespace Bb.TransformJson
             this._configuration = configuration;
         }
 
-        public TranformJsonAstTree GetTemplate(StringBuilder sb)
+        public XjsltTemplate GetTemplate(StringBuilder sb)
         {
 
             JObject obj = null;
@@ -24,9 +24,13 @@ namespace Bb.TransformJson
 
             TranformJsonTemplateReader reader = new TranformJsonTemplateReader(obj, this._configuration);
 
-            TranformJsonAstTree result = new TranformJsonAstTree()
+            var tree = reader.Tree();
+            XjsltTemplate result = new XjsltTemplate()
             {
-                Rules = reader.Get()
+                Rule = sb,
+                Configuration = this._configuration,
+                Template = tree,
+                Rules = reader.Get(tree)
             };
 
             return result;

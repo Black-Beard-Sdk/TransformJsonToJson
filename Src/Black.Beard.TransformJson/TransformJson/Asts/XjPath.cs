@@ -6,29 +6,28 @@ using System.Xml;
 namespace Bb.TransformJson.Asts
 {
 
-    public class JPath : XsltJson
+    public class XjPath : XjsltJson
     {
 
-        public JPath()
+        public XjPath()
         {
-            Kind = XsltKind.Jpath;
+            Kind = XjsltKind.Jpath;
         }
 
         //public XsltJson Child { get; internal set; }
 
         public string Value { get; internal set; }
 
-        public XsltJson Child { get; internal set; }
+        public XjsltJson Child { get; internal set; }
 
         public string Type { get; internal set; }
 
-        public XsltObject TypeObject { get; internal set; }
+        public XjsltObject TypeObject { get; internal set; }
 
         public override object Accept(IXsltJsonVisitor visitor)
         {
             return visitor.VisitJPath(this);
         }
-
 
     }
 

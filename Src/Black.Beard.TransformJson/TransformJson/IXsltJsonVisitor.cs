@@ -9,17 +9,17 @@ namespace Bb.TransformJson
 
         TranformJsonAstConfiguration Configuration { get; set; }
 
-        object VisitArray(XsltArray node);
+        object VisitArray(XjsltArray node);
         
-        object VisitConstant(XsltConstant node);
+        object VisitConstant(XjsltConstant node);
         
-        object VisitObject(XsltObject node);
+        object VisitObject(XjsltObject node);
         
-        object VisitProperty(XsltProperty node);
+        object VisitProperty(XjsltProperty node);
         
-        object VisitType(XsltType node);
+        object VisitType(XjsltType node);
 
-        object VisitJPath(JPath node);
+        object VisitJPath(XjPath node);
 
         object VisitMapProperty(XsltMapProperty node);
     }

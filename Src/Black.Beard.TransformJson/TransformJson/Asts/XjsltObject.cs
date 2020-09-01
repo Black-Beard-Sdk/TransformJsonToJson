@@ -1,21 +1,22 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 
 namespace Bb.TransformJson.Asts
 {
 
 
-    public class XsltObject : XsltJson
+    public class XjsltObject : XjsltJson
     {
 
-        public XsltObject()
+        public XjsltObject()
         {
-            this.Kind = XsltKind.Object;
-            this._items = new Dictionary<string, XsltProperty>();
+            this.Kind = XjsltKind.Object;
+            this._items = new Dictionary<string, XjsltProperty>();
         }
 
 
-        internal void Append(XsltProperty property)
+        internal void Append(XjsltProperty property)
         {
             if (property.Name == TransformJsonConstants.Source)
                 this.Source = property.Value;
@@ -24,7 +25,7 @@ namespace Bb.TransformJson.Asts
                 _items.Add(property.Name, property);
         }
 
-        public IEnumerable<XsltProperty> Properties { get => _items.Values; }
+        public IEnumerable<XjsltProperty> Properties { get => _items.Values; }
 
         public string Name { get; set; }
 
@@ -33,12 +34,13 @@ namespace Bb.TransformJson.Asts
             return visitor.VisitObject(this);
         }
 
-        private readonly Dictionary<string, XsltProperty> _items;
+        private readonly Dictionary<string, XjsltProperty> _items;
 
-        internal void AddProperty(XsltProperty prop)
+        internal void AddProperty(XjsltProperty prop)
         {
             this._items.Add(prop.Name, prop);
         }
+
     }
 
 }

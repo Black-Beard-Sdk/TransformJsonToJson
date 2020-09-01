@@ -17,40 +17,40 @@ namespace Bb.TransformJson
             this._configuration = configuration;
         }
 
-        public Func<RuntimeContext, JToken, JToken> Get()
+        public XjsltJson Tree()
+        {
+            if (_root != null)
+                return Read(_root);
+            return null;
+        }
+
+        public Func<RuntimeContext, JToken, JToken> Get(XjsltJson tree)
         {
 
             Func<RuntimeContext, JToken, JToken> fnc;
-            Expression e;
-            Expression<Func<RuntimeContext, JToken, JToken>> lbd;
 
-            if (_root != null)
+            if (tree != null)
             {
-                var result = Read(_root);
-
-                var builder = new ConfigurationBuilder()
-                {
-                    Configuration = this._configuration,
-                };
-
-                e = result.Accept(builder) as Expression;
-                lbd = Expression.Lambda<Func<RuntimeContext, JToken, JToken>>(e, builder.Context, builder.Argument);
-
+                var builder = new ConfigurationBuilder() { Configuration = this._configuration, };
+                fnc = builder.Compile(tree);
             }
-            else
+            else // Template empty
             {
                 var arg = Expression.Parameter(typeof(RuntimeContext), "arg0");
                 var arg1 = Expression.Parameter(typeof(JToken), "arg1");
-                lbd = Expression.Lambda<Func<RuntimeContext, JToken, JToken>>(arg1, arg, arg1);
-            }
+                var lbd = Expression.Lambda<Func<RuntimeContext, JToken, JToken>>(arg1, arg, arg1);
 
-            fnc = lbd.Compile();
+                if (lbd.CanReduce)
+                    lbd.ReduceAndCheck();
+
+                fnc = lbd.Compile();
+            }
 
             return fnc;
 
         }
 
-        private XsltJson Read(JToken n)
+        private XjsltJson Read(JToken n)
         {
 
             switch (n.Type)
@@ -110,42 +110,42 @@ namespace Bb.TransformJson
 
         }
 
-        private XsltJson ReadTimeSpan(JValue n)
+        private XjsltJson ReadTimeSpan(JValue n)
         {
-            return new XsltConstant() { Value = n.Value, Kind = XsltKind.TimeSpan };
+            return new XjsltConstant() { Value = n.Value, Kind = XjsltKind.TimeSpan };
         }
 
-        private XsltJson ReadUri(JValue n)
+        private XjsltJson ReadUri(JValue n)
         {
-            return new XsltConstant() { Value = n.Value, Kind = XsltKind.Uri };
+            return new XjsltConstant() { Value = n.Value, Kind = XjsltKind.Uri };
         }
 
-        private XsltJson ReadGuid(JValue n)
+        private XjsltJson ReadGuid(JValue n)
         {
-            return new XsltConstant() { Value = n.Value, Kind = XsltKind.Guid };
+            return new XjsltConstant() { Value = n.Value, Kind = XjsltKind.Guid };
         }
 
-        private XsltJson ReadBytes(JValue n)
+        private XjsltJson ReadBytes(JValue n)
         {
-            return new XsltConstant() { Value = n.Value, Kind = XsltKind.Bytes };
+            return new XjsltConstant() { Value = n.Value, Kind = XjsltKind.Bytes };
         }
 
-        private XsltJson ReadDate(JValue n)
+        private XjsltJson ReadDate(JValue n)
         {
-            return new XsltConstant() { Value = n.Value, Kind = XsltKind.Date };
+            return new XjsltConstant() { Value = n.Value, Kind = XjsltKind.Date };
         }
 
-        private XsltJson ReadNull(JValue n)
+        private XjsltJson ReadNull(JValue n)
         {
-            return new XsltConstant() { Value = n.Value, Kind = XsltKind.Null };
+            return new XjsltConstant() { Value = n.Value, Kind = XjsltKind.Null };
         }
 
-        private XsltJson ReadBoolean(JValue n)
+        private XjsltJson ReadBoolean(JValue n)
         {
-            return new XsltConstant() { Value = n.Value, Kind = XsltKind.Boolean };
+            return new XjsltConstant() { Value = n.Value, Kind = XjsltKind.Boolean };
         }
 
-        private XsltJson ReadString(JValue n)
+        private XjsltJson ReadString(JValue n)
         {
             var value = n.Value?.ToString();
             var parser = new StringParser(value);
@@ -154,10 +154,10 @@ namespace Bb.TransformJson
             return result;
         }
 
-        private XsltJson ConvertChildToType(XsltJson node)
+        private XjsltJson ConvertChildToType(XjsltJson node)
         {
 
-            if (node is JPath jp)
+            if (node is XjPath jp)
             {
                 if (jp.Type != "jpath")
                 {
@@ -166,14 +166,14 @@ namespace Bb.TransformJson
                     if (service == null)
                         throw new MissingServiceException(jp.Type);
 
-                    return new XsltType(jp.TypeObject) { Type = jp.Type, ServiceProvider = service };
+                    return new XjsltType(jp.TypeObject) { Type = jp.Type, ServiceProvider = service };
 
                 }
 
                 if (jp.Child != null)
                     jp.Child = ConvertChildToType(jp.Child);
             }
-            else if (node is XsltType t)
+            else if (node is XjsltType t)
             {
 
                 var service = this._configuration.Services.GetService(t.Type);
@@ -186,25 +186,25 @@ namespace Bb.TransformJson
 
         }
 
-        private XsltJson ReadFloat(JValue n)
+        private XjsltJson ReadFloat(JValue n)
         {
-            return new XsltConstant() { Value = n.Value, Kind = XsltKind.Float };
+            return new XjsltConstant() { Value = n.Value, Kind = XjsltKind.Float };
         }
 
-        private XsltJson ReadInteger(JValue n)
+        private XjsltJson ReadInteger(JValue n)
         {
-            return new XsltConstant() { Value = n.Value, Kind = XsltKind.Integer };
+            return new XjsltConstant() { Value = n.Value, Kind = XjsltKind.Integer };
         }
 
-        private XsltJson ReadConstructor(JConstructor n)
+        private XjsltJson ReadConstructor(JConstructor n)
         {
             throw new NotImplementedException();
         }
 
-        private XsltJson ReadArray(JArray n)
+        private XjsltJson ReadArray(JArray n)
         {
 
-            var arr = new XsltArray(n.Count);
+            var arr = new XjsltArray(n.Count);
 
             foreach (var item in n)
             {
@@ -224,23 +224,23 @@ namespace Bb.TransformJson
 
         }
 
-        private XsltJson ReadObject(JObject n)
+        private XjsltJson ReadObject(JObject n)
         {
 
             string name = string.Empty;
 
-            var result = new XsltObject() { Name = name };
+            var result = new XjsltObject() { Name = name };
 
             foreach (var item in n.Properties())
-                result.Append(Read(item) as XsltProperty);
+                result.Append(Read(item) as XjsltProperty);
 
             if (result.Source != null)
-                if (result.Source is XsltConstant c)
+                if (result.Source is XjsltConstant c)
                     if (c.Value is string v)
                     {
                         var service = this._configuration.Services.GetService(v);
                         if (service != null)
-                            return new XsltType(result) { ServiceProvider = service };
+                            return new XjsltType(result) { ServiceProvider = service };
                         else
                             throw new MissingServiceException(v);
                     }
@@ -249,12 +249,12 @@ namespace Bb.TransformJson
 
         }
 
-        private XsltJson ReadProperty(JProperty n)
+        private XjsltJson ReadProperty(JProperty n)
         {
 
             var name = n.Name;
 
-            var result = new XsltProperty()
+            var result = new XjsltProperty()
             {
                 Name = name,
                 Value = Read(n.Value)

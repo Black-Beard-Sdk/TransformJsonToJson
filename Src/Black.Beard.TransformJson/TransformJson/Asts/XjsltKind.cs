@@ -1,6 +1,6 @@
 ﻿namespace Bb.TransformJson.Asts
 {
-    public enum XsltKind
+    public enum XjsltKind
     {
         Object,
         Property,

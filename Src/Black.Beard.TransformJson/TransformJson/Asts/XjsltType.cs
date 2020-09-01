@@ -5,19 +5,19 @@ using System.Linq;
 
 namespace Bb.TransformJson.Asts
 {
-    public class XsltType : XsltJson
+    public class XjsltType : XjsltJson
     {
 
-        public XsltType(XsltObject o)
+        public XjsltType(XjsltObject o)
         {
-            this.Kind = XsltKind.Type;
+            this.Kind = XjsltKind.Type;
             this._items = new Dictionary<string, XsltMapProperty>();
 
             foreach (var item in o.Properties.Where(c=> c.Name.StartsWith("$")))
                 if (item.Name == TransformJsonConstants.Source)
-                    this.Type = (item.Value as XsltConstant).Value.ToString();
+                    this.Type = (item.Value as XjsltConstant).Value.ToString();
                 else
-                    this._items.Add(item.Name, new XsltMapProperty() { Name = item.Name, Value = item.Value });
+                    this._items.Add(item.Name, new XsltMapProperty() { Name = item.Name.Substring(1), Value = item.Value });
 
         }
 

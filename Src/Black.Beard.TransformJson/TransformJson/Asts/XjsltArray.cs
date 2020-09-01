@@ -2,16 +2,16 @@
 
 namespace Bb.TransformJson.Asts
 {
-    public class XsltArray : XsltJson
+    public class XjsltArray : XjsltJson
     {
 
-        public XsltArray(int count)
+        public XjsltArray(int count)
         {
-            this.Kind = XsltKind.Array;
+            this.Kind = XjsltKind.Array;
         }
 
 
-        internal XsltJson Append(XsltJson item)
+        internal XjsltJson Append(XjsltJson item)
         {
             _items.Add(item);
             return item;
@@ -22,9 +22,9 @@ namespace Bb.TransformJson.Asts
             return visitor.VisitArray(this);
         }
 
-        public XsltJson Item { get; internal set; }
+        public XjsltJson Item { get; internal set; }
 
-        private readonly List<XsltJson> _items;
+        private readonly List<XjsltJson> _items;
 
     }
 

@@ -4,7 +4,7 @@ namespace Bb.TransformJson.Asts
 {
 
 
-    public class XsltConstant : XsltJson
+    public class XjsltConstant : XjsltJson
     {
 
         public object Value { get; set; }

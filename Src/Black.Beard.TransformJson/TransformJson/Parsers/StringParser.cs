@@ -10,10 +10,10 @@ namespace Bb.TransformJson.Parsers
         public StringParser(string rule)
         {
             this._rule = rule;
-            this._stack = new Stack<JPath>();
+            this._stack = new Stack<XjPath>();
         }
 
-        public XsltJson Get()
+        public XjsltJson Get()
         {
 
             this._lexer = new Lexer(_rule);
@@ -25,7 +25,7 @@ namespace Bb.TransformJson.Parsers
                 return p;
             }
 
-            return new XsltConstant() { Value = _rule };
+            return new XjsltConstant() { Value = _rule };
         }
 
         private Queue<Token> Prepare()
@@ -92,10 +92,10 @@ namespace Bb.TransformJson.Parsers
 
         }
 
-        private JPath ParseRoot(Queue<Token> tokens)
+        private XjPath ParseRoot(Queue<Token> tokens)
         {
 
-            JPath prop = null;
+            XjPath prop = null;
 
             while (tokens.Count > 0)
             {
@@ -105,7 +105,7 @@ namespace Bb.TransformJson.Parsers
                     case KindToken.Identifier:
                         if (prop != null)
                             throw new ParsingException(token.Text, token.Index);
-                        prop = new JPath() { Type = token.Text.ToLower() };
+                        prop = new XjPath() { Type = token.Text.ToLower() };
                         break;
 
                     case KindToken.Left:
@@ -135,7 +135,7 @@ namespace Bb.TransformJson.Parsers
 
         }
 
-        private void ParseJpath(Queue<Token> tokens, JPath prop)
+        private void ParseJpath(Queue<Token> tokens, XjPath prop)
         {
 
             while (tokens.Count > 0)
@@ -159,10 +159,10 @@ namespace Bb.TransformJson.Parsers
 
         }
 
-        private void ParseFunction(Queue<Token> tokens, JPath propRoot)
+        private void ParseFunction(Queue<Token> tokens, XjPath propRoot)
         {
 
-            XsltObject o = null;
+            XjsltObject o = null;
             string type = string.Empty;
 
             while (tokens.Count > 0)
@@ -172,14 +172,14 @@ namespace Bb.TransformJson.Parsers
                 {
                     case KindToken.Identifier:
                         type = token.Text;
-                        o = new XsltObject() { };
+                        o = new XjsltObject() { };
                         break;
 
                     case KindToken.Left:
                         if (o == null)
                             throw new ParsingException(token.Text, token.Index);
                         ParseObject(tokens, o);
-                        propRoot.Child = new XsltType(o) { Type = type };
+                        propRoot.Child = new XjsltType(o) { Type = type };
                         break;
 
                     case KindToken.Pipe:
@@ -196,16 +196,16 @@ namespace Bb.TransformJson.Parsers
 
         }
 
-        private void ParseObject(Queue<Token> tokens, XsltObject o)
+        private void ParseObject(Queue<Token> tokens, XjsltObject o)
         {
-            XsltProperty prop = null;
+            XjsltProperty prop = null;
             while (tokens.Count > 0)
             {
                 var token = tokens.Dequeue();
                 switch (token.Kind)
                 {
                     case KindToken.Identifier:
-                        prop = new XsltProperty() { Name = token.Text };
+                        prop = new XjsltProperty() { Name = token.Text };
                         o.AddProperty(prop);
                         ParseProperty(tokens, prop);
                         break;
@@ -227,9 +227,9 @@ namespace Bb.TransformJson.Parsers
 
         }
 
-        private void ParseProperty(Queue<Token> tokens, XsltProperty prop)
+        private void ParseProperty(Queue<Token> tokens, XjsltProperty prop)
         {
-            JPath p = null;
+            XjPath p = null;
 
             while (tokens.Count > 0)
             {
@@ -237,7 +237,7 @@ namespace Bb.TransformJson.Parsers
                 switch (token.Kind)
                 {
                     case KindToken.Identifier:
-                        p = new JPath() { Type = token.Text.ToLower() };
+                        p = new XjPath() { Type = token.Text.ToLower() };
                         prop.Value = p;
                         break;
 
@@ -266,7 +266,7 @@ namespace Bb.TransformJson.Parsers
 
         private Lexer _lexer;
         private readonly string _rule;
-        private readonly Stack<JPath> _stack;
+        private readonly Stack<XjPath> _stack;
     }
 
 }

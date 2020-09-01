@@ -1,17 +1,17 @@
 ﻿namespace Bb.TransformJson.Asts
 {
 
-    public class XsltProperty : XsltJson
+    public class XjsltProperty : XjsltJson
     {
 
-        public XsltProperty()
+        public XjsltProperty()
         {
-            this.Kind = XsltKind.Property;
+            this.Kind = XjsltKind.Property;
         }
 
         public string Name{ get; set; }
 
-        public XsltJson Value { get; set; }
+        public XjsltJson Value { get; set; }
 
         public override object Accept(IXsltJsonVisitor visitor)
         {
@@ -20,17 +20,17 @@
 
     }
 
-    public class XsltMapProperty : XsltJson
+    public class XsltMapProperty : XjsltJson
     {
 
         public XsltMapProperty()
         {
-            this.Kind = XsltKind.Property;
+            this.Kind = XjsltKind.Property;
         }
 
         public string Name { get; set; }
 
-        public XsltJson Value { get; set; }
+        public XjsltJson Value { get; set; }
 
         public override object Accept(IXsltJsonVisitor visitor)
         {
