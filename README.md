@@ -46,7 +46,7 @@ configuration.AddService("sum", () => new ServiceSum());
 
 //Build the template translator
 StringBuilder sbPayloadTemplate = new StringBuilder(@"payload template");
-TranformJsonAstTree template = Templateprovider.GetTemplate(sbPayloadTemplate);
+XjsltTemplate template = Templateprovider.GetTemplate(sbPayloadTemplate);
 
 StringBuilder sbSource = new StringBuilder(@"payload source json");
 JToken result = template.Transform(sbSource);
