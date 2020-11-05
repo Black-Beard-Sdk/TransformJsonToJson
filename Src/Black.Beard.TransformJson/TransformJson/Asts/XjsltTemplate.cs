@@ -11,7 +11,7 @@ namespace Bb.TransformJson.Asts
 
         public XjsltTemplate()
         {
-           
+
         }
 
         public Func<RuntimeContext, JToken, JToken> Rules { get; internal set; }
@@ -19,16 +19,22 @@ namespace Bb.TransformJson.Asts
         public RuntimeContext LastExecutionContext { get; private set; }
 
         public XjsltJson Template { get; internal set; }
-        
+
         public TranformJsonAstConfiguration Configuration { get; internal set; }
 
         internal StringBuilder Rule { get; set; }
 
-        public JToken Transform(StringBuilder payload)
+        public (JToken, RuntimeContext) Transform(StringBuilder payload)
         {
             JObject obj = JObject.Parse(payload.ToString());
-            this.LastExecutionContext = new RuntimeContext();
-            return Rules(this.LastExecutionContext, obj);
+            return Transform(obj);
+        }
+
+        public (JToken, RuntimeContext) Transform(JObject obj)
+        {
+            var ctx = new RuntimeContext();
+            var result = Rules(ctx, obj);
+            return (result, ctx);
         }
 
         public override string ToString()

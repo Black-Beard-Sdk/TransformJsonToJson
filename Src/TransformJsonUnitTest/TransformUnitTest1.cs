@@ -20,7 +20,7 @@ namespace TransformJsonUnitTest
      */
 
     [TestClass]
-    public class UnitTest1
+    public class TransformUnitTest1
     {
 
         /// <summary>
@@ -36,9 +36,9 @@ namespace TransformJsonUnitTest
             string payloadSource = @"{ 'name' : 'name111' }";
             StringBuilder sb2 = new StringBuilder(payloadSource.Replace('\'', '"'));
 
-            var result = template.Transform(sb2) as JObject;
+            var result = template.Transform(sb2);
 
-            Assert.AreEqual(result.ToString(Newtonsoft.Json.Formatting.None), @"{""name"":""name111""}");
+            Assert.AreEqual(result.Item1.ToString(Newtonsoft.Json.Formatting.None), @"{""name"":""name111""}");
 
         }
 
@@ -56,9 +56,9 @@ namespace TransformJsonUnitTest
             string payloadSource = @"{ 'name' : 'name111' }";
             StringBuilder sb2 = new StringBuilder(payloadSource.Replace('\'', '"'));
 
-            var result = template.Transform(sb2) as JObject;
+            var result = template.Transform(sb2);
 
-            Assert.AreEqual(result["name"], "name1");
+            Assert.AreEqual(result.Item1["name"], "name1");
 
         }
 
@@ -76,9 +76,9 @@ namespace TransformJsonUnitTest
             string payloadSource = @"{ 'person': { 'identity': { 'name' : 'name111' } } }";
             StringBuilder sb2 = new StringBuilder(payloadSource.Replace('\'', '"'));
 
-            var result = template.Transform(sb2) as JObject;
+            var result = template.Transform(sb2);
 
-            Assert.AreEqual(result["person"]["name"], "name111");
+            Assert.AreEqual(result.Item1["person"]["name"], "name111");
 
         }
 
@@ -96,10 +96,10 @@ namespace TransformJsonUnitTest
             string payloadSource = @"{ 'person': { 'identity': { 'name' : 'name111', 'age':16 } } }";
             StringBuilder sb2 = new StringBuilder(payloadSource.Replace('\'', '"'));
 
-            var result = template.Transform(sb2) as JObject;
+            var result = template.Transform(sb2);
 
-            Assert.AreEqual(result["person"]["name"], "name111");
-            Assert.AreEqual(result["person"]["age"], 16);
+            Assert.AreEqual(result.Item1["person"]["name"], "name111");
+            Assert.AreEqual(result.Item1["person"]["age"], 16);
 
         }
 
@@ -117,9 +117,9 @@ namespace TransformJsonUnitTest
             string payloadSource = @"{ 'persons': [{'name' : 'name1'}, {'name' : 'name2'}, {'name' : 'name3'}] }";
             StringBuilder sb2 = new StringBuilder(payloadSource.Replace('\'', '"'));
 
-            var result = template.Transform(sb2) as JObject;
+            var result = template.Transform(sb2);
 
-            Assert.AreEqual(result["person"]["name"], "name2");
+            Assert.AreEqual(result.Item1["person"]["name"], "name2");
 
         }
 
@@ -137,9 +137,9 @@ namespace TransformJsonUnitTest
             string payloadSource = @"{ 'persons': [{'name' : 'name1'}, {'name' : 'name2'}, {'name' : 'name3'}] }";
             StringBuilder sb2 = new StringBuilder(payloadSource.Replace('\'', '"'));
 
-            var result = template.Transform(sb2) as JObject;
+            var result = template.Transform(sb2);
 
-            Assert.AreEqual(result["person"]["name"], "name3");
+            Assert.AreEqual(result.Item1["person"]["name"], "name3");
 
         }
 
@@ -156,9 +156,9 @@ namespace TransformJsonUnitTest
             string payloadSource = @"{ 'persons': [{'n' : 'name1'}, {'n' : 'name2'}, {'n' : 'name3'}] }";
             StringBuilder sb2 = new StringBuilder(payloadSource.Replace('\'', '"'));
 
-            var result = template.Transform(sb2) as JObject;
+            var result = template.Transform(sb2);
 
-            Assert.AreEqual(result["persons"][2]["name"], "name3");
+            Assert.AreEqual(result.Item1["persons"][2]["name"], "name3");
 
         }
 
@@ -175,9 +175,9 @@ namespace TransformJsonUnitTest
             string payloadSource = @"{ 'persons': [{'n' : 'name1'}, {'n' : 'name2'}, {'n' : 'name3'}] }";
             StringBuilder sb2 = new StringBuilder(payloadSource.Replace('\'', '"'));
 
-            var result = template.Transform(sb2) as JObject;
+            var result = template.Transform(sb2);
 
-            Assert.AreEqual(result["persons"][0]["name"], "name2");
+            Assert.AreEqual(result.Item1["persons"][0]["name"], "name2");
 
         }
 
@@ -194,9 +194,9 @@ namespace TransformJsonUnitTest
             string payloadSource = @"{ 'persons': [{'n' : 'name1'}, {'n' : 'name2'}, {'n' : 'name3'}] }";
             StringBuilder sb2 = new StringBuilder(payloadSource.Replace('\'', '"'));
 
-            var result = template.Transform(sb2) as JObject;
+            var result = template.Transform(sb2);
 
-            Assert.AreEqual(result["persons"][0]["name"], "name2");
+            Assert.AreEqual(result.Item1["persons"][0]["name"], "name2");
 
         }
 
@@ -215,9 +215,9 @@ namespace TransformJsonUnitTest
             string payloadSource = @"{ 'prices': [{'n' : 1}, {'n' : 2}, {'n' : 3}] }";
             StringBuilder sb2 = new StringBuilder(payloadSource.Replace('\'', '"'));
 
-            var result = template.Transform(sb2) as JObject;
+            var result = template.Transform(sb2);
 
-            Assert.AreEqual(result["prices"], 6);
+            Assert.AreEqual(result.Item1["prices"], 6);
 
         }
 
@@ -236,9 +236,9 @@ namespace TransformJsonUnitTest
             string payloadSource = @"{ 'Event':'e1', 'id':'FR345' }";
             StringBuilder sb2 = new StringBuilder(payloadSource.Replace('\'', '"'));
 
-            var result = template.Transform(sb2) as JObject;
+            var result = template.Transform(sb2);
 
-            Assert.AreEqual(result["Person"]["Uuid"], "FR345");
+            Assert.AreEqual(result.Item1["Person"]["Uuid"], "FR345");
 
         }
 
@@ -257,9 +257,9 @@ namespace TransformJsonUnitTest
             string payloadSource = @"{ 'Event':'e1', 'id':'FR345' }";
             StringBuilder sb2 = new StringBuilder(payloadSource.Replace('\'', '"'));
 
-            var result = template.Transform(sb2) as JObject;
+            var result = template.Transform(sb2);
 
-            Assert.AreEqual(result["Uuid"], "FR345");
+            Assert.AreEqual(result.Item1["Uuid"], "FR345");
 
         }
 
