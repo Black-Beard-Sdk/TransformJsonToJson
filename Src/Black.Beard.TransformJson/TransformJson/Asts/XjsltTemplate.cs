@@ -26,11 +26,17 @@ namespace Bb.TransformJson.Asts
 
         public (JToken, RuntimeContext) Transform(StringBuilder payload)
         {
-            JObject obj = JObject.Parse(payload.ToString());
-            return Transform(obj);
+            if (payload.Length > 0)
+            {
+                JToken obj = JToken.Parse(payload.ToString());
+                return Transform(obj);
+            }
+
+            return Transform(new JObject());
+
         }
 
-        public (JToken, RuntimeContext) Transform(JObject obj)
+        public (JToken, RuntimeContext) Transform(JToken obj)
         {
             var ctx = new RuntimeContext();
             var result = Rules(ctx, obj);

@@ -1,20 +1,27 @@
 # Transform Json To Json
+
 Manage configuration for transform a json source in json target.
 
 Consider the following template. note that the template is a json that describe the structure of the target json. If the template is empty, the process return the initial source json.
+
 ```JSON
     { "name" : "jpath:{$.n}" }
 ```
+
 In this case. the result will be an object with a property named "name" and the value will be the property "n" at the root of the source json.
 
 And now the document source
+
 ```JSON
     { "n" : "name1" }
 ```
+
 The result will be.
+
 ```JSON
     { "name" : "name1" }
 ```
+
 The template is a valid json structur. the value in string have a specific syntax.
 
 ```JSON
@@ -36,6 +43,7 @@ the key is a name of the service you need to call. You are responsable of regist
 ```  
 
 ## How to use
+
 ```CSHARP
 // Intialization of the configuration
 var configuration = new TranformJsonAstConfiguration();
@@ -52,9 +60,7 @@ StringBuilder sbSource = new StringBuilder(@"payload source json");
 JToken result = template.Transform(sbSource);
 ```
 
-
-
-# JSONPath Syntax
+## JSONPath Syntax
 
 ### JSONPath notation
 
@@ -65,6 +71,7 @@ $.store.books[0].title
 ```
 
 or the bracket notation:
+
 ```JAVASCRIPT
 $['store']['books'][0]['title']
 ```
@@ -89,27 +96,31 @@ Other syntax elements are described below.
 | `[(_expression_)]` | Script expressions can be used instead of explicit property names or indexes. An example is  `[(@.length-1)]`  which selects the last item in an array. Here,  `length`  refers to the length of the current array rather than a JSON field named  `length`. |
 | `@` | Used in filter expressions to refer to the current node being processed. |
 
-## Notes:
--   Json path expressions, including property names and values, are  **case-sensitive**.
--  Json path does not have operations for accessing parent or sibling nodes from the given node.
+## Notes
+
+- Json path expressions, including property names and values, are  **case-sensitive**.
+- Json path does not have operations for accessing parent or sibling nodes from the given node.
 
 ### Filters
+
 Filters are logical expressions used to filter arrays. An example of a JSONPath expression with a filter is
 
 ```JAVASCRIPT
 $.store.book[?(@.price < 10)]
 ```
+
 where  `@`  represents the current array item or object being processed. Filters can also use  `$`  to refer to the properties outside of the current object:
 
 ```JAVASCRIPT
 $.store.book[?(@.price < $.expensive)]
 ```
+
 An expression that specifies just a property name, such as  `[?(@.isbn)]`, matches all items that have this property, regardless of the value.
 
 Below are the operators that can be used in filters.
 |Operator|Description|
 |--|--|
-|`==`|Equals to. String values must be enclosed in single quotes (not double quotes):  `[?(@.color=='red')]`.| 
+|`==`|Equals to. String values must be enclosed in single quotes (not double quotes):  `[?(@.color=='red')]`.|
 |`!=`| Not equal to. String values must be enclosed in single quotes:  `[?(@.color!='red')]`.
 |`>`|Greater than.
 |`>=`|Greater than or equal to.
@@ -188,8 +199,3 @@ In all these examples, the leading  `$.`  is optional and can be omitted.
 |`$..*`|All members of the JSON structure beneath the root (child objects, individual property values, array items), combined into an array.|
 
 
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbMjAzNzY2NDQzNyw5MzM0ODM4Nyw1NjI3ND
-gxMjEsMTI1MzM5MDk5LDEzNzY3MDQ0MDcsLTE3NDIxNDE2ODEs
-LTIwNzM0ODc2MjUsOTYwMjExMTI3XX0=
--->

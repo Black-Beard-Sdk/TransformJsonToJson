@@ -20,7 +20,8 @@ namespace Bb.TransformJson
             this._ctorJProperty = typeof(JProperty).GetConstructor(new Type[] { typeof(string), typeof(object) });
             this._ctorJValue = typeof(JValue).GetConstructor(new Type[] { typeof(object) });
             this._ctorJObject = typeof(JObject).GetConstructor(new Type[] { });
-            this._AddJObject = typeof(JObject).GetMethod("Add", new Type[] { typeof(object) });
+            //this._AddJObject = typeof(JObject).GetMethod("Add", new Type[] { typeof(object) });
+            this._AddJObject2 = typeof(RuntimeContext).GetMethod("AddProperty", new Type[] { typeof(JObject), typeof(JProperty) });
             this._ctorJArray = typeof(JArray).GetConstructor(new Type[] { typeof(object[]) });
             this._AddJArray = typeof(JArray).GetMethod("Add", new Type[] { typeof(object) });
             this._propJArray_Item = typeof(JArray).GetProperty("Item", new Type[] { typeof(Int32) });
@@ -52,34 +53,38 @@ namespace Bb.TransformJson
 
                 var src = ctx.Current.Source;
 
-                var target = src.AddVar(typeof(JArray), null, typeof(JArray).CreateObject());
-                ctx.Current.RootTarget = target;
+                var targetArray = src.AddVar(typeof(JArray), null, typeof(JArray).CreateObject());
+                ctx.Current.RootTarget = targetArray;
 
-                var resultToken = src.AddVar((typeof(JToken)), null, (Expression)node.Source.Accept(this));
+                if (node.Source != null)
+                {
 
-                // Case when result is array
-                var i = src.If(resultToken.TypeIs(typeof(JArray)));
-                var listArray = i.Then.AddVar(typeof(JArray), null, resultToken.ConvertIfDifferent(typeof(JArray)));
+                    var resultToken = src.AddVar((typeof(JToken)), null, (Expression)node.Source.Accept(this));
 
-                var if1 = i.Then.For(Expression.Constant(0), listArray.Property("Count"));
-                if1.Where = Expression.LessThan(if1.Index, listArray.Property("Count"));
-                ctx.Current.Source = if1.Body;
+                    // Case when result is array
+                    var i = src.If(resultToken.TypeIs(typeof(JArray)));
+                    var listArray = i.Then.AddVar(typeof(JArray), null, resultToken.ConvertIfDifferent(typeof(JArray)));
 
-                var itemList = if1.Body.AddVar((typeof(JToken)), null,  Expression.Property(listArray, _propJArray_Item, if1.Index));
-                ctx.Current.RootSource = itemList;
+                    var _if = i.Then.For(Expression.Constant(0), listArray.Property("Count"));
+                    _if.Where = Expression.LessThan(_if.Index, listArray.Property("Count"));
+                    ctx.Current.Source = _if.Body;
 
-                var b = (Expression)node.Item.Accept(this);
-                if1.Body.Add(target.Call(this._AddJArray, b));
+                    var itemList = _if.Body.AddVar((typeof(JToken)), null, Expression.Property(listArray, _propJArray_Item, _if.Index));
+                    ctx.Current.RootSource = itemList;
 
-
-                // Case when else
-                ctx.Current.Source = i.Else;
-                ctx.Current.RootSource = resultToken;
-                b = (Expression)node.Item.Accept(this);
-                i.Else.Add(target.Call(this._AddJArray, b));
+                    var b = (Expression)node.Item.Accept(this);
+                    _if.Body.Add(targetArray.Call(this._AddJArray, b));
 
 
-                return target;
+                    // Case when else
+                    ctx.Current.Source = i.Else;
+                    ctx.Current.RootSource = resultToken;
+                    b = (Expression)node.Item.Accept(this);
+                    i.Else.Add(targetArray.Call(this._AddJArray, b));
+
+                }
+
+                return targetArray;
 
             }
 
@@ -107,16 +112,38 @@ namespace Bb.TransformJson
         public object VisitObject(XjsltObject node)
         {
 
+
             using (var ctx = this.NewContext())
             {
 
                 var v1 = ctx.Current.Source.AddVar(typeof(JObject), null, _ctorJObject.CreateObject());
                 ctx.Current.RootTarget = v1;
 
-                foreach (var item in node.Properties)
+                if (node.Source != null)
                 {
-                    var prop = (Expression)item.Accept(this);
-                    ctx.Current.Source.Add(v1.Call(_AddJObject, prop));
+
+                    var src = ctx.Current.Source;
+
+                    var resultToken = src.AddVar((typeof(JToken)), null, (Expression)node.Source.Accept(this));
+                    ctx.Current.RootSource = resultToken;
+
+                    foreach (var item in node.Properties)
+                    {
+                        var prop = (Expression)item.Accept(this);
+                        //ctx.Current.Source.Add(v1.Call(_AddJObject, prop));
+                        ctx.Current.Source.Add(_AddJObject2.Call(v1, prop));
+                    }
+                   
+                }
+                else
+                {
+
+                    foreach (var item in node.Properties)
+                    {
+                        var prop = (Expression)item.Accept(this);
+                        //ctx.Current.Source.Add(v1.Call(_AddJObject, prop));
+                        ctx.Current.Source.Add(_AddJObject2.Call(v1, prop));
+                    }
                 }
 
                 return v1;
@@ -204,7 +231,8 @@ namespace Bb.TransformJson
         private readonly ConstructorInfo _ctorJProperty;
         private readonly ConstructorInfo _ctorJValue;
         private readonly ConstructorInfo _ctorJObject;
-        private readonly MethodInfo _AddJObject;
+        //private readonly MethodInfo _AddJObject;
+        private readonly MethodInfo _AddJObject2;
 
         private BuildContext BuildCtx
         {

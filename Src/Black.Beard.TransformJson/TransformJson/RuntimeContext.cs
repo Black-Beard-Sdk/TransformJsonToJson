@@ -82,6 +82,21 @@ namespace Bb.TransformJson
             return service.Execute(ctx, token);
         }
 
+        public static void AddProperty( JObject token, JProperty property)
+        {
+
+            try
+            {
+                token.Add(property);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
         public static JToken GetContentByJPath(RuntimeContext ctx, JToken token, string path)
         {
 

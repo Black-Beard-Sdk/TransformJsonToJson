@@ -1,4 +1,5 @@
-﻿using Bb.TransformJson.Asts;
+﻿using Bb.Exceptions;
+using Bb.TransformJson.Asts;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Text;
@@ -17,10 +18,32 @@ namespace Bb.TransformJson
         public XjsltTemplate GetTemplate(StringBuilder sb)
         {
 
-            JObject obj = null;
+            JToken obj = null;
 
-            if (sb.Length > 0)
-                obj = JObject.Parse(sb.ToString());
+            for (int i = 0; i < sb.Length; i++)
+            {
+                char ii = sb[i];
+                if (ii == '\r' || ii == '\n')
+                {
+                    ii = ' ';
+                    sb[i] = ii;
+                }
+            }
+
+            try
+            {
+
+                if (sb.Length > 0)
+                    obj = JToken.Parse(sb.ToString());
+
+            }
+            catch (Exception e)
+            {
+
+                throw new ParsingJsonException("Failed to parse Json. " + e.Message, e);
+
+            }
+
 
             TranformJsonTemplateReader reader = new TranformJsonTemplateReader(obj, this._configuration);
 
