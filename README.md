@@ -198,4 +198,3 @@ In all these examples, the leading  `$.`  is optional and can be omitted.
 |`$..book[?(@.category == 'fiction' || @.category == 'reference')]`| All fiction and reference books.|
 |`$..*`|All members of the JSON structure beneath the root (child objects, individual property values, array items), combined into an array.|
 
-
