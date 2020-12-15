@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace Bb.TransformJson.Services
 {
 
+    [DisplayName("sum")]
     public class ServiceSum : ITransformJsonService
     {
 
@@ -37,6 +39,5 @@ namespace Bb.TransformJson.Services
 
 
     }
-
 
 }

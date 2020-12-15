@@ -17,7 +17,11 @@ namespace Bb.TransformJson.Asts
                 if (item.Name == TransformJsonConstants.Source)
                     this.Type = (item.Value as XjsltConstant).Value.ToString();
                 else
-                    this._items.Add(item.Name, new XsltMapProperty() { Name = item.Name.Substring(1), Value = item.Value });
+                    this._items.Add(item.Name, new XsltMapProperty() 
+                    {
+                        Name = item.Name.Substring(1), 
+                        Value = item.Value 
+                    });
 
         }
 

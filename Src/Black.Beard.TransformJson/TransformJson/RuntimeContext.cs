@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -12,20 +13,25 @@ namespace Bb.TransformJson
 
         static RuntimeContext()
         {
+            _addLikeProperty = RuntimeContext.AddLikeProperty;
+            _mapPropertyService = RuntimeContext.MapPropertyService;
             _getContentByJPath = RuntimeContext.GetContentByJPath;
             _getContentFromService = RuntimeContext.GetContentFromService;
-            _mapPropertyService = RuntimeContext.MapPropertyService;
-            _addProperty = RuntimeContext.AddProperty;
+            _addProperty = typeof(RuntimeContext).GetMethod("AddProperty", new Type[] { typeof(JObject), typeof(JProperty) });
+            _convertToBool = typeof(RuntimeContext).GetMethod("ConvertToBool", new Type[] { typeof(JToken) });
+            
 
             _properties = new Dictionary<Type, Dictionary<string, (PropertyInfo, Action<object, object>)>>();
         }
 
 
-        public static JToken AddProperty(
-            RuntimeContext ctx, 
-            JToken tokenSource, 
-            JToken value, 
-            JToken tokenTarget, 
+        #region methods called in the expressions
+
+        public static JToken AddLikeProperty(
+            RuntimeContext ctx,
+            JToken tokenSource,
+            JToken value,
+            JToken tokenTarget,
             string propertyName
             )
         {
@@ -34,7 +40,7 @@ namespace Bb.TransformJson
             {
 
                 if (tokenTarget is JObject o)
-                    o.Add(new JProperty(propertyName, value));
+                    AddProperty(o, new JProperty(propertyName, value));
 
                 else if (tokenTarget is JArray a)
                 {
@@ -76,25 +82,9 @@ namespace Bb.TransformJson
 
         }
 
-        // ITransformJsonService
         public static JToken GetContentFromService(RuntimeContext ctx, JToken token, ITransformJsonService service)
         {
             return service.Execute(ctx, token);
-        }
-
-        public static void AddProperty( JObject token, JProperty property)
-        {
-
-            try
-            {
-                token.Add(property);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
         }
 
         public static JToken GetContentByJPath(RuntimeContext ctx, JToken token, string path)
@@ -102,7 +92,11 @@ namespace Bb.TransformJson
 
             JToken result = null;
 
-            if (token != null)
+            if (token == null)
+            {
+                //Trace.WriteLine($"the token is null. the filter '{path}' can't be apply");
+            }
+            else
             {
 
                 if (token is JObject o)
@@ -143,11 +137,32 @@ namespace Bb.TransformJson
 
         }
 
+        public static void AddProperty(JObject token, JProperty property)
+        {
+            token.Add(property);
+        }
+        
+        public static bool ConvertToBool(JToken token)
+        {
+
+            if (token is JValue v)
+                return (object.Equals(v.Value, true)) ;
+
+            return false;
+
+        }
+
+        #endregion methods called in the expressions
+
+
         public static readonly Func<RuntimeContext, JToken, Func<RuntimeContext, JToken, JToken>, JToken> _getProjectionFromSource;
         public static readonly Func<RuntimeContext, JToken, string, JToken> _getContentByJPath;
         public static readonly Func<RuntimeContext, JToken, ITransformJsonService, JToken> _getContentFromService;
         public static readonly Func<RuntimeContext, ITransformJsonService, string, JToken, ITransformJsonService> _mapPropertyService;
-        public static readonly Func<RuntimeContext, JToken, JToken, JToken, string, JToken> _addProperty;
+        public static readonly Func<RuntimeContext, JToken, JToken, JToken, string, JToken> _addLikeProperty;
+        public static readonly MethodInfo _addProperty;
+        
+        public static readonly MethodInfo _convertToBool;
 
         private static (PropertyInfo, Action<object, object>) GetWriter(Type componentType, string propertyName)
         {
@@ -202,8 +217,8 @@ namespace Bb.TransformJson
 
         }
 
-
         private static readonly Dictionary<Type, Dictionary<string, (PropertyInfo, Action<object, object>)>> _properties;
+
         private static object _lock = new object();
 
     }

@@ -13,6 +13,8 @@ namespace Bb.TransformJson.Asts
 
         public XjsltJson Source { get; internal set; }
 
+        public XjsltJson Where { get; internal set; }
+
 
     }
 

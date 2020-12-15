@@ -18,10 +18,14 @@ namespace Bb.TransformJson.Asts
 
         internal void Append(XjsltProperty property)
         {
+
             if (property.Name == TransformJsonConstants.Source)
                 this.Source = property.Value;
-            
-            else 
+
+            else if (property.Name == TransformJsonConstants.Where)
+                this.Where = property.Value;
+
+            else
                 _items.Add(property.Name, property);
         }
 

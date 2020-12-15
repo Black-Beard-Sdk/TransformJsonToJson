@@ -73,30 +73,37 @@ namespace AppJsonEvaluator
 
         }
 
-        private void Update()
+        private void UpdateTemplate()
         {
 
+            _template = null;
             Errors.Items.Clear();
-
-            XjsltTemplate template = null;
-            StringBuilder payloadSource;
 
             try
             {
-                template = TemplateEditor.Text.GetTransformProvider();
+                _template = TemplateEditor.Text.GetTransformProvider();
             }
             catch (Exception e1)
             {
                 Errors.Items.Insert(0, e1.Message);
             }
 
-            if (template != null)
+        }
+
+        private void Update()
+        {
+
+
+            if (_template != null)
             {
+
+                StringBuilder payloadSource;
+                Errors.Items.Clear();
 
                 try
                 {
                     payloadSource = new StringBuilder(SourceEditor.Text);
-                    var result = template.Transform(payloadSource);
+                    var result = _template.Transform(payloadSource);
                     var value = result.Item1.ToString();
                     TargetEditor.Text = value;
                 }
@@ -113,6 +120,7 @@ namespace AppJsonEvaluator
         private void TemplateEditorTextChanged(object sender, EventArgs e)
         {
             UpdateFolding(_templateFoldingManager, TemplateEditor);
+            UpdateTemplate();
             Update();
         }
 
@@ -133,8 +141,7 @@ namespace AppJsonEvaluator
         private readonly FoldingManager _templateFoldingManager;
         private readonly FoldingManager _sourceFoldingManager;
         private readonly FoldingManager _targetFoldingManager;
-
-
+        private XjsltTemplate _template;
     }
 
 
@@ -178,7 +185,7 @@ namespace AppJsonEvaluator
 
         }
 
-        public static XjsltTemplate GetTransformProvider(this string self, params (string, ITransformJsonService)[] services)
+        public static XjsltTemplate GetTransformProvider(this string self, params Type[] services)
         {
 
 #if UNIT_TEST
@@ -189,7 +196,7 @@ namespace AppJsonEvaluator
 
             var configuration = new TranformJsonAstConfiguration();
             foreach (var item in services)
-                configuration.AddService(item.Item1, item.Item2);
+                configuration.AddService(item);
 
             TemplateTransformProvider Templateprovider = new TemplateTransformProvider(configuration);
 

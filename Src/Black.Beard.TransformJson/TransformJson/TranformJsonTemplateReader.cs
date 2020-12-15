@@ -210,6 +210,7 @@ namespace Bb.TransformJson
             {
 
                 var it = arr.Item = Read(item);
+                
                 if (it.Source != null)
                 {
                     arr.Source = it.Source;
@@ -217,6 +218,12 @@ namespace Bb.TransformJson
                 }
                 else
                     throw new MissingFieldException("$source");
+
+                if (it.Where != null)
+                {
+                    arr.Where = it.Where;
+                    it.Where = null;
+                }
 
             }
 
@@ -236,6 +243,17 @@ namespace Bb.TransformJson
 
             if (result.Source != null)
                 if (result.Source is XjsltConstant c)
+                    if (c.Value is string v)
+                    {
+                        var service = this._configuration.Services.GetService(v);
+                        if (service != null)
+                            return new XjsltType(result) { ServiceProvider = service };
+                        else
+                            throw new MissingServiceException(v);
+                    }
+
+            if (result.Where != null)
+                if (result.Where is XjsltConstant c)
                     if (c.Value is string v)
                     {
                         var service = this._configuration.Services.GetService(v);

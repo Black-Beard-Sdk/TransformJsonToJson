@@ -9,6 +9,7 @@ namespace Bb.TransformJson
     {
 
         public const string Source = "$source";
+        public const string Where = "$where";
 
     }
 }

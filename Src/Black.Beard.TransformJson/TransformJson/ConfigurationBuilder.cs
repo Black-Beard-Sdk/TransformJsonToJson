@@ -21,7 +21,6 @@ namespace Bb.TransformJson
             this._ctorJValue = typeof(JValue).GetConstructor(new Type[] { typeof(object) });
             this._ctorJObject = typeof(JObject).GetConstructor(new Type[] { });
             //this._AddJObject = typeof(JObject).GetMethod("Add", new Type[] { typeof(object) });
-            this._AddJObject2 = typeof(RuntimeContext).GetMethod("AddProperty", new Type[] { typeof(JObject), typeof(JProperty) });
             this._ctorJArray = typeof(JArray).GetConstructor(new Type[] { typeof(object[]) });
             this._AddJArray = typeof(JArray).GetMethod("Add", new Type[] { typeof(object) });
             this._propJArray_Item = typeof(JArray).GetProperty("Item", new Type[] { typeof(Int32) });
@@ -72,15 +71,50 @@ namespace Bb.TransformJson
                     var itemList = _if.Body.AddVar((typeof(JToken)), null, Expression.Property(listArray, _propJArray_Item, _if.Index));
                     ctx.Current.RootSource = itemList;
 
-                    var b = (Expression)node.Item.Accept(this);
-                    _if.Body.Add(targetArray.Call(this._AddJArray, b));
+                    Expression b;
+
+                    // add in array
+                    if (node.Where != null)
+                    {
+
+                        var whereToken = _if.Body.AddVar((typeof(bool)), null, RuntimeContext._convertToBool.Call((Expression)node.Where.Accept(this)));
+                     
+                        var _if2 =_if.Body.If(whereToken.IsTrue());
+
+                        ctx.Current.Source = _if2.Then;
+                        b = (Expression)node.Item.Accept(this);
+                        _if2.Then.Add(targetArray.Call(this._AddJArray, b));
+                    }
+                    else
+                    {
+                        b = (Expression)node.Item.Accept(this);
+                        _if.Body.Add(targetArray.Call(this._AddJArray, b));
+                    }
 
 
                     // Case when else
-                    ctx.Current.Source = i.Else;
-                    ctx.Current.RootSource = resultToken;
-                    b = (Expression)node.Item.Accept(this);
-                    i.Else.Add(targetArray.Call(this._AddJArray, b));
+                    if (node.Where != null)
+                    {
+
+                        ctx.Current.Source = i.Else;
+                        ctx.Current.RootSource = resultToken;
+
+                        b = (Expression)node.Item.Accept(this);
+                        i.Else.Add(targetArray.Call(this._AddJArray, b));
+
+                    }
+                    else
+                    {
+
+                        ctx.Current.Source = i.Else;
+                        ctx.Current.RootSource = resultToken;
+
+                        b = (Expression)node.Item.Accept(this);
+                        i.Else.Add(targetArray.Call(this._AddJArray, b));
+
+                    }
+
+
 
                 }
 
@@ -130,10 +164,9 @@ namespace Bb.TransformJson
                     foreach (var item in node.Properties)
                     {
                         var prop = (Expression)item.Accept(this);
-                        //ctx.Current.Source.Add(v1.Call(_AddJObject, prop));
-                        ctx.Current.Source.Add(_AddJObject2.Call(v1, prop));
+                        ctx.Current.Source.Add(RuntimeContext._addProperty.Call(v1, prop));
                     }
-                   
+
                 }
                 else
                 {
@@ -141,8 +174,7 @@ namespace Bb.TransformJson
                     foreach (var item in node.Properties)
                     {
                         var prop = (Expression)item.Accept(this);
-                        //ctx.Current.Source.Add(v1.Call(_AddJObject, prop));
-                        ctx.Current.Source.Add(_AddJObject2.Call(v1, prop));
+                        ctx.Current.Source.Add(RuntimeContext._addProperty.Call(v1, prop));
                     }
                 }
 
@@ -165,7 +197,7 @@ namespace Bb.TransformJson
             using (var ctx = NewContext())
             {
 
-                Expression expressionCreatetService = Expression.Call(Expression.Constant(node.ServiceProvider), TransformJsonServiceProvider.Method);
+                Expression expressionCreatetService = Expression.Call(Expression.Constant(node.ServiceProvider), TransformJsonServiceProvider.Method, PrivatedIndex.GetNewIndex().AsConstant());
 
                 foreach (var property in node.Properties)
                 {
@@ -232,7 +264,7 @@ namespace Bb.TransformJson
         private readonly ConstructorInfo _ctorJValue;
         private readonly ConstructorInfo _ctorJObject;
         //private readonly MethodInfo _AddJObject;
-        private readonly MethodInfo _AddJObject2;
+
 
         private BuildContext BuildCtx
         {

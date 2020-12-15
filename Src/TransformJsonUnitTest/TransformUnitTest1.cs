@@ -23,6 +23,24 @@ namespace TransformJsonUnitTest
     public class TransformUnitTest1
     {
 
+
+
+
+
+        ///// <summary>
+        ///// If the template is empty, the source doc is returned in the target.
+        ///// </summary>
+        //[TestMethod]
+        //public void TestBuildProvider()
+        //{
+
+        //    var configuration = new TranformJsonAstConfiguration();
+        //    TemplateTransformProvider Templateprovider = new TemplateTransformProvider(configuration);
+
+        //}
+
+
+
         /// <summary>
         /// If the template is empty, the source doc is returned in the target.
         /// </summary>
@@ -208,9 +226,7 @@ namespace TransformJsonUnitTest
         {
 
             string payloadTemplate = @"{ 'prices': 'jpath:{$..n} | sum:{}' }";
-            XjsltTemplate template = GetProvider(payloadTemplate,
-                ("sum", new ServiceSum())
-                );
+            XjsltTemplate template = GetProvider(payloadTemplate          );
 
             string payloadSource = @"{ 'prices': [{'n' : 1}, {'n' : 2}, {'n' : 3}] }";
             StringBuilder sb2 = new StringBuilder(payloadSource.Replace('\'', '"'));
@@ -277,7 +293,6 @@ namespace TransformJsonUnitTest
 
             var p = new StringParser(rule);
             var o = p.Get();
-
 
         }
 

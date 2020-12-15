@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Reflection;
 using System.Text;
 
 namespace Bb.TransformJson
@@ -33,30 +32,6 @@ namespace Bb.TransformJson
         }
 
         private readonly Dictionary<string, Func<ITransformJsonService>> _dictionary;
-
-    }
-
-    public class TransformJsonServiceProvider
-    {
-
-        static TransformJsonServiceProvider()
-        {
-            TransformJsonServiceProvider.Method = typeof(TransformJsonServiceProvider).GetMethod("Get", BindingFlags.Instance | BindingFlags.Public);
-        }
-
-        public TransformJsonServiceProvider(Func<ITransformJsonService> generator)
-        {
-            this._generator = generator;
-        }
-
-        public ITransformJsonService Get()
-        {
-            return this._generator();
-        }
-
-        private readonly Func<ITransformJsonService> _generator;
-
-        public static MethodInfo Method { get; private set; }
 
     }
 
