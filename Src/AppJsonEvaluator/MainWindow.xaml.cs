@@ -1,20 +1,17 @@
-﻿using Bb.TransformJson;
-using Bb.TransformJson.Asts;
+﻿using Bb.TransformJson.Asts;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Folding;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -23,6 +20,7 @@ using System.Windows.Shapes;
 
 namespace AppJsonEvaluator
 {
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -42,8 +40,31 @@ namespace AppJsonEvaluator
             _sourceFoldingManager = UpdateTemplate(SourceEditor);
             _targetFoldingManager = UpdateTemplate(TargetEditor);
 
-            TemplateEditor.Load("template.txt");
-            SourceEditor.Load("source.txt");
+
+            this._parameterFile = System.IO.Path.Combine(Environment.CurrentDirectory, "parameters");
+            if (System.IO.File.Exists(this._parameterFile))
+            {
+                this._parameters = this._parameterFile
+                    .LoadFile()
+                    .Deserialize<Parameters>();
+
+                if (System.IO.File.Exists(this._parameters.TemplateFile))
+                {
+                    TemplateEditor.Load(this._parameters.TemplateFile);
+                    this.LabelTemplateFile.Content = this._parameters.TemplateFile;
+                    _templateUpdated = false;
+                }
+
+                if (System.IO.File.Exists(this._parameters.SourceTestFile))
+                {
+                    SourceEditor.Load(this._parameters.SourceTestFile);
+                    this.LabelSourceTestFile.Content = this._parameters.SourceTestFile;
+                    _sourceUpdated = false;
+                }
+
+            }
+            else
+                this._parameters = new Parameters();
 
         }
 
@@ -65,9 +86,11 @@ namespace AppJsonEvaluator
 
         protected override void OnClosing(CancelEventArgs e)
         {
+            if (_templateUpdated)
+                SaveTemplate();
 
-            TemplateEditor.Save("template.txt");
-            SourceEditor.Save("source.txt");
+            if (_sourceUpdated)
+                SaveSourceTest();
 
             base.OnClosing(e);
 
@@ -119,13 +142,16 @@ namespace AppJsonEvaluator
 
         private void TemplateEditorTextChanged(object sender, EventArgs e)
         {
+            _templateUpdated = true;
             UpdateFolding(_templateFoldingManager, TemplateEditor);
             UpdateTemplate();
             Update();
+
         }
 
         private void SourceEditorTextChanged(object sender, EventArgs e)
         {
+            _sourceUpdated = true;
             UpdateFolding(_sourceFoldingManager, SourceEditor);
             Update();
         }
@@ -137,75 +163,156 @@ namespace AppJsonEvaluator
         }
 
 
+
+        private void BtnOpenTemplate_Click(object sender, RoutedEventArgs e)
+        {
+
+            var file = GetFileFromOpenFile(this._parameters.TemplateFile);
+            if (!string.IsNullOrEmpty(file))
+            {
+                TemplateEditor.Load(file);
+                this._parameters.TemplateFile = file;
+                SaveParameters();
+
+            }
+
+        }
+
+        private void BtnSaveTemplate_Click(object sender, RoutedEventArgs e)
+        {
+            SaveTemplate();
+        }
+
+        private void BtnOpenSourceTest_Click(object sender, RoutedEventArgs e)
+        {
+            SaveSourceTest();
+        }
+
+        private void BtnSaveSourceTest_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (string.IsNullOrEmpty(this._parameters.SourceTestFile))
+                this._parameters.SourceTestFile = GetFileFromSaveFile("Save source test");
+
+            if (!string.IsNullOrEmpty(this._parameters.SourceTestFile))
+            {
+                SaveParameters();
+                TemplateEditor.Save(this._parameters.SourceTestFile);
+            }
+
+        }
+
+        private void SaveTemplate()
+        {
+            if (string.IsNullOrEmpty(this._parameters.TemplateFile))
+                this._parameters.TemplateFile = GetFileFromSaveFile("Save template");
+
+            if (!string.IsNullOrEmpty(this._parameters.TemplateFile))
+            {
+                SaveParameters();
+                TemplateEditor.Save(this._parameters.TemplateFile);
+                _templateUpdated = false;
+            }
+        }
+
+        private void SaveSourceTest()
+        {
+            var file = GetFileFromOpenFile(this._parameters.SourceTestFile);
+            if (!string.IsNullOrEmpty(file))
+            {
+                SourceEditor.Load(file);
+                this._parameters.SourceTestFile = file;
+                SaveParameters();
+                _sourceUpdated = false;
+            }
+        }
+
+        private void SaveParameters()
+        {
+            this._parameterFile.WriteInFile(this._parameters.Serialize());
+
+            this.LabelSourceTestFile.Content = this._parameters.SourceTestFile;
+            this.LabelTemplateFile.Content = this._parameters.TemplateFile;
+
+        }
+
+        private string GetFileFromOpenFile(string file)
+        {
+
+            string initialFilename = string.Empty;
+            string initialDirectory = string.Empty;
+
+            if (!string.IsNullOrEmpty(file))
+            {
+                var initialFile = new System.IO.FileInfo(file);
+                if (initialFile.Exists)
+                    initialFilename = initialFile.FullName;
+
+                if (initialFile.Directory.Exists)
+                    initialDirectory = initialFile.Directory.FullName;
+
+            }
+            else
+            {
+                initialDirectory = Environment.CurrentDirectory;
+            }
+
+            OpenFileDialog openFileDialog = new OpenFileDialog()
+            {
+                FileName = initialFilename,
+                InitialDirectory = initialDirectory,
+                Filter = "json files (*.json)|*.json|javascript files (*.js)|*.js|Text files (*.txt)|*.txt|All files (*.*)|*.*",
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+                return openFileDialog.FileName;
+
+            return string.Empty;
+
+        }
+
+        private string GetFileFromSaveFile(string title)
+        {
+
+            //string initialFilename = string.Empty;
+            //string initialDirectory = string.Empty;
+
+            //if (!string.IsNullOrEmpty(file))
+            //{
+            //    var initialFile = new System.IO.FileInfo(file);
+            //    if (initialFile.Exists)
+            //        initialFilename = initialFile.FullName;
+
+            //    if (initialFile.Directory.Exists)
+            //        initialDirectory = initialFile.Directory.FullName;
+
+            //}
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog()
+            {
+                Title = title,
+                FileName = "",          // initialFilename,
+                InitialDirectory = "",  // initialDirectory,
+                Filter = "json files (*.json)|*.json|javascript files (*.js)|*.js|Text files (*.txt)|*.txt|All files (*.*)|*.*",
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+                return saveFileDialog.FileName;
+
+            return string.Empty;
+
+        }
+
+
         private readonly BraceFoldingStrategy _foldingStrategy;
         private readonly FoldingManager _templateFoldingManager;
         private readonly FoldingManager _sourceFoldingManager;
         private readonly FoldingManager _targetFoldingManager;
         private XjsltTemplate _template;
-    }
-
-
-
-    public static class Extensions
-    {
-
-
-        public static void Load(this RichTextBox richTextBox, string filename)
-        {
-            TextRange textRange = richTextBox.GetRange();
-            textRange.Text = System.IO.Path.Combine(Environment.CurrentDirectory, filename).LoadFile();
-        }
-
-        public static void Save(this RichTextBox richTextBox, string filename)
-        {
-            TextRange textRange = richTextBox.GetRange();
-            System.IO.Path.Combine(Environment.CurrentDirectory, filename).WriteInFile(textRange.Text);
-        }
-
-        public static TextRange GetRange(this RichTextBox richTextBox)
-        {
-            TextRange textRange = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
-            return textRange;
-        }
-
-        public static string LoadFile(this string filename)
-        {
-            return File.ReadAllText(filename);
-        }
-
-        public static void WriteInFile(this string self, string content)
-        {
-
-            byte[] array = System.Text.UTF8Encoding.UTF8.GetBytes(content);
-
-            using (var file = File.OpenWrite(self))
-            {
-                file.Write(array, 0, array.Length);
-            }
-
-        }
-
-        public static XjsltTemplate GetTransformProvider(this string self, params Type[] services)
-        {
-
-#if UNIT_TEST
-            StringBuilder sb = new StringBuilder(self.Replace('\'', '"').Replace('§', '\''));
-#else
-            StringBuilder sb = new StringBuilder(self);
-#endif
-
-            var configuration = new TranformJsonAstConfiguration();
-            foreach (var item in services)
-                configuration.AddService(item);
-
-            TemplateTransformProvider Templateprovider = new TemplateTransformProvider(configuration);
-
-            XjsltTemplate template = Templateprovider.GetTemplate(sb);
-
-            return template;
-
-        }
-
+        private string _parameterFile;
+        private Parameters _parameters;
+        private bool _templateUpdated;
+        private bool _sourceUpdated;
     }
 
 }

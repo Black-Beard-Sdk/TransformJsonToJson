@@ -1,136 +1,88 @@
-﻿namespace AppJsonEvaluator
+﻿using Bb.TransformJson;
+using Bb.TransformJson.Asts;
+using Newtonsoft.Json;
+using System;
+using System.IO;
+using System.Text;
+using System.Windows.Controls;
+using System.Windows.Documents;
+
+namespace AppJsonEvaluator
 {
-    using AppJsonEvaluator.ViewModels;
-    using Newtonsoft.Json.Linq;
-    using Newtonsoft.Json.Schema;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text.RegularExpressions;
-    using System.Windows;
-    using System.Windows.Media;
-
-    static class Extensions
+    public static class Extensions
     {
-        public static IEnumerable<T> FindVisualChildren<T>(this DependencyObject depObj) 
-            where T : DependencyObject
+
+
+        //public static void Load(this RichTextBox richTextBox, string filename)
+        //{
+        //    TextRange textRange = richTextBox.GetRange();
+        //    textRange.Text = System.IO.Path.Combine(Environment.CurrentDirectory, filename).LoadFile();
+        //}
+
+        //public static void Save(this RichTextBox richTextBox, string filename)
+        //{
+        //    TextRange textRange = richTextBox.GetRange();
+        //    System.IO.Path.Combine(Environment.CurrentDirectory, filename).WriteInFile(textRange.Text);
+        //}
+
+        public static TextRange GetRange(this RichTextBox richTextBox)
         {
-            if (depObj != null)
-            {
-                for (var i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
-                {
-                    var child = VisualTreeHelper.GetChild(depObj, i);
-
-                    if (child != null && child is T)
-                    {
-                        yield return (T)child;
-                    }
-
-                    foreach (var childOfChild in child.FindVisualChildren<T>())
-                    {
-                        yield return childOfChild;
-                    }
-                }
-            }
+            TextRange textRange = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
+            return textRange;
         }
 
-        public static void Validate(this ItemViewModel item, JSchema schema)
+        public static T Deserialize<T>(this string self)
         {
-            item.Value.Schema = schema;
-            item.Validation.Validate(schema, item.Value.Token);
+
+            return JsonConvert.DeserializeObject<T>(self);
+
         }
 
-        public static void Saved(this TokenViewModel vm)
+        public static string Serialize<T>(this T self)
         {
-            var items = vm as IEnumerable<ItemViewModel>;
 
-            if (items != null)
-            {
-                foreach (var item in items)
-                {
-                    item.Value.Saved();
-                }
-            }
-            else
-            {
-                vm.IsChanged = false;
-            }
+            return JsonConvert.SerializeObject(self);
+
         }
 
-        public static JSchema GetItemSchema(this JSchema schema)
+        public static string LoadFile(this string filename)
         {
-            var result = schema;
-
-            if (schema != null)
-            {
-                result = schema.Items.FirstOrDefault() ?? schema.AdditionalItems;
-            }
-
-            return result;
+            return File.ReadAllText(filename);
         }
 
-        public static JSchema GetPropertySchema(this JSchema schema, String propertyName)
+        public static void WriteInFile(this string self, string content)
         {
-            var result = schema;
 
-            if (schema != null && !schema.Properties.TryGetValue(propertyName, out result))
+            byte[] array = System.Text.UTF8Encoding.UTF8.GetBytes(content);
+
+            using (var file = File.OpenWrite(self))
             {
-                var patternProperties = schema?.PatternProperties;
-
-                if (patternProperties != null)
-                {
-                    foreach (var pattern in patternProperties)
-                    {
-                        var regex = new Regex(pattern.Key, RegexOptions.ECMAScript | RegexOptions.CultureInvariant);
-
-                        if (regex.IsMatch(propertyName))
-                        {
-                            result = pattern.Value;
-                            break;
-                        }
-                    }
-                }
-
-                if (result == null)
-                {
-                    result = schema.AdditionalProperties;
-                }
+                file.Write(array, 0, array.Length);
             }
 
-            return result;
         }
 
-        public static JToken CreateInstance(this JSchema schema)
+        public static XjsltTemplate GetTransformProvider(this string self, params Type[] services)
         {
-            var type = schema.Type;
 
-            if (!type.HasValue)
-            {
-                if (schema.Properties.Count > 0 || schema.PatternProperties.Count > 0 || schema.AdditionalProperties != null)
-                {
-                    type = JSchemaType.Object;
-                }
-                //else if (schema.)
-            }
+#if UNIT_TEST
+            StringBuilder sb = new StringBuilder(self.Replace('\'', '"').Replace('§', '\''));
+#else
+            StringBuilder sb = new StringBuilder(self);
+#endif
 
-            if (type.HasValue)
-            {
-                switch (type.Value)
-                {
-                    case JSchemaType.Number:
-                        return new JValue(0.0);
-                    case JSchemaType.Boolean:
-                        return new JValue(false);
-                    case JSchemaType.String:
-                        return new JValue(String.Empty);
-                    case JSchemaType.Object:
-                        return new JObject();
-                    case JSchemaType.Array:
-                        return new JArray();
-                }
-            }
+            var configuration = new TranformJsonAstConfiguration();
+            foreach (var item in services)
+                configuration.AddService(item);
 
-            return schema.Enum.FirstOrDefault() ?? schema.Default;
+            TemplateTransformProvider Templateprovider = new TemplateTransformProvider(configuration);
+
+            XjsltTemplate template = Templateprovider.GetTemplate(sb);
+
+            return template;
+
         }
+
     }
+
 }

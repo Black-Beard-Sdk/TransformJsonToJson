@@ -33,18 +33,48 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <avalonEdit:TextEditor x:Name="TemplateEditor" Grid.Row="0" FontFamily="Consolas" FontSize="16" TextChanged="TemplateEditorTextChanged" >
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="32" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <ToolBar Grid.Row="0" >
+                        <Button x:Name="BtnOpenTemplate" Content="Open template" Click="BtnOpenTemplate_Click"/>
+                        <Button x:Name="BtnSaveTemplate" Content="Save template" Click="BtnSaveTemplate_Click" />
+                        <Label x:Name="LabelTemplateFile" />
+                    </ToolBar>
+
+                    <avalonEdit:TextEditor x:Name="TemplateEditor" Grid.Row="1" FontFamily="Consolas" FontSize="16" TextChanged="TemplateEditorTextChanged" >
                     
                 </avalonEdit:TextEditor>
+
+                </Grid>
 
                 <GridSplitter Background="DarkGray"  ResizeDirection="Rows" Grid.Row="1" 
                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                       ResizeBehavior="PreviousAndNext" />
 
-                <avalonEdit:TextEditor x:Name="SourceEditor" Grid.Row="2" FontFamily="Consolas" FontSize="16" TextChanged="SourceEditorTextChanged">
+                <Grid Grid.Row="2">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="32" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <ToolBar Grid.Row="0">
+                        <Button x:Name="BtnOpenSourceTest" Content="Open test source" Click="BtnOpenSourceTest_Click"/>
+                        <Button x:Name="BtnSaveSourceTest" Content="Save test source" Click="BtnSaveSourceTest_Click" />
+                        <Label x:Name="LabelSourceTestFile" />
+                    </ToolBar>
+
+                    <avalonEdit:TextEditor x:Name="SourceEditor" Grid.Row="1" FontFamily="Consolas" FontSize="16" TextChanged="SourceEditorTextChanged" VerticalAlignment="Bottom" >
+                    </avalonEdit:TextEditor>
                     
-                </avalonEdit:TextEditor>
+                </Grid>
                 
+    
             </Grid>
 
             <GridSplitter Background="DarkGray"  ResizeDirection="Columns" Grid.Column="1" 
@@ -74,6 +104,7 @@
 
         </Grid>
 
-        <StatusBar Height="20" Grid.Row="3"  />
+        <StatusBar Height="20" Grid.Row="3">
+        </StatusBar>
     </Grid>
 </Window>
