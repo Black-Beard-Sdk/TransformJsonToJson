@@ -74,8 +74,9 @@ namespace Bb.TransformJson
 
                 else
                 {
-
+                    writer.Item2(service, value);
                 }
+
             }
 
             return service;

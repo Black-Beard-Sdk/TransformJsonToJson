@@ -16,6 +16,7 @@ namespace TransformJsonUnitTest
     "name":  { "$type":"MonSrvData", "arg1": "$/person/name",  "filter": { } }
      
              { "$type": "filterEqual",     "left": "$name", "right": { "_type": "filterGreatThan", } }
+             { "$type": "add",     "left": "$name", "right": { "_type": "filterGreatThan", } }
 
      */
 
@@ -234,6 +235,26 @@ namespace TransformJsonUnitTest
             var result = template.Transform(sb2);
 
             Assert.AreEqual(result.Item1["prices"], 6);
+
+        }
+
+        /// <summary>
+        /// Add integer test
+        /// </summary>
+        [TestMethod]
+        public void TestCompositeExecuteCustomRule2()
+        {
+
+            string payloadTemplate = @"{ 'prices': { '$type': 'addNum', '$left': 'jpath:{$.price1}', '$right' : { '$type': 'addNum', '$left': 'jpath:{$.price1}', '$right' : 'jpath:{$.price2}' } }}";
+
+            XjsltTemplate template = GetProvider(payloadTemplate);
+
+            string payloadSource = @"{ 'price1': 1, 'price2': 2 }";
+            StringBuilder sb2 = new StringBuilder(payloadSource.Replace('\'', '"'));
+
+            var result = template.Transform(sb2);
+
+            Assert.AreEqual(result.Item1["prices"], 4.0);
 
         }
 

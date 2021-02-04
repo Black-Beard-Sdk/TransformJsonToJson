@@ -6,6 +6,10 @@ using System.Linq;
 namespace Bb.TransformJson.Services
 {
 
+    /// <summary>
+    /// return a list of key with no duplicated values
+    /// Display name is the key used in the template
+    /// </summary>
     [DisplayName("distinct")]
     public class ServiceDistinct : ITransformJsonService
     {

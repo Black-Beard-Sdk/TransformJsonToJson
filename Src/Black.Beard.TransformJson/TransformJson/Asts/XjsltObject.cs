@@ -25,6 +25,9 @@ namespace Bb.TransformJson.Asts
             else if (property.Name == TransformJsonConstants.Where)
                 this.Where = property.Value;
 
+            else if (property.Name == TransformJsonConstants.Type)
+                this.Name = property.Value.ToString();
+
             else
                 _items.Add(property.Name, property);
         }

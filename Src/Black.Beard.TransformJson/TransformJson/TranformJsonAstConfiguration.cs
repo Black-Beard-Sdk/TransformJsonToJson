@@ -7,6 +7,7 @@ using System.Reflection;
 
 namespace Bb.TransformJson
 {
+
     public class TranformJsonAstConfiguration
     {
 
@@ -15,8 +16,17 @@ namespace Bb.TransformJson
 
             this.Services = new ServiceContainer();
 
-            this.AddService(typeof(ServiceSum))
-                .AddService(typeof(ServiceDistinct));
+            this.AddService(typeof(ServiceAdd))
+                .AddService(typeof(ServiceConcat))
+                .AddService(typeof(ServiceDistinct))
+                .AddService(typeof(ServiceDiv))
+                .AddService(typeof(ServiceModulo))
+                .AddService(typeof(ServiceSubStr))
+                .AddService(typeof(ServiceSubstract))
+                .AddService(typeof(ServiceSum))
+                .AddService(typeof(ServiceTime))
+
+                ;
 
         }
 

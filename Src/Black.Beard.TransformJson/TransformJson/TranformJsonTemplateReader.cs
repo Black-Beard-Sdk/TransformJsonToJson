@@ -50,6 +50,8 @@ namespace Bb.TransformJson
 
         }
 
+        #region read values
+
         private XjsltJson Read(JToken n)
         {
 
@@ -201,6 +203,8 @@ namespace Bb.TransformJson
             throw new NotImplementedException();
         }
 
+        #endregion read values
+
         private XjsltJson ReadArray(JArray n)
         {
 
@@ -210,7 +214,7 @@ namespace Bb.TransformJson
             {
 
                 var it = arr.Item = Read(item);
-                
+
                 if (it.Source != null)
                 {
                     arr.Source = it.Source;
@@ -242,17 +246,33 @@ namespace Bb.TransformJson
                 result.Append(Read(item) as XjsltProperty);
 
             if (result.Source != null)
+            {
                 if (result.Source is XjsltConstant c)
                     if (c.Value is string v)
                     {
                         var service = this._configuration.Services.GetService(v);
                         if (service != null)
-                            return new XjsltType(result) { ServiceProvider = service };
+                            return new XjsltType(result)
+                            {
+                                ServiceProvider = service,
+                            };
                         else
                             throw new MissingServiceException(v);
                     }
-
-            if (result.Where != null)
+            }
+            else if (!string.IsNullOrEmpty(result.Name))
+            {
+                var service = this._configuration.Services.GetService(result.Name);
+                if (service != null)
+                    return new XjsltType(result)
+                    {
+                        ServiceProvider = service,
+                        Type = result.Name,
+                    };
+                else
+                    throw new MissingServiceException(result.Name);
+            }
+            else if (result.Where != null)
                 if (result.Where is XjsltConstant c)
                     if (c.Value is string v)
                     {
@@ -271,11 +291,12 @@ namespace Bb.TransformJson
         {
 
             var name = n.Name;
+            var value = Read(n.Value);
 
             var result = new XjsltProperty()
             {
                 Name = name,
-                Value = Read(n.Value)
+                Value = value
             };
 
             return result;

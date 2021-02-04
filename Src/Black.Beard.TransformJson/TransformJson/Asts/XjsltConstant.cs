@@ -14,6 +14,11 @@ namespace Bb.TransformJson.Asts
             return visitor.VisitConstant(this);
         }
 
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
+
     }
 
 }

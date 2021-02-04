@@ -18,8 +18,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Black.Beard.Expressions", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppJsonEvaluator", "AppJsonEvaluator\AppJsonEvaluator.csproj", "{31F7480A-FBD2-4152-A82A-6E8A89752497}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompareJsonIhm", "CompareJsonIhm\CompareJsonIhm.csproj", "{9C249266-28F5-407A-AAF5-F28F40E691EF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,10 +40,6 @@ Global
 		{31F7480A-FBD2-4152-A82A-6E8A89752497}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31F7480A-FBD2-4152-A82A-6E8A89752497}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31F7480A-FBD2-4152-A82A-6E8A89752497}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9C249266-28F5-407A-AAF5-F28F40E691EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9C249266-28F5-407A-AAF5-F28F40E691EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9C249266-28F5-407A-AAF5-F28F40E691EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9C249266-28F5-407A-AAF5-F28F40E691EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

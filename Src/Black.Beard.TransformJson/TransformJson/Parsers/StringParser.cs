@@ -176,8 +176,12 @@ namespace Bb.TransformJson.Parsers
                         break;
 
                     case KindToken.Left:
+
                         if (o == null)
-                            throw new ParsingException(token.Text, token.Index);
+                        {
+                            //    throw new ParsingException(token.Text, token.Index);
+                        }
+
                         ParseObject(tokens, o);
                         propRoot.Child = new XjsltType(o) { Type = type };
                         break;

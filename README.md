@@ -25,10 +25,11 @@ The result will be.
 The template is a valid json structur. the value in string have a specific syntax.
 
 ```JSON
-    "key:{argument} key:{argument} ..."
+    "key:{argument} | key:{argument} ..."
 ```
 
-the key is a name of the service you need to call. You are responsable of registered the services in the configuration for matching with the template. the unique key registered is **jpath** -> "jpath:{valid json path expression}". The json path fetch the value at specified adress in the source document. jpath as json path is a query language for JSON, similar to XPath for XML. The implementation of JsonPath is did by newtonsoft. [SelectToken](https://www.newtonsoft.com/json/help/html/SelectToken.htm)
+the key is a name of the service you need to call. You are responsable of registered the services in the configuration for matching with the template. The **jpath** key is registered by the sdk  -> "jpath:{valid json path expression}". The json path fetch the value at specified adress in the source document. jpath as json path is a query language for JSON, similar to XPath for XML. The implementation of JsonPath is did by newtonsoft. [SelectToken](https://www.newtonsoft.com/json/help/html/SelectToken.htm).
+The sdk provide another keys like sum or distinct.
 
 ```JSON
 // Template
@@ -65,6 +66,7 @@ JToken result = template.Transform(sbSource);
 ### JSONPath notation
 
 A JSONPath expression specifies a path to an element (or a set of elements) in a JSON structure. Paths can use the dot notation:
+The implementation is provided by newtonsoft.
 
 ```JAVASCRIPT
 $.store.books[0].title
