@@ -10,9 +10,14 @@ namespace Bb.TransformJson
     public class TemplateTransformProvider
     {
 
-        public TemplateTransformProvider(TranformJsonAstConfiguration configuration)
+        public TemplateTransformProvider(TranformJsonAstConfiguration configuration = null)
         {
+            
+            if (configuration == null)
+                configuration = new TranformJsonAstConfiguration();
+
             this._configuration = configuration;
+
         }
 
         public XjsltTemplate GetTemplate(StringBuilder sb)

@@ -50,8 +50,8 @@ The sdk provide another keys like sum or distinct.
 var configuration = new TranformJsonAstConfiguration();
 TemplateTransformProvider Templateprovider = new TemplateTransformProvider(configuration);
 
-// add a custom service
-configuration.AddService("sum", () => new ServiceSum());
+// add a custom service : Note the services in the sdk are already registered
+// configuration.AddService("sum", () => new ServiceSum());
 
 //Build the template translator
 StringBuilder sbPayloadTemplate = new StringBuilder(@"payload template");

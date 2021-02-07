@@ -55,8 +55,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompareUnitTest1.cs" />
-    <Compile Include="TransformUnitTest1.cs" />
+    <Compile Include="ConvertDatatableUnitTest.cs" />
+    <Compile Include="CompareUnitTest.cs" />
+    <Compile Include="TransformUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -11,17 +11,8 @@ using Newtonsoft.Json.Linq;
 namespace TransformJsonUnitTest
 {
 
-    /*
-     
-    "name":  { "$type":"MonSrvData", "arg1": "$/person/name",  "filter": { } }
-     
-             { "$type": "filterEqual",     "left": "$name", "right": { "_type": "filterGreatThan", } }
-             { "$type": "add",     "left": "$name", "right": { "_type": "filterGreatThan", } }
-
-     */
-
     [TestClass]
-    public class TransformUnitTest1
+    public class TransformUnitTest
     {
 
 

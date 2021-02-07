@@ -1,0 +1,12 @@
+{
+
+	"$new": ["user"],
+	"Name": { "$path":"user.Lastname" },
+	"Firstname": { "$path":"user.firstname" },
+
+	"events" : [  
+		{ "$new": ["events"], "name": "events.name", },
+	]
+	
+
+}

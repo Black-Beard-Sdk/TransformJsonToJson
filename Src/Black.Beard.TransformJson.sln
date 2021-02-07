@@ -18,6 +18,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Black.Beard.Expressions", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppJsonEvaluator", "AppJsonEvaluator\AppJsonEvaluator.csproj", "{31F7480A-FBD2-4152-A82A-6E8A89752497}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Black.Beard.TransformJson.Processors", "Black.Beard.TransformJson.Processors\Black.Beard.TransformJson.Processors.csproj", "{553A2AD0-A788-4466-9477-0A450EAD30F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Black.Beard.TransformJson.Processors.UnitTests", "Black.Beard.TransformJson.Processors.UnitTests\Black.Beard.TransformJson.Processors.UnitTests.csproj", "{977A14D7-7A86-426C-BF43-E53F17DCFFDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Black.Beard.Json", "Black.Beard.Json\Black.Beard.Json.csproj", "{4741FEFF-2D94-4702-A619-9C301B15A5B8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocTests", "DocTests", "{31A7E707-F89E-4ACF-83A1-01A38D3BF909}"
+	ProjectSection(SolutionItems) = preProject
+		DocTests\source1.json = DocTests\source1.json
+		DocTests\template1.json = DocTests\template1.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +52,18 @@ Global
 		{31F7480A-FBD2-4152-A82A-6E8A89752497}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31F7480A-FBD2-4152-A82A-6E8A89752497}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31F7480A-FBD2-4152-A82A-6E8A89752497}.Release|Any CPU.Build.0 = Release|Any CPU
+		{553A2AD0-A788-4466-9477-0A450EAD30F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{553A2AD0-A788-4466-9477-0A450EAD30F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{553A2AD0-A788-4466-9477-0A450EAD30F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{553A2AD0-A788-4466-9477-0A450EAD30F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{977A14D7-7A86-426C-BF43-E53F17DCFFDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{977A14D7-7A86-426C-BF43-E53F17DCFFDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{977A14D7-7A86-426C-BF43-E53F17DCFFDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{977A14D7-7A86-426C-BF43-E53F17DCFFDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4741FEFF-2D94-4702-A619-9C301B15A5B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4741FEFF-2D94-4702-A619-9C301B15A5B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4741FEFF-2D94-4702-A619-9C301B15A5B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4741FEFF-2D94-4702-A619-9C301B15A5B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

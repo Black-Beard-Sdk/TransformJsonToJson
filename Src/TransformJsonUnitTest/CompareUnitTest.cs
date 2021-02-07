@@ -14,7 +14,7 @@ namespace TransformJsonUnitTest
 
 
     [TestClass]
-    public class CompareUnitTest1
+    public class CompareUnitTest
     {
 
         /// <summary>
