@@ -18,13 +18,19 @@ namespace Bb.TransformJson
 
             this.AddService(typeof(ServiceAdd))
                 .AddService(typeof(ServiceConcat))
+                .AddService(typeof(ServiceConcatAll))
+                .AddService(typeof(ServiceCrc32))
                 .AddService(typeof(ServiceDistinct))
                 .AddService(typeof(ServiceDiv))
+                .AddService(typeof(ServiceFrombase64))
                 .AddService(typeof(ServiceModulo))
+                .AddService(typeof(ServiceSha256))
+                .AddService(typeof(ServiceSha512))
                 .AddService(typeof(ServiceSubStr))
                 .AddService(typeof(ServiceSubstract))
                 .AddService(typeof(ServiceSum))
                 .AddService(typeof(ServiceTime))
+                .AddService(typeof(ServiceTobase64))
 
                 ;
 

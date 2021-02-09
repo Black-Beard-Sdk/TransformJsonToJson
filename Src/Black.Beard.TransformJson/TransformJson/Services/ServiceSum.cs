@@ -7,6 +7,7 @@ using System.Linq;
 namespace Bb.TransformJson.Services
 {
 
+
     /// <summary>
     /// return the sum of the terms values
     /// if one of the term is not a number
@@ -26,8 +27,6 @@ namespace Bb.TransformJson.Services
             double result = 0;
             if (token != null)
             {
-
-                JTokenType type = JTokenType.None;
 
                 if (token is JArray a && a.Count > 0)
                 {
