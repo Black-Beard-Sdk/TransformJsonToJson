@@ -58,6 +58,9 @@ namespace Bb.Json.Commands
                     , ValidatorExtension.EvaluateFileExist
                     );
 
+                var optTemplatePath = validator.OptionNoValue("--m", "the result is merge on the source document"
+                  );
+
                 config.OnExecute(() =>
                 {
 
@@ -76,29 +79,55 @@ namespace Bb.Json.Commands
                     processor.Initialize();
 
                     JToken result;
+                    JToken TokenSource = null;
 
                     var inPipe = Input.IsPipedInput;
 
                     if (!string.IsNullOrEmpty(argTemplatePath.Value))
+                    {
                         result = processor.Execute();
-                    
+                        TokenSource = processor.LastRuntimeContext.TokenSource;
+                    }
+
                     else
                     {
 
                         if (!inPipe)
                         {
-                            app.ShowHelp(); 
+                            app.ShowHelp();
                             return ErrorEnum.MissingSource.Error("no source specified");
                         }
 
                         var payload = Input.ReadInput(Encoding.UTF8);
                         result = processor.Execute(payload);
+                        TokenSource = processor.LastRuntimeContext.TokenSource;
 
                     }
 
-                    result
-                        .ToString(Formatting.None)
-                        .WriteLineStandard()
+                    if (optTemplatePath.HasValue())
+                    {
+
+                        if (TokenSource is JObject o)
+                        {
+                            o.Merge(result, new JsonMergeSettings
+                            {
+                                MergeArrayHandling = MergeArrayHandling.Union,
+                            });
+                        }
+                        else if (TokenSource is JArray a)
+                        {
+                            a.Merge(result, new JsonMergeSettings
+                            {
+                                MergeArrayHandling = MergeArrayHandling.Union,
+                            });
+                        }
+
+                        result = TokenSource;
+
+                    }
+
+                    result.ToString(Formatting.None)
+                          .WriteLineStandard()
                     ;
 
                     return 0;

@@ -25,6 +25,7 @@ namespace Bb.TransformJson.Services
                 var d2 = Convert.FromBase64String(token.ToString());
                 var data = System.Text.Encoding.UTF8.GetString(d2);
                 return new JValue(data);
+
             }
 
             return new JValue(string.Empty);

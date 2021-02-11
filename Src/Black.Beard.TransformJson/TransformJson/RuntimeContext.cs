@@ -222,6 +222,8 @@ namespace Bb.TransformJson
 
         private static object _lock = new object();
 
+        public JToken TokenSource { get; internal set; }
+
     }
 
 }

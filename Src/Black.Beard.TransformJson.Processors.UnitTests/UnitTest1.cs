@@ -44,6 +44,28 @@ namespace Black.Beard.TransformJson.Processors.UnitTests
         }
 
         [TestMethod]
+        public void TestEasyTransformWithMerge()
+        {
+
+            var output = Output.GetStandardRedirection();
+
+            var source = GetPathDoc("source1.json");
+            var template = GetPathDoc("template1.json");
+
+            Bb.Json.Program.Main("template", "execute",
+                    Quote(template), 
+                    Quote(source), "--m"
+                );
+
+            var result = output.ConvertToString()
+                               .ConvertToJson();
+
+            Assert.AreEqual(result["bigName"], "toto");
+            Assert.AreEqual(result["value1"], "toto");
+
+        }
+
+        [TestMethod]
         public void TestEasyImport()
         {
 

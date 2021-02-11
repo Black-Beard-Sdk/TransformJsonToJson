@@ -29,9 +29,14 @@ namespace Bb.CommandLines.Validators
             return Option(name, Description, CommandOptionType.SingleValue, validators);
         }
 
-        public CommandOption Option(string name, string Description, CommandOptionType multipleValues, params Func<CommandOption, int>[] validators)
+        public CommandOption OptionMultiValue(string name, string Description, params Func<CommandOption, int>[] validators)
         {
-            var cmd = _config.Option(name, Description, CommandOptionType.SingleValue);
+            return Option(name, Description, CommandOptionType.MultipleValue, validators);
+        }
+
+        public CommandOption Option(string name, string Description, CommandOptionType value, params Func<CommandOption, int>[] validators)
+        {
+            var cmd = _config.Option(name, Description, value);
             Validate(cmd, validators);
             return cmd;
         }

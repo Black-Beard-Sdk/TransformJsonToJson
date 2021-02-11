@@ -38,7 +38,10 @@ namespace Bb.TransformJson.Asts
 
         public (JToken, RuntimeContext) Transform(JToken obj)
         {
-            var ctx = new RuntimeContext();
+            var ctx = new RuntimeContext()
+            {
+                TokenSource = obj,
+            };
             var result = Rules(ctx, obj);
             return (result, ctx);
         }
