@@ -174,7 +174,17 @@ namespace Bb
         }
 
         /// <summary>
-        /// convert the <see cref="string"/> in <see cref="JObject" />
+        /// convert the <see cref="StringBuilder"/> in <see cref="JToken" />
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static JToken ConvertToJson(this StringBuilder self)
+        {
+            return JToken.Parse(self.ToString());
+        }
+
+        /// <summary>
+        /// convert the <see cref="string"/> in <see cref="JToken" />
         /// </summary>
         /// <param name="self"></param>
         /// <returns></returns>

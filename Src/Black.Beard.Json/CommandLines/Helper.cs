@@ -11,7 +11,17 @@ namespace Bb.CommandLines
 
         public static string TrimPath(this string self)
         {
-            return self.Trim().Trim('"', '\'');
+
+            var o = self.Trim();
+
+            if (o.StartsWith('"') && o.EndsWith('"'))
+                o =self.Trim().Trim('"');
+
+            if (o.StartsWith('\'') && o.EndsWith('\''))
+                o = self.Trim().Trim('\'');
+
+            return o;
+
         }
 
         //static Helper()

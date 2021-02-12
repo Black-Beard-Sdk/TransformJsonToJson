@@ -53,8 +53,8 @@ namespace Black.Beard.TransformJson.Processors.UnitTests
             var template = GetPathDoc("template1.json");
 
             Bb.Json.Program.Main("template", "execute",
-                    Quote(template), 
-                    Quote(source), "--m"
+                    Quote(template), "--m",
+                    Quote(source)
                 );
 
             var result = output.ConvertToString()
@@ -96,6 +96,32 @@ namespace Black.Beard.TransformJson.Processors.UnitTests
 
         }
 
+        [TestMethod]
+        public void TestExportCsv()
+        {
+
+            string targetName = Guid.NewGuid().ToString()
+                                .Replace("-", "")
+                                .Trim(' ', '{', '}')
+                                ;
+
+            var source = GetPathDoc("source3.json");
+            var template = GetPathDoc("templateExportDataset.json");
+
+            // json export csv <template> <target folder> --source 'source file' --n 'nameRoot' --h --s ';' --q '"'
+            Bb.Json.Program.Main("export", "csv",
+                    Quote(template),
+                    Quote(this._directoryout.FullName),
+                    "--source", Quote(source),
+                    "--name", Quote(targetName),
+                    "--h", 
+                    "--s", Quote(","),
+                    "--q", "\""
+                );
+
+           
+
+        }
 
         private FileInfo GetPathDoc(string filename)
         {

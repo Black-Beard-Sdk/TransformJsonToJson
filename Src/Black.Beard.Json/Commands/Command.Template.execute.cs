@@ -54,12 +54,13 @@ namespace Bb.Json.Commands
                     , ValidatorExtension.EvaluateRequired
                     );
 
+                var optTemplatePath = validator.OptionNoValue("--m", "the result is merge on the source document"
+             );
                 var argSource = validator.Argument("<source file >", "json source path that contains data source"
                     , ValidatorExtension.EvaluateFileExist
                     );
 
-                var optTemplatePath = validator.OptionNoValue("--m", "the result is merge on the source document"
-                  );
+           
 
                 config.OnExecute(() =>
                 {
@@ -83,7 +84,7 @@ namespace Bb.Json.Commands
 
                     var inPipe = Input.IsPipedInput;
 
-                    if (!string.IsNullOrEmpty(argTemplatePath.Value))
+                    if (!string.IsNullOrEmpty(argSource.Value))
                     {
                         result = processor.Execute();
                         TokenSource = processor.LastRuntimeContext.TokenSource;
@@ -108,19 +109,16 @@ namespace Bb.Json.Commands
                     {
 
                         if (TokenSource is JObject o)
-                        {
                             o.Merge(result, new JsonMergeSettings
                             {
                                 MergeArrayHandling = MergeArrayHandling.Union,
                             });
-                        }
+                        
                         else if (TokenSource is JArray a)
-                        {
                             a.Merge(result, new JsonMergeSettings
                             {
                                 MergeArrayHandling = MergeArrayHandling.Union,
                             });
-                        }
 
                         result = TokenSource;
 

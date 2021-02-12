@@ -31,31 +31,32 @@ namespace Bb.ConvertToDatables
 
             foreach (var item in o.Properties())
             {
-                if (item.Value is JObject oo)
-                {
-                    if (oo.Properties().Any(c => c.Name == "$path"))
-                        ParseMapping(parser, item, oo);
 
-                    else
-                    {
-                        var parser2 = parser.AddSub(item.Name);
-                        ParseObjectProperties(oo, parser2);
-                    }
-                }
-                else if (item.Value is JArray arr)
+                if (item.Name.ToLower() == "$new" && item.Value is JArray arr)
+                    foreach (var item3 in arr)
+                        parser.AppendNewLine(item3.ToString());
+                
+                else
                 {
 
-                    if (item.Name.ToLower() == "$new")
+                    if (item.Value is JObject oo)
                     {
-                        foreach (var item3 in arr)
-                            parser.AppendNewLine(item3.ToString());
+                        if (oo.Properties().Any(c => c.Name == "$path"))
+                            ParseMapping(parser, item, oo);
+
+                        else
+                        {
+                            var parser2 = parser.AddSub(item.Name);
+                            ParseObjectProperties(oo, parser2);
+                        }
                     }
-                    else
+                    else if (item.Value is JArray arr2)
                     {
+
                         var parser2 = parser.AddSub(item.Name);
                         parser2.IsArray = true;
 
-                        var item1 = arr[0];
+                        var item1 = arr2[0];
                         if (item1 is JObject oo2)
                         {
                             ParseObjectProperties(oo2, parser2);
@@ -64,8 +65,11 @@ namespace Bb.ConvertToDatables
                         {
 
                         }
+
                     }
+
                 }
+
 
             }
 
@@ -126,7 +130,7 @@ namespace Bb.ConvertToDatables
             if (defaultValue != null)
                 column.DefaultValue = Convert.ChangeType(defaultValue, type);
         }
-    
+
     }
 
 }

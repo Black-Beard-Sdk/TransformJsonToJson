@@ -1,11 +1,11 @@
 {
 
 	"$new": ["user"],
-	"Name": { "$path":"user.Lastname" },
+	"Name": { "$path":"user.lastname" },
 	"Firstname": { "$path":"user.firstname" },
 
-	"events" : [  
-		{ "$new": ["events"], "name": "events.name", },
+	"Parents" : [  
+		{ "$new": ["parent"], "Firstname": { "$path":"parent.firstname" } },
 	]
 	
 

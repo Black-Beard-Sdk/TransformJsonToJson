@@ -23,6 +23,7 @@ namespace Bb.Json
                     .CommandExecute()
                     .CommandFormat()
                     .CommandImport()
+                    .CommandExport()
                 ;
 
                 int result = app.Execute(args);
