@@ -17,7 +17,6 @@ namespace Bb.TransformJson.Services
 
         }
 
-
         public string SplitChar { get; set; } = string.Empty;
 
         public string DelimitChar { get; set; } = string.Empty;

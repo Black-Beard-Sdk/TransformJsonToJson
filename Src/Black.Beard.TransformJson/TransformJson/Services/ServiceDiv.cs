@@ -15,9 +15,9 @@ namespace Bb.TransformJson.Services
 
         }
 
-        public float Value { get; set; }
+        public double Value { get; set; }
 
-        public float Part { get; set; }
+        public double Part { get; set; }
 
         public JToken Execute(RuntimeContext ctx, JToken token)
         {

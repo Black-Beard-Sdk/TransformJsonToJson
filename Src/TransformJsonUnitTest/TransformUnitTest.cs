@@ -236,7 +236,7 @@ namespace TransformJsonUnitTest
         public void TestCompositeExecuteCustomRule2()
         {
 
-            string payloadTemplate = @"{ 'prices': { '$type': 'addNum', '$left': 'jpath:{$.price1}', '$right' : { '$type': 'addNum', '$left': 'jpath:{$.price1}', '$right' : 'jpath:{$.price2}' } }}";
+            string payloadTemplate = @"{ 'prices': { '$type': 'add', '$left': 'jpath:{$.price1}', '$right' : { '$type': 'add', '$left': 'jpath:{$.price1}', '$right' : 'jpath:{$.price2}' } }}";
 
             XjsltTemplate template = GetProvider(payloadTemplate);
 

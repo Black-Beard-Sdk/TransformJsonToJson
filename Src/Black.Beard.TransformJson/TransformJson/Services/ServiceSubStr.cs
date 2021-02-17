@@ -6,7 +6,7 @@ namespace Bb.TransformJson.Services
     /// <summary>
     /// return a sub part of the initial Text from the 'start' position and from length 'Lenght'
     /// </summary>
-    [DisplayName("subString")]
+    [DisplayName("substr")]
     public class ServiceSubStr : ITransformJsonService
     {
 

@@ -2,7 +2,7 @@
 
 Manage configuration for transform a json source in json target.
 
-Consider the following template. note that the template is a json that describe the structure of the target json. If the template is empty, the process return the initial source json.
+Consider the following template. note this template is a json that describe the structure of the target json. If the template is empty, the process return the initial source json.
 
 ```JSON
     { "name" : "jpath:{$.n}" }
@@ -22,14 +22,14 @@ The result will be.
     { "name" : "name1" }
 ```
 
-The template is a valid json structur. the value in string have a specific syntax.
+The template is a valid json structure. the value in string have a specific syntax.
 
 ```JSON
     "key:{argument} | key:{argument} ..."
 ```
 
-the key is a name of the service you need to call. You are responsable of registered the services in the configuration for matching with the template. The **jpath** key is registered by the sdk  -> "jpath:{valid json path expression}". The json path fetch the value at specified adress in the source document. jpath as json path is a query language for JSON, similar to XPath for XML. The implementation of JsonPath is did by newtonsoft. [SelectToken](https://www.newtonsoft.com/json/help/html/SelectToken.htm).
-The sdk provide another keys like sum or distinct.
+the key is a name of the service you need to call. You manage of registered custom services in the configuration for matching with the template. The **jpath** key is registered by the sdk  -> "jpath:{valid json path expression}". The json path fetch the value at specified adress in the source document. jpath as json path is a query language for JSON, similar to XPath for XML. The implementation of JsonPath is did by newtonsoft. [SelectToken](https://www.newtonsoft.com/json/help/html/SelectToken.htm).
+The sdk provide another keys like sum or distinct. the list is available [here](Custom_services.md)
 
 ```JSON
 // Template
@@ -120,8 +120,8 @@ $.store.book[?(@.price < $.expensive)]
 An expression that specifies just a property name, such as  `[?(@.isbn)]`, matches all items that have this property, regardless of the value.
 
 Below are the operators that can be used in filters.
-|Operator|Description|
-|--|--|
+|Operator|Description|  
+|--|--|  
 |`==`|Equals to. String values must be enclosed in single quotes (not double quotes):  `[?(@.color=='red')]`.|
 |`!=`| Not equal to. String values must be enclosed in single quotes:  `[?(@.color!='red')]`.
 |`>`|Greater than.

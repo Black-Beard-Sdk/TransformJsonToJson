@@ -11,6 +11,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Links", "Links", "{CA2581B6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{781BF86E-D80D-403C-83B5-7BC7F167E72E}"
 	ProjectSection(SolutionItems) = preProject
+		..\Custom_services.md = ..\Custom_services.md
+		..\Format_DateTime.md = ..\Format_DateTime.md
+		..\Format_double.md = ..\Format_double.md
+		..\Format_Guid.md = ..\Format_Guid.md
+		..\Format_integer.md = ..\Format_integer.md
+		..\Format_Timespan.md = ..\Format_Timespan.md
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
@@ -23,12 +29,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Black.Beard.TransformJson.Processors.UnitTests", "Black.Beard.TransformJson.Processors.UnitTests\Black.Beard.TransformJson.Processors.UnitTests.csproj", "{977A14D7-7A86-426C-BF43-E53F17DCFFDE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Black.Beard.Json", "Black.Beard.Json\Black.Beard.Json.csproj", "{4741FEFF-2D94-4702-A619-9C301B15A5B8}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocTests", "DocTests", "{31A7E707-F89E-4ACF-83A1-01A38D3BF909}"
-	ProjectSection(SolutionItems) = preProject
-		DocTests\source1.json = DocTests\source1.json
-		DocTests\template1.json = DocTests\template1.json
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
