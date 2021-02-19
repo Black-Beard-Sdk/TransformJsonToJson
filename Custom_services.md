@@ -37,7 +37,7 @@ Concat Arguments of type text. Note all arguments are not required
 ## **ConcatAll**  
 Concat input stream of type text. 
 ```JSON
-["jpath:{$[0].Text}", { "$type" : "concat", '$splitchar":",", "$delimitchar":"\" }"]
+["jpath:{$[0].Text}", { "$type" : "concat", "$splitchar":",", "$delimitchar":"\" }"]
 ```
 
 ## **Crc32**  
@@ -86,7 +86,7 @@ return the rest of the division
 ## **Now**  
 return the current date and time  
 ```JSON
-[{ "$type" : "utc", 'utc":true }"]
+[{ "$type" : "utc", "utc":true }"]
 ```
 
 ## **Sha256**  

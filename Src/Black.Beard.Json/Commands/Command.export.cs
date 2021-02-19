@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Text;
 
@@ -26,7 +27,6 @@ namespace Bb.Json.Commands
     /// </summary>
     public static partial class Command
     {
-
 
         public static CommandLineApplication CommandExport(this CommandLineApplication app)
         {
@@ -73,83 +73,54 @@ namespace Bb.Json.Commands
                     if (!validator.Evaluate(out int errorNum))
                         return errorNum;
 
-                    var builder = new BuildSchema();
-
-                    var template = argTemplatePath.Value.TrimPath()
-                        .LoadContentFromFile()
-                        .ConvertToJson();
-
-                    var parser = builder.ParseTemplate(template);
-
-                    var inPipe = Input.IsPipedInput;
-                    JToken source = null;
+                    var targetDir = new DirectoryInfo(argtarget.Value.TrimPath());
+                    char separator = GetSeparator(optSeparator);
+                    char quote = GetQuote(optQuote);
 
                     string targetName = string.Empty;
+                    JToken source = null;
 
-                    if (argSource.HasValue())
+                    Parser parser = GenerateParser(argTemplatePath);
+                    var result = ReadSource(app, argSource, argTargetName);
+
+                    if (result.Item1 > 0)
+                        return result.Item1;
+
+                    source = result.Item3;
+                    targetName = result.Item2;
+
+                    Func<Context, DataTable, bool> flush = (ctx, table) =>
                     {
-
-                        var s = argSource.Value();
-                        source = s.TrimPath()
-                                 .LoadContentFromFile()
-                                 .ConvertToJson();
-
-                        targetName = Path.GetFileNameWithoutExtension(s);
-
-                    }
-                    else
-                    {
-
-                        if (!inPipe)
+                        try
                         {
-                            app.ShowHelp();
-                            return ErrorEnum.MissingSource.Error("no source specified");
+                            var file = new FileInfo(Path.Combine(targetDir.FullName, targetName.Trim('_') + "_" + table.TableName + ".csv"));
+                            table.WriteToCsv(file, Encoding.UTF8, optWriteHeader.HasValue(), separator, quote);
+                            return true;
+                        }
+                        catch (Exception ex)
+                        {
+                            ctx.Exception = ex;
+                            return false;
                         }
 
-                        source = Input.ReadInput(Encoding.UTF8)
-                            .ConvertToJson();
+                    };
 
-                        if (argTargetName.HasValue())
-                            targetName = Path.GetFileNameWithoutExtension(argTargetName.Value().TrimPath());
-                        else
-                            targetName = Guid.NewGuid().ToString()
-                                .Replace("-", "")
-                                .Trim(' ', '{', '}')
-                                ;
-
-                    }
-
-                    parser.Import(source);
-
-                    var targetDir = new DirectoryInfo(argtarget.Value.TrimPath());
-
-                    char separator = ';';
-                    char quote = '"';
-
-                    if (optSeparator.HasValue())
+                    using (var ctx = parser.Open(flush, 500000))
                     {
-                        string se = optSeparator.Value();
-                        if (se.Length > 1)
-                            se = se.Trim(se[0]);
-                        separator = se[0];
+
+                        parser.Load(source, ctx);
+
+
                     }
 
-                    if (optQuote.HasValue())
-                    {
-                        string se = optQuote.Value();
-                        if (se.Length > 1)
-                            se = se.Trim(se[0]);
-                        quote = se[0];
-                    }
-
-                    parser.Dataset.Write(
-                            targetDir
-                          , targetName
-                          , Encoding.UTF8
-                          , optWriteHeader.HasValue()
-                          , separator
-                          , quote
-                          );
+                    //parser.Schema.DataSet.WriteToCsv(
+                    //       targetDir
+                    //     , targetName
+                    //     , Encoding.UTF8
+                    //     , optWriteHeader.HasValue()
+                    //     , separator
+                    //     , quote
+                    //     );
 
                     return 0;
 
@@ -161,5 +132,93 @@ namespace Bb.Json.Commands
 
         }
 
+        private static char GetSeparator(CommandOption optSeparator)
+        {
+            char separator = ';';
+
+            if (optSeparator.HasValue())
+            {
+                string se = optSeparator.Value();
+                if (se.Length > 1)
+                    se = se.Trim(se[0]);
+                separator = se[0];
+            }
+
+            return separator;
+
+        }
+
+        private static char GetQuote(CommandOption optQuote)
+        {
+
+            char quote = '"';
+
+            if (optQuote.HasValue())
+            {
+                string se = optQuote.Value();
+                if (se.Length > 1)
+                    se = se.Trim(se[0]);
+                quote = se[0];
+            }
+
+            return quote;
+
+        }
+
+        private static (int, string, JToken) ReadSource(CommandLineApplication app, CommandOption argSource, CommandOption argTargetName)
+        {
+            string targetName = string.Empty;
+            JToken source = null;
+
+            var inPipe = Input.IsPipedInput;
+
+            if (argSource.HasValue())
+            {
+
+                var s = argSource.Value();
+                source = s.TrimPath()
+                         .LoadContentFromFile()
+                         .ConvertToJson();
+
+                targetName = Path.GetFileNameWithoutExtension(s);
+
+            }
+            else
+            {
+
+                if (!inPipe)
+                {
+                    app.ShowHelp();
+                    return (ErrorEnum.MissingSource.Error("no source specified"), string.Empty, null);
+                }
+
+                source = Input.ReadInput(Encoding.UTF8)
+                    .ConvertToJson();
+
+                if (argTargetName.HasValue())
+                    targetName = Path.GetFileNameWithoutExtension(argTargetName.Value().TrimPath());
+                else
+                    targetName = Guid.NewGuid().ToString()
+                        .Replace("-", "")
+                        .Trim(' ', '{', '}')
+                        ;
+
+            }
+
+            return (0, targetName, source);
+
+        }
+
+        private static Parser GenerateParser(CommandArgument argTemplatePath)
+        {
+            var builder = new BuildSchema();
+
+            var template = argTemplatePath.Value.TrimPath()
+                .LoadContentFromFile()
+                .ConvertToJson();
+
+            var parser = builder.ParseTemplate(template);
+            return parser;
+        }
     }
 }

@@ -16,9 +16,6 @@ namespace TransformJsonUnitTest
     {
 
 
-
-
-
         ///// <summary>
         ///// If the template is empty, the source doc is returned in the target.
         ///// </summary>

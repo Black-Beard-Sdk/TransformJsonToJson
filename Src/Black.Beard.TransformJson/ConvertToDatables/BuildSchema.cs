@@ -17,11 +17,21 @@ namespace Bb.ConvertToDatables
 
         public Parser ParseTemplate(JToken schema)
         {
-            var p = new Parser(new DataSet(), null);
+
+            var p = new Parser(null, new StructureSchema(new DataSet()));
+
             if (schema is JObject o)
+            {
+
+                foreach (var item in o.Properties().Where(c => c.Name == "$schema"))
+                    p.Schema.Populate(item.Value);
+
                 ParseObjectProperties(o, p);
 
-            p.Initialize();
+                p.Initialize();
+
+            }
+
 
             return p;
         }
@@ -32,10 +42,18 @@ namespace Bb.ConvertToDatables
             foreach (var item in o.Properties())
             {
 
-                if (item.Name.ToLower() == "$new" && item.Value is JArray arr)
-                    foreach (var item3 in arr)
-                        parser.AppendNewLine(item3.ToString());
-                
+                if (item.Name.ToLower() == "$schema" && item.Value is JObject schema)
+                {
+                    // Managed in root   
+                }
+                else if (item.Name.ToLower() == "$news" && item.Value is JArray arrNewLignes)
+                {
+                    foreach (var item3 in arrNewLignes)
+                    {
+                        string tableName = item3.ToString();
+                        parser.AppendNewLine(tableName);
+                    }
+                }
                 else
                 {
 
@@ -58,9 +76,8 @@ namespace Bb.ConvertToDatables
 
                         var item1 = arr2[0];
                         if (item1 is JObject oo2)
-                        {
                             ParseObjectProperties(oo2, parser2);
-                        }
+
                         else
                         {
 
@@ -70,20 +87,13 @@ namespace Bb.ConvertToDatables
 
                 }
 
-
             }
 
         }
 
-        private static void ParseMapping(Parser parser, JProperty item, JObject oo)
+        private void ParseMapping(Parser parser, JProperty item, JObject oo)
         {
             var property = parser.AddProperty(item.Name);
-            DataColumn column = null;
-            Type type = typeof(object);
-            bool nullable = true;
-            bool isUnique = false;
-            int maxLength = -1;
-            object defaultValue = null;
 
             foreach (var item2 in oo.Properties())
             {
@@ -91,29 +101,14 @@ namespace Bb.ConvertToDatables
                 {
 
                     case "$path":
-                        column = property.GetTargetPath(item2.Value as JValue, item.Name);
-                        break;
 
-                    case "$type":
-                        type = Type.GetType(item2.Value.ToString());
-                        if (type == null)
-                            throw new InvalidExpressionException($"the type cant't be solved from '{item2.Value}'");
-                        break;
+                        if (item2.Value is JArray a)
+                        {
+                            foreach (JValue item3 in a)
+                                property.AppendTargetPath(item3.Value.ToString(), item.Name, parser.Schema);
 
-                    case "$nullable":
-                        nullable = item2.Value<bool>();
-                        break;
+                        }
 
-                    case "$isunique":
-                        isUnique = item2.Value<bool>();
-                        break;
-
-                    case "$maxlength":
-                        maxLength = item2.Value<int>();
-                        break;
-
-                    case "$defaultvalue":
-                        defaultValue = item2.Value<object>();
                         break;
 
                     default:
@@ -121,16 +116,9 @@ namespace Bb.ConvertToDatables
                 }
             }
 
-            column.DataType = type;
-            column.AllowDBNull = nullable;
-            column.Unique = isUnique;
-            if (maxLength > -1)
-                column.MaxLength = maxLength;
-
-            if (defaultValue != null)
-                column.DefaultValue = Convert.ChangeType(defaultValue, type);
         }
 
     }
+
 
 }

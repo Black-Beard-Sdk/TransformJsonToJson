@@ -1,12 +1,54 @@
 {
 
-	"$new": ["user"],
-	"Name": { "$path":"user.lastname" },
-	"Firstname": { "$path":"user.firstname" },
-
-	"Parents" : [  
-		{ "$new": ["parent"], "Firstname": { "$path":"parent.firstname" } },
-	]
+	"$schema":{
+		"tables":[
+		{
+			"name":"user", 
+			"columns": [
+				{
+					"name":"lastname",
+					"dbtype":"String",
+					"nullable":false,
+					"maxlength":20,
+					"defaultValue":"",
+					"isPrimary":true,
+				},
+				{
+					"name":"firstname",
+					"dbtype":"String",
+					"nullable":false,
+					"maxlength":20,
+					"defaultValue":"",
+					"isPrimary":true,
+				}
+				]
+		},
+		{
+			"name":"parent", "columns": 
+			[
+				{
+					"name":"firstname",
+					"caption":"firstname of the user",
+					"dbtype":"String",
+					"nullable":false,
+					"maxlength":20,
+					//"defaultValue": { "$generate":"newGuid|increment" }
+					
+				}
+			]
+		}
+		]
+	},
 	
 
+
+	"$news": ["user"],
+		
+	"Name": { "$path":["user.lastname"] },
+	"Firstname": { "$path":["user.firstname"] },
+
+	"Parents" : [  
+		{ "$news": ["parent"], "Firstname": { "$path":["parent.firstname"] } },
+	]
+	
 }

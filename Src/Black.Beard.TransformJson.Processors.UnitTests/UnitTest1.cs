@@ -119,7 +119,6 @@ namespace Black.Beard.TransformJson.Processors.UnitTests
                     "--q", "\""
                 );
 
-           
 
         }
 

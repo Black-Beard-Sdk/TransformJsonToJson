@@ -10,44 +10,32 @@ namespace Bb.ConvertToDatables
     {
 
 
-        public Parser(System.Data.DataSet dataSet, Parser parent)
+        public Parser(Parser parent, StructureSchema schema)
         {
             this._parent = parent;
-            this.Dataset = dataSet;
-            this._properties = new List<MappingProperty>();
+            this._properties = new List<SourceMappingProperty>();
             this._sub = new List<Parser>();
-            this._newLines = new List<string>();
-            this._parentKeys = new List<(string, string)>();
-
+            this._newLines = new List<StructureTable>();
+            this._dependencies = new List<StructureTable>();
+            this._parentKeys = new List<(StructureColumn, StructureColumn)>();
+            this.Schema = schema;
         }
 
+        /// <summary>
+        /// Clone in the table child, the relation key from parent.
+        /// </summary>
         internal void Initialize()
         {
 
             if (this._parent != null && this._newLines.Any())
-            {
-
-                foreach (var tableName in this._newLines)
-                {
-
-                    var table = this.Dataset.Tables[tableName];
-                    var key = table.Columns["technicalKey"];
-                    var ordinal = key.Ordinal + 1;
-
-                    foreach (var parentTableName in this._parent.GetTables())
-                    {
-                        string name = parentTableName + "_" + "technicalKey";
-                        if (!table.Columns.Contains(name))
+                foreach (StructureTable table in this._newLines)
+                    foreach (StructureTable parentTable in this._parent.GetTables())
+                        foreach (StructureColumn key in parentTable.PrimaryKey)
                         {
-                            var c = new DataColumn(name, typeof(Guid));
-                            table.Columns.Add(c);
-                            c.SetOrdinal(ordinal++);
-                            this._parentKeys.Add((parentTableName, name));
+                            StructureColumn foreignKey = table.GenerateRelationFrom(key);
+                            this._parentKeys.Add((key, foreignKey));
                         }
-                    }
-                }
 
-            }
 
             foreach (var item in this._sub)
                 item.Initialize();
@@ -56,10 +44,9 @@ namespace Bb.ConvertToDatables
 
         public string Name { get; set; }
 
-        public DataSet Dataset { get; }
         public bool IsArray { get; internal set; }
 
-        public IEnumerable<string> GetTables()
+        public IEnumerable<StructureTable> GetTables()
         {
 
             if (_parent != null)
@@ -74,35 +61,66 @@ namespace Bb.ConvertToDatables
 
         #region Build template
 
-        internal MappingProperty AddProperty(string name)
+        internal SourceMappingProperty AddProperty(string name)
         {
-            var p = new MappingProperty(this.Dataset) { Name = name };
+            var p = new SourceMappingProperty() { Name = name };
             this._properties.Add(p);
             return p;
         }
 
         internal Parser AddSub(string name)
         {
-            var p = new Parser(Dataset, this) { Name = name };
+            var p = new Parser(this, this.Schema) { Name = name };
             this._sub.Add(p);
             return p;
         }
 
         internal void AppendNewLine(string tableName)
         {
-            this._newLines.Add(tableName);
+            var t = this.Schema.Get<StructureTable>(tableName);
+            this._newLines.Add(t);
+            AppendDependencies(t);
+        }
+
+        private void AppendDependencies(StructureTable t)
+        {
+            
+            if (this._parent != null)
+                this._parent.AppendDependencies(t);
+
+            else if (!this._dependencies.Contains(t))
+                this._dependencies.Insert(0, t);
+
         }
 
         #endregion Build template
 
-
-        public void Import(JToken obj)
+        /// <summary>
+        /// Create a new context.
+        /// </summary>
+        /// <param name="flush"></param>
+        /// <param name="bulkCount"></param>
+        /// <returns></returns>
+        public Context Open(Func<Context, DataTable, bool> flush = null, int bulkCount = 50000)
         {
-            ImportCurrent(obj, new Context(this.Dataset));
+            var ctx = new Context(this.Schema)
+                .SetFlush(flush)
+                .SetBulkCount(bulkCount)
+                .SetDependencies(_dependencies);
+            ;
+            return ctx;
         }
+
+        public void Load(JToken obj, Context ctx)
+        {
+            ImportCurrent(obj, ctx);
+        }
+
 
         private void ImportCurrent(JToken obj, Context ctx)
         {
+
+            ctx.Increment();
 
             if (this.IsArray)
             {
@@ -110,32 +128,53 @@ namespace Bb.ConvertToDatables
                 var a = obj as JArray;
                 foreach (var item in a)
                 {
-
-                    foreach (var tableName in this._newLines)
-                        ctx.NewLine(tableName, this._parentKeys);
+                    OpenNewLines(ctx);
 
                     ParseProperties(item, ctx);
                     ParseSub(item, ctx);
 
-                    foreach (var tableName in this._newLines)
-                        ctx.Close(tableName);
+                    CloseLines(ctx);
 
                 }
             }
             else
             {
 
-                foreach (var tableName in this._newLines)
-                    ctx.NewLine(tableName, this._parentKeys);
+                OpenNewLines(ctx);
 
                 ParseProperties(obj, ctx);
                 ParseSub(obj, ctx);
 
-                foreach (var tableName in this._newLines)
-                    ctx.Close(tableName);
+                CloseLines(ctx);
 
             }
 
+            ctx.Decrement();
+
+        }
+
+        private void CloseLines(Context ctx)
+        {
+
+            bool result = false;
+
+            foreach (var tableName in this._newLines)
+            {
+                var r = ctx.Close(tableName);
+                if (r)
+                    result = true;
+
+            }
+
+            if (result && ctx.IsRootLevel)
+                ctx.Flush();
+
+        }
+
+        private void OpenNewLines(Context ctx)
+        {
+            foreach (var tableName in this._newLines)
+                ctx.NewLine(tableName, this._parentKeys);
         }
 
         private void ParseSub(JToken obj, Context ctx)
@@ -151,16 +190,22 @@ namespace Bb.ConvertToDatables
         private void ParseProperties(JToken obj, Context ctx)
         {
 
-            foreach (var item in _properties)
-                ctx.AppendProperty(item, obj[item.Name]);
-
+            foreach (var PropertySource in _properties)
+            {
+                var s = obj[PropertySource.Name];
+                ctx.AppendProperty(PropertySource, s);
+            }
         }
 
 
-        private readonly List<MappingProperty> _properties;
+        private readonly List<SourceMappingProperty> _properties;
         private readonly List<Parser> _sub;
-        private List<string> _newLines;
-        private List<(string, string)> _parentKeys;
+        private List<StructureTable> _newLines;
+        private List<StructureTable> _dependencies;
+        private List<(StructureColumn, StructureColumn)> _parentKeys;
+
+        public StructureSchema Schema { get; }
+
         private readonly Parser _parent;
 
 
