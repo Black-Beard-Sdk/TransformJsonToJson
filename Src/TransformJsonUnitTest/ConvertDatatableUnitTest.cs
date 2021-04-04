@@ -70,7 +70,7 @@ namespace TransformJsonUnitTest
                 })
             };
 
-            parser.Import(obj);
+            //parser.Import(obj);
 
         }
 

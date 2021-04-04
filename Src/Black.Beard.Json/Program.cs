@@ -24,6 +24,7 @@ namespace Bb.Json
                     .CommandFormat()
                     .CommandImport()
                     .CommandExport()
+                    .CommandLoadCsv()
                 ;
 
                 int result = app.Execute(args);
