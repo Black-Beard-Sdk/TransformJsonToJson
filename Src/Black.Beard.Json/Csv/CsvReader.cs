@@ -30,7 +30,7 @@ using System.IO;
 
 using Bb.Sdk.Csv.Exceptions;
 using Bb.Sdk.Csv.Events;
-using Bb.Sdk.Csv.Resources;
+using Bb.Json.Csv;
 
 namespace Bb.Sdk.Csv
 {
@@ -594,6 +594,8 @@ namespace Bb.Sdk.Csv
 		#endregion
 
 		#region State
+
+		public int CurrentPosition { get => _nextFieldStart; }
 
 		/// <summary>
 		/// Gets the maximum number of fields to retrieve for each record.
@@ -1446,6 +1448,7 @@ namespace Bb.Sdk.Csv
 								value = string.Empty;
 
 							_fields[index] = value;
+							this._lastReadedText = value;
 						}
 					}
 				}
@@ -2362,10 +2365,13 @@ namespace Bb.Sdk.Csv
 		/// </summary>
 		private bool _isDisposed = false;
 
-		/// <summary>
-		/// Contains the locking object for multi-threading purpose.
-		/// </summary>
-		private readonly object _lock = new object();
+
+        private string _lastReadedText;
+
+        /// <summary>
+        /// Contains the locking object for multi-threading purpose.
+        /// </summary>
+        private readonly object _lock = new object();
 
 		/// <summary>
 		/// Occurs when the instance is disposed of.

@@ -17,4 +17,19 @@
     <ProjectReference Include="..\Black.Beard.TransformJson.Processors\Black.Beard.TransformJson.Processors.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Csv\ExceptionMessage.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ExceptionMessage.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Csv\ExceptionMessage.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExceptionMessage.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>
