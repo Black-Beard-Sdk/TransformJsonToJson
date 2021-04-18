@@ -7,6 +7,7 @@ using Microsoft.Extensions.CommandLineUtils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Bb.Json.Commands
@@ -52,15 +53,18 @@ namespace Bb.Json.Commands
                 var argTemplatePath = validator.Argument("<template file>", "template path"
                     , ValidatorExtension.EvaluateFileExist
                     , ValidatorExtension.EvaluateRequired
-                    );
+                );
 
-                var optTemplatePath = validator.OptionNoValue("--m", "the result is merge on the source document"
-             );
-                var argSource = validator.Argument("<source file >", "json source path that contains data source"
+
+                var argSource = validator.Argument("<source file>", "json source path that contains data source"
                     , ValidatorExtension.EvaluateFileExist
-                    );
+                );
 
-           
+                var argTarget = validator.Argument("<target file>", "json target path that contains output data"
+                );
+
+                var optTemplatePath = validator.OptionNoValue("--m", "the result is merge on the source document");
+                var optNoIndent = validator.OptionNoValue("--noIndented", "format stream on one line");
 
                 config.OnExecute(() =>
                 {
@@ -124,9 +128,19 @@ namespace Bb.Json.Commands
 
                     }
 
-                    result.ToString(Formatting.None)
-                          .WriteLineStandard()
-                    ;
+                    var resultPayload = result.ToString(optNoIndent.HasValue() ? Formatting.None : Formatting.Indented);
+
+                    if (!string.IsNullOrEmpty(argTarget.Value))
+                    {
+
+                        if (File.Exists(argTarget.Value))
+                            File.Delete(argTarget.Value);
+
+                        ContentHelper.Save(argTarget.Value, resultPayload);
+
+                    }
+                    else
+                        resultPayload.WriteLineStandard();
 
                     return 0;
 

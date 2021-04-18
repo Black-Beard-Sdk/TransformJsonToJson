@@ -13,8 +13,15 @@ In this sample the argument "$argumentName" describe the source
 * Consume the flow of data.  
 Jpath select a value and the function distinct return false if the value is already matched.
 ```JSON
-{ "$where" : "jpath:{$[0].key} | distinct:{}" }
+{ "$where" : "jpath:{$.property_Path} | distinct:{}" }
 ```
+
+* Consume the flow of data.  
+Jpath select a value and the function notnul return false if the value is null.
+```JSON
+{ "$where" : "jpath:{$.property_Path} | notnull:{}" }
+```
+
 
 ## Custom services embedded in the Sdk
 ## **Add**  
@@ -44,6 +51,12 @@ Concat input stream of type text.
 Compute Crc32 checksum  
 ```JSON
 "Syntax" : { "$type" : "crc32" }
+```
+
+## **Generate id**  
+format text and Compute Crc32 checksum  
+```JSON
+"Syntax" : { "$type" : "id" }
 ```
 
 ## **Distinct**  
@@ -104,7 +117,7 @@ return the hash of Sha512 algorithm
 ## **SubStr**  
 return a sub string of text
 ```JSON
-"Syntax" : { "$type" : "substr", "$text":"<value>", "$start":"$value", , "$length":"$value" }
+"Syntax" : { "$type" : "substr", "$text":"<value>", "$start":"$value", "$length":"$value" }
 ```
 
 ## **Subtract**  

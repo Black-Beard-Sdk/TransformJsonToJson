@@ -23,7 +23,7 @@ namespace Bb.TransformJson.Processors
             if (!fileTemplate.Exists)
                 throw new FileNotFoundException(fileTemplate.FullName);
 
-            var sbPayloadTemplate = new StringBuilder(ContentHelper.LoadContentFromFile(fileTemplate.FullName));
+            var sbPayloadTemplate = new StringBuilder(ContentHelper.LoadFile(fileTemplate.FullName));
             this._template = _templateProvider.GetTemplate(sbPayloadTemplate);
 
         }

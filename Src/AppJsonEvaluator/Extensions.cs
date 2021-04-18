@@ -53,6 +53,9 @@ namespace AppJsonEvaluator
         public static void WriteInFile(this string self, string content)
         {
 
+            if (File.Exists(self))
+                File.Delete(self);
+
             byte[] array = System.Text.UTF8Encoding.UTF8.GetBytes(content);
 
             using (var file = File.OpenWrite(self))

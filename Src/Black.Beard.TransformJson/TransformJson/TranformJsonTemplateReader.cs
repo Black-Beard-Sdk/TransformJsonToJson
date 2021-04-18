@@ -272,7 +272,9 @@ namespace Bb.TransformJson
                 else
                     throw new MissingServiceException(result.Name);
             }
-            else if (result.Where != null)
+
+            if (result.Where != null)
+            {
                 if (result.Where is XjsltConstant c)
                     if (c.Value is string v)
                     {
@@ -282,6 +284,8 @@ namespace Bb.TransformJson
                         else
                             throw new MissingServiceException(v);
                     }
+            
+            }
 
             return result;
 

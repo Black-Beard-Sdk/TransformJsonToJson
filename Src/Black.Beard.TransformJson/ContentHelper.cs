@@ -25,6 +25,11 @@ namespace Bb
             return LoadContentFromFile(self.FullName);
         }
 
+        public static string LoadFile(this string _path)
+        {
+            return File.ReadAllText(_path);
+        }
+
         public static string LoadContentFromFile(this string _path)
         {
 

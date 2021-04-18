@@ -39,8 +39,10 @@ namespace Bb.TransformJson
             {
 
                 if (sb.Length > 0)
-                    obj = JToken.Parse(sb.ToString());
-
+                {
+                    var value = sb.ToString().Trim();
+                    obj = JToken.Parse(value);
+                }
             }
             catch (Exception e)
             {
