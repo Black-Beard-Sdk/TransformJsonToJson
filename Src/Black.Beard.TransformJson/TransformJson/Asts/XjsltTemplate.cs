@@ -24,26 +24,17 @@ namespace Bb.TransformJson.Asts
 
         internal StringBuilder Rule { get; set; }
 
-        public (JToken, RuntimeContext) Transform(StringBuilder payload)
-        {
-            if (payload.Length > 0)
-            {
-                JToken obj = JToken.Parse(payload.ToString());
-                return Transform(obj);
-            }
-
-            return Transform(new JObject());
-
-        }
-
-        public (JToken, RuntimeContext) Transform(JToken obj)
+        public (JToken, RuntimeContext) Transform(Sources sources)
         {
             var ctx = new RuntimeContext()
             {
-                TokenSource = obj,
+                TokenSource = sources.Source.Datas,
+                SubSources = sources,
             };
-            var result = Rules(ctx, obj);
+
+            var result = Rules(ctx, ctx.TokenSource);
             return (result, ctx);
+
         }
 
         public override string ToString()

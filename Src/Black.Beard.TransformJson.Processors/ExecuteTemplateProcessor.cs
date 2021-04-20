@@ -28,38 +28,16 @@ namespace Bb.TransformJson.Processors
 
         }
 
-        public JToken Execute()
+        public JToken Execute(Sources sources)
         {
-
-            // Charge and evaluate source
-            var filePathSource = new FileInfo(PathSource);
-            if (!filePathSource.Exists)
-                throw new FileNotFoundException(filePathSource.FullName);
-
-            var fileContent = new StringBuilder(ContentHelper.LoadContentFromFile(filePathSource.FullName));
-            var r = Execute(fileContent);
-
-            return r;
-
-        }
-
-        public JToken Execute(StringBuilder sbPayload)
-        {
-            var result = _template.Transform(sbPayload);
+            var result = this._template.Transform(sources);
             this.LastRuntimeContext = result.Item2;
             return result.Item1;
-        }
-
-        public JToken Execute(string payload)
-        {
-            return Execute(new StringBuilder(payload));
         }
 
         public RuntimeContext LastRuntimeContext { get; private set; }
 
         public string PathTemplate { get; set; }
-
-        public string PathSource { get; set; }
 
         private TemplateTransformProvider _templateProvider;
         private XjsltTemplate _template;

@@ -42,11 +42,11 @@ namespace Bb.Json.Commands
                 var optQuote = validator.Option("--quote", "specifiy the quote charset. by default the value is '\"'");
                 var optEscape = validator.Option("--escape", "specifiy the escape charset. by default the value is '\'");
 
-                var argSource = validator.Argument("<source file>", "csv source path that contains data source"
+                var argSource = validator.Option("--source", "csv source path that contains data source"
                    , ValidatorExtension.EvaluateFileExist
                    );
 
-                var argTarget = validator.Argument("<target file>", "json file target path"
+                var argTarget = validator.Option("--out", "json file target path"
                    );
 
                 var optNoIndent = validator.OptionNoValue("--noIndented", "format stream on one line");
@@ -59,7 +59,7 @@ namespace Bb.Json.Commands
                         return errorNum;
 
                     var items = ReadCsv(
-                        argSource.Value,
+                        argSource.Value(),
                         !optHeader.HasValue(),
                         optSeparator.HasValue()
                             ? optSeparator.Value()
@@ -74,13 +74,14 @@ namespace Bb.Json.Commands
 
                     var result = items.ToString(optNoIndent.HasValue() ? Formatting.None : Formatting.Indented);
 
-                    if (!string.IsNullOrEmpty(argTarget.Value))
+                    if (argTarget.HasValue())
                     {
 
-                        if (File.Exists(argTarget.Value))
-                            File.Delete(argTarget.Value);
+                        string o = argTarget.Value();
+                        if (File.Exists(o))
+                            File.Delete(o);
 
-                        ContentHelper.Save(argTarget.Value, result);
+                        ContentHelper.Save(o, result);
 
                     }
                     else

@@ -24,6 +24,10 @@ namespace Bb.TransformJson
             _properties = new Dictionary<Type, Dictionary<string, (PropertyInfo, Action<object, object>)>>();
         }
 
+        public RuntimeContext()
+        {
+
+        }
 
         #region methods called in the expressions
 
@@ -223,6 +227,8 @@ namespace Bb.TransformJson
         private static object _lock = new object();
 
         public JToken TokenSource { get; internal set; }
+
+        public Sources SubSources { get; internal set; }
 
     }
 

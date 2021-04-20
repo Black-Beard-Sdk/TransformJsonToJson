@@ -2,7 +2,7 @@
   "profiles": {
     "Black.Beard.Json": {
       "commandName": "Project",
-      "commandLineArgs": "template execute \"C:\\Users\\g.beard\\Desktop\\CartoTest\\Imports\\templates\\module.templateimport.json\" \"C:\\Users\\g.beard\\Desktop\\CartoTest\\Imports\\temp\\functions.json\" \"C:\\Users\\g.beard\\Desktop\\CartoTest\\Imports\\Artefacts\\functions.entities.json\""
+      "commandLineArgs": "template execute \"C:\\Users\\g.beard\\Desktop\\CartoTest\\Imports\\templates\\module.templateimport.json\" --source:\"C:\\Users\\g.beard\\Desktop\\CartoTest\\Imports\\temp\\functions.json\" --out:\"C:\\Users\\g.beard\\Desktop\\CartoTest\\Imports\\Artefacts\\functions.entities.json\""
     }
   }
 }

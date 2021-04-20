@@ -2,6 +2,7 @@
 using Bb.CommandLines.Ins;
 using Bb.CommandLines.Outs;
 using Bb.CommandLines.Validators;
+using Bb.TransformJson;
 using Bb.TransformJson.Processors;
 using Microsoft.Extensions.CommandLineUtils;
 using Newtonsoft.Json;
@@ -33,10 +34,8 @@ namespace Bb.Json.Commands
 
             var cmd = app.Command("template", config =>
             {
-
                 config.Description = "template process";
                 config.HelpOption(HelpFlag);
-
             });
 
             /*
@@ -55,12 +54,11 @@ namespace Bb.Json.Commands
                     , ValidatorExtension.EvaluateRequired
                 );
 
-
-                var argSource = validator.Argument("<source file>", "json source path that contains data source"
+                var argSource = validator.Option("--source", "json source path that contains data source"
                     , ValidatorExtension.EvaluateFileExist
                 );
 
-                var argTarget = validator.Argument("<target file>", "json target path that contains output data"
+                var argTarget = validator.Option("--out", "json target path that contains output data"
                 );
 
                 var optTemplatePath = validator.OptionNoValue("--m", "the result is merge on the source document");
@@ -78,36 +76,30 @@ namespace Bb.Json.Commands
                     var processor = new ExecuteTemplateProcessor(provider)
                     {
                         PathTemplate = argTemplatePath.Value.TrimPath(),
-                        PathSource = argSource.Value.TrimPath(),
                     };
 
                     processor.Initialize();
 
                     JToken result;
                     JToken TokenSource = null;
+                    Sources payload = null;
 
                     var inPipe = Input.IsPipedInput;
 
-                    if (!string.IsNullOrEmpty(argSource.Value))
-                    {
-                        result = processor.Execute();
-                        TokenSource = processor.LastRuntimeContext.TokenSource;
-                    }
 
+                    if (argSource.HasValue())
+                        payload = new Sources(SourceJson.GetFromFile(argSource.Value()));
+
+                    else if (!inPipe)
+                    {
+                        app.ShowHelp();
+                        return ErrorEnum.MissingSource.Error("no source specified");
+                    }
                     else
-                    {
+                        payload = new Sources(SourceJson.GetFromText(Input.ReadInput(Encoding.UTF8)));
 
-                        if (!inPipe)
-                        {
-                            app.ShowHelp();
-                            return ErrorEnum.MissingSource.Error("no source specified");
-                        }
-
-                        var payload = Input.ReadInput(Encoding.UTF8);
-                        result = processor.Execute(payload);
-                        TokenSource = processor.LastRuntimeContext.TokenSource;
-
-                    }
+                    result = processor.Execute(payload);
+                    TokenSource = processor.LastRuntimeContext.TokenSource;
 
                     if (optTemplatePath.HasValue())
                     {
@@ -117,7 +109,7 @@ namespace Bb.Json.Commands
                             {
                                 MergeArrayHandling = MergeArrayHandling.Union,
                             });
-                        
+
                         else if (TokenSource is JArray a)
                             a.Merge(result, new JsonMergeSettings
                             {
@@ -130,13 +122,13 @@ namespace Bb.Json.Commands
 
                     var resultPayload = result.ToString(optNoIndent.HasValue() ? Formatting.None : Formatting.Indented);
 
-                    if (!string.IsNullOrEmpty(argTarget.Value))
+                    if (argTarget.HasValue())
                     {
+                        var @out = argTarget.Value();
+                        if (File.Exists(@out))
+                            File.Delete(@out);
 
-                        if (File.Exists(argTarget.Value))
-                            File.Delete(argTarget.Value);
-
-                        ContentHelper.Save(argTarget.Value, resultPayload);
+                        ContentHelper.Save(@out, resultPayload);
 
                     }
                     else

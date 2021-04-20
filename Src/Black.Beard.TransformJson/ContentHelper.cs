@@ -20,6 +20,11 @@ namespace Bb
             return LoadContentFromFile(_path);
         }
 
+        public static string LoadFile(this FileInfo self)
+        {
+            return LoadFile(self.FullName);
+        }
+
         public static string LoadContentFromFile(this FileInfo self)
         {
             return LoadContentFromFile(self.FullName);

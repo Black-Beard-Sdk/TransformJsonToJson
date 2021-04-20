@@ -1,4 +1,5 @@
-﻿using Bb.TransformJson.Asts;
+﻿using Bb.TransformJson;
+using Bb.TransformJson.Asts;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Folding;
@@ -120,13 +121,12 @@ namespace AppJsonEvaluator
             if (_template != null)
             {
 
-                StringBuilder payloadSource;
                 Errors.Items.Clear();
 
                 try
                 {
-                    payloadSource = new StringBuilder(SourceEditor.Text);
-                    var result = _template.Transform(payloadSource);
+                    var src = new Sources(SourceJson.GetFromText(SourceEditor.Text));
+                    var result = _template.Transform(src);
                     var value = result.Item1.ToString();
                     TargetEditor.Text = value;
                 }

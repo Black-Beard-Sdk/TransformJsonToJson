@@ -10,9 +10,7 @@ namespace Bb.TransformJson
     public interface IExecuteProcessor
     {
 
-        JToken Execute();
-
-        JToken Execute(string payload);
+        JToken Execute(Sources sources);
 
     }
 

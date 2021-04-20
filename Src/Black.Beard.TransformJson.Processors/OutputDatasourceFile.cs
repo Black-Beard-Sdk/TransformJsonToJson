@@ -48,16 +48,11 @@ namespace Bb.TransformJson.Processors
 
         }
 
-        public JToken Execute(string payload)
+        public JToken Execute(Sources payload)
         {
-            this._datas = payload.ConvertToJson();
-            return Execute();
-        }
-
-        public JToken Execute()
-        {
+         
             int countMissing = 0;
-            var array = this._datas as JArray;
+            var array = payload.Source.Datas as JArray;
             foreach (var value in array)
             {
 
@@ -162,7 +157,6 @@ namespace Bb.TransformJson.Processors
         private Dictionary<string, string> _dic;
         private string _path;
         private FileInfo _fileIndex;
-        private JToken _datas;
     }
 
 }
