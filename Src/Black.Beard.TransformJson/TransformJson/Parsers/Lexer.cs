@@ -66,6 +66,20 @@ namespace Bb.TransformJson.Parsers
         private readonly int _length;
         private char _currentChar;
         private Kind _current;
+
     }
 
 }
+
+/*
+ 
+	"sample1":"@.path($)",										// Jpath
+	"sample1":"@.path($.Nom_de_l_application)",					// Jpath	
+	"sample1":"@.path($.Nom_de_l_application) | @.notnull()",	// Jpath redirigé sur un notnull
+	"sample1":"(@.path($.v1) | @.notnull()) && (@.path($.v2))",	// et logique
+	"sample1":"(@.path($.v1) | @.notnull()) || (@.path($.v2))",	// ou logique
+	
+	"sample1":"@.sha256(@.path{$.Nom_de_l_application})",		// Jpath redirigé sur un notnull
+ 
+ */
+

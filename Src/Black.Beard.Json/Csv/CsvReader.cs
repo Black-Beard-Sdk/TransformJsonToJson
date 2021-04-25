@@ -370,6 +370,7 @@ namespace Bb.Sdk.Csv
 		/// </exception>
 		public CsvReader(TextReader reader, bool hasHeaders, char delimiter, char? quote, char escape, char comment, ValueTrimmingOptions trimmingOptions, int bufferSize)
 		{
+
 #if DEBUG
 			_allocStack = new System.Diagnostics.StackTrace();
 #endif

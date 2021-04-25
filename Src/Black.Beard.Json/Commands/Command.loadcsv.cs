@@ -115,61 +115,66 @@ namespace Bb.Json.Commands
 
             var _file = new FileInfo(filename);
 
-            using (var _txt = _file.OpenText())
-            using (CsvReader csv = new CsvReader(_txt, hasHeader, separator[0], quote[0], escape[0], '#', ValueTrimmingOptions.All, (int)_file.Length))
+            var text = _file.FullName.LoadContentFromFile();
+
+            using (var _txt = new StringReader(text))
             {
-                
-                System.Data.IDataReader reader = csv;
-                int line = 0;
-                try
+
+                using (CsvReader csv = new CsvReader(_txt, hasHeader, separator[0], quote[0], escape[0], '#', ValueTrimmingOptions.All, (int)_file.Length))
                 {
 
-                    while (reader.Read())
+                    System.Data.IDataReader reader = csv;
+                    int line = 0;
+                    try
                     {
 
-                        line++;
-
-                        var o = new JObject();
-
-                        for (int i = 0; i < reader.FieldCount; i++)
+                        while (reader.Read())
                         {
 
-                            string name = hasHeader
-                                ? reader.GetName(i)
-                                    .Replace(" ", "_")
-                                    .Replace("'", "_")
-                                    .Replace("___", "_")
-                                    .Replace("__", "_")
-                                    .Replace("é", "e")
-                                    .Replace("è", "e")
-                                    .Replace("ë", "e")
-                                    .Replace("î", "i")
-                                    .Replace("ï", "i")
-                                    .Replace("ô", "o")
-                                    .Replace("à", "a")
-                                    .Replace("ê", "e")
+                            line++;
 
-                                : "Column" + i.ToString();
+                            var o = new JObject();
 
-                            var value = reader.GetValue(i);
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
 
-                            o.Add(new JProperty(name, value));
+                                string name = hasHeader
+                                    ? reader.GetName(i)
+                                        .Replace(" ", "_")
+                                        .Replace("'", "_")
+                                        .Replace("___", "_")
+                                        .Replace("__", "_")
+                                        .Replace("é", "e")
+                                        .Replace("è", "e")
+                                        .Replace("ë", "e")
+                                        .Replace("î", "i")
+                                        .Replace("ï", "i")
+                                        .Replace("ô", "o")
+                                        .Replace("à", "a")
+                                        .Replace("ê", "e")
+
+                                    : "Column" + i.ToString();
+
+                                var value = reader.GetValue(i);
+
+                                o.Add(new JProperty(name, value));
+
+                            }
+
+                            result.Add(o);
 
                         }
 
-                        result.Add(o);
-
+                    }
+                    catch (Exception)
+                    {
+                        Output.WriteLineError($"Failed to read after {result.Last.ToString(Formatting.Indented)}");
+                        throw;
                     }
 
                 }
-                catch (Exception)
-                {
-                    Output.WriteLineError($"Failed to read after {result.Last.ToString(Formatting.Indented)}");
-                    throw;
-                }
 
             }
-
             return result;
 
         }

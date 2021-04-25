@@ -35,6 +35,29 @@ namespace Bb
             return File.ReadAllText(_path);
         }
 
+        public static System.Text.Encoding GetEncoding(this string _path)
+        {
+
+            string fileContents = string.Empty;
+            System.Text.Encoding encoding = null;
+            FileInfo _file = new FileInfo(_path);
+
+            using (FileStream fs = _file.OpenRead())
+            {
+
+                Ude.CharsetDetector cdet = new Ude.CharsetDetector();
+                cdet.Feed(fs);
+                cdet.DataEnd();
+                if (cdet.Charset != null)
+                    encoding = System.Text.Encoding.GetEncoding(cdet.Charset);
+                else
+                    encoding = System.Text.Encoding.UTF8;
+            }
+
+            return encoding;
+
+        }
+
         public static string LoadContentFromFile(this string _path)
         {
 
