@@ -131,6 +131,7 @@ namespace Bb.TransformJson
                 }
                 else if (token is JValue v)
                     return null;
+
                 else
                 {
 

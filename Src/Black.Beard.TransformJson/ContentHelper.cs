@@ -20,10 +20,10 @@ namespace Bb
             return LoadContentFromFile(_path);
         }
 
-        public static string LoadFile(this FileInfo self)
-        {
-            return LoadFile(self.FullName);
-        }
+        //public static string LoadFile(this FileInfo self)
+        //{
+        //    return LoadFile(self.FullName);
+        //}
 
         public static string LoadContentFromFile(this FileInfo self)
         {
@@ -33,29 +33,6 @@ namespace Bb
         public static string LoadFile(this string _path)
         {
             return File.ReadAllText(_path);
-        }
-
-        public static System.Text.Encoding GetEncoding(this string _path)
-        {
-
-            string fileContents = string.Empty;
-            System.Text.Encoding encoding = null;
-            FileInfo _file = new FileInfo(_path);
-
-            using (FileStream fs = _file.OpenRead())
-            {
-
-                Ude.CharsetDetector cdet = new Ude.CharsetDetector();
-                cdet.Feed(fs);
-                cdet.DataEnd();
-                if (cdet.Charset != null)
-                    encoding = System.Text.Encoding.GetEncoding(cdet.Charset);
-                else
-                    encoding = System.Text.Encoding.UTF8;
-            }
-
-            return encoding;
-
         }
 
         public static string LoadContentFromFile(this string _path)
@@ -92,7 +69,15 @@ namespace Bb
                 fileContents = System.Text.Encoding.UTF8.GetString(datas);
             }
 
-            return fileContents;
+            StringBuilder sb = new StringBuilder(fileContents.Length);
+            for (int i = 0; i < fileContents.Length; i++)
+            {
+                var c = fileContents[i];
+                if ((int)c != 65279)
+                    sb.Append(c);
+            }
+
+            return sb.ToString();
 
         }
 

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
 using System.IO;
 using System.Text;
 
@@ -14,7 +15,7 @@ namespace Bb.TransformJson
             if (string.IsNullOrEmpty(payload))
                 return new JObject();
 
-            return JToken.Parse(payload);
+            return JToken.Parse(Normalize(payload));
 
         }
 
@@ -29,7 +30,7 @@ namespace Bb.TransformJson
             if (!filePathSource.Exists)
                 throw new FileNotFoundException(filePathSource.FullName);
 
-            var getDatas = GetDatas(filename.LoadFile());
+            var getDatas = GetDatas(filename.LoadContentFromFile());
 
             return new SourceJson(getDatas, name);
 
@@ -45,7 +46,7 @@ namespace Bb.TransformJson
             if (!file.Exists)
                 throw new FileNotFoundException(file.FullName);
 
-            var getDatas = GetDatas(file.LoadFile());
+            var getDatas = GetDatas(file.LoadContentFromFile());
 
             return new SourceJson(getDatas, name);
 
@@ -99,6 +100,29 @@ namespace Bb.TransformJson
         {
             return SourceJson.GetFromJson(sb);
         }
+
+
+        private static string Normalize(string payload)
+        {
+
+            var length = payload.Length;
+            StringBuilder sb = new StringBuilder(length);
+
+            for (int i = 0; i < length; i++)
+            {
+
+                char c = payload[i];
+
+                if ((int)c != 65279)
+                    sb.Append(c);
+
+            }
+
+
+            return sb.ToString();
+
+        }
+
 
     }
 
